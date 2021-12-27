@@ -1,0 +1,64 @@
+svg * {
+  transform-box: fill-box;
+}
+
+.feature-icon {
+    transform-origin: right;
+}
+
+
+#feature-icon-1 {
+    animation: feature-icon-left .8s 1.58s both;
+}
+
+#feature-icon-2 {
+    animation: feature-icon-left .8s 1.66s both;
+}
+
+#feature-icon-3 {
+    animation: feature-icon-left .8s 1.74s both;
+}
+
+#feature-icon-4 {
+    animation: feature-icon-left .8s 1.82s both;
+}
+
+#feature-icon-5 {
+    animation: feature-icon-left .8s 1.90s both;
+}
+
+#feature-icon-6 {
+    animation: feature-icon-left .8s 1.98s both;
+}
+
+#feature-icon-7 {
+    animation: feature-icon-left .8s 2.06s both;
+}
+
+#feature-icon-8 {
+    animation: feature-icon-left .8s 2.14s both;
+}
+
+#feature-icon-9 {
+    animation: feature-icon-left .8s 2.22s both;
+}
+
+#feature-icon-10 {
+    animation: feature-icon-left .8s 2.30s both;
+}
+
+@keyframes feature-icon-left {
+    0% {
+        transform: scale(1) translateX(30px);
+        opacity: .1;
+        animation-timing-function: cubic-bezier(0.3, 0.1, 0.9, 0.5);
+    }
+    20% {
+        transform: scale(1.1) translateX(20px);
+        animation-timing-function: cubic-bezier(0.1, 0.4, 0.2, 1);
+    }
+    100% {
+        transform: scale(1) translateX(0);
+        opacity: 1;
+    }
+}

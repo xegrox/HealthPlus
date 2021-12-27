@@ -1,0 +1,23 @@
+{% from 'button.html' import button, focus_button %}
+
+{% macro nav_link(name, link='') %}
+<a class="hover:bg-primary/10 transition-colors px-10 flex" href="{{ link }}">
+    <p class="m-auto">{{ name }}</p>
+</a>
+{% endmacro %}
+
+<div class="h-20 flex space-x-20 px-10 flex fixed w-full">
+    <a class="text-2xl m-auto flex flex-none space-x-6" href="/">
+        <img class="w-10" src="{{ url_for('static', filename='logo.svg') }}"/>
+        <p class="font-black text-gray-700">Health<span class="text-secondary">Plus</span></p>
+    </a>
+    <div class="flex flex-1">
+        {{ nav_link('Home') }}
+        {{ nav_link('Services') }}
+        {{ nav_link('Contact') }}
+    </div>
+    <div class="flex flex-none items-center space-x-5">
+        {{ button('Log In') }}
+        {{ focus_button('Sign Up') }}
+    </div>
+</div>
