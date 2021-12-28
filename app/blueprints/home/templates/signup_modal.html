@@ -1,0 +1,21 @@
+{% from 'button.html' import focus_button %}
+{% from 'input.html' import input %}
+
+{% extends 'modal.html' %}
+{% set name = 'signup' %}
+{% block content %}
+<div class="flex flex-col space-y-10 w-96">
+    <p class="text-3xl font-bold underline decoration-primary">Sign Up</p>
+    <div class="flex flex-col space-y-5">
+        <div class="flex space-x-5">
+            <div class="min-w-0"> {{ input('First name') }} </div>
+            <div class="min-w-0"> {{ input('Last name') }} </div>
+        </div>
+        {{ input('Email address', type='email') }}
+        {{ input('Password', type='password') }}
+        {{ input('Repeat password', type='password') }}
+    </div>
+    {{ focus_button('Sign Up') }}
+</div>
+
+{% endblock %}

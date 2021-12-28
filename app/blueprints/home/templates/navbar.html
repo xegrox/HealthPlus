@@ -18,6 +18,7 @@
     </div>
     <div class="flex flex-none items-center space-x-5">
         {{ button('Log In') }}
-        {{ focus_button('Sign Up') }}
+        {{ focus_button('Sign Up', onclick='show_modal_signup()') }}
     </div>
 </div>
+{% include 'signup_modal.html' %}
