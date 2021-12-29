@@ -1,33 +1,50 @@
 import shelve
 import threading
-from typing import Callable, ValuesView
-from .database_object import DatabaseObject
+from typing import ValuesView, TypeVar, KeysView
+
+T = TypeVar('T', bound='DatabaseObject')
 
 
 class DatabaseInterface:
-    def __init__(self, db: shelve.Shelf):
+    def __init__(self, lock: threading.Lock, db: shelve.Shelf):
         self.__db = db
+        self.__lock = lock
 
-    def put(self, item: DatabaseObject):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def put(self, item: T):
         self.__db[item.key] = item
 
     def remove(self, key: str):
         del self.__db[key]
 
-    def get(self, key: str) -> DatabaseObject:
+    def get(self, key: str) -> T:
         return self.__db[key]
 
-    def values(self) -> ValuesView[DatabaseObject]:
+    def keys(self) -> KeysView[str]:
+        return self.__db.keys()
+
+    def values(self) -> ValuesView[T]:
         return self.__db.values()
+
+    def exists(self, key: str) -> bool:
+        return key in self.__db
+
+    def close(self):
+        self.__db.close()
+        self.__lock.release()
 
 
 """Wrapper around a shelve database to support concurrency
 
-Flask handles each HTTP request in a separate thread, which might cause the database to be written by multiple threads 
-at the same time
-However, shelve does not support concurrent writes, causing the write operations to fail
-The wrapper solves this by propagating each write operation into different threads managed by a single lock
-The lock delays each thread until the previous one has completed, preventing the risk of write operations colliding
+Flask handles each HTTP request in a separate thread, which might cause the database to be written simultaneously
+However, shelve does not support concurrent writes, causing simultaneous write operations to fail
+The wrapper solves this by managing each operations with a single lock
+The lock delays each operation until the previous one has completed, preventing writes from colliding
 """
 
 
@@ -36,41 +53,7 @@ class Database:
         self.__name = name
         self.__lock = threading.Lock()
 
-    def dispatch(self, operation: Callable[[DatabaseInterface], None], autostart=True) -> threading.Thread:
-        """Run crud operations on a lock managed thread
-
-        Parameters
-        ----------
-        autostart : bool
-            Starts operation immediately if True. Defaults to True
-        operation : Callable[[DatabaseInterface], None]
-            Callback with interface for crud operations
-
-        Example
-        -------
-        The following inserts 'item' at 'item.key' into a database named 'example'
-        >>> item = DatabaseObject()
-        ... db = Database('example')
-        ...
-        ... def add_item(interface):
-        ...    interface.put(item)
-        ...
-        ... db.dispatch(add_item)
-
-        Returns
-        -------
-        Thread
-            The thread that the dispatched operation is running on
-        """
-        def worker():
-            self.__lock.acquire()  # Wait until lock has been released
-            db = shelve.open(self.__name)
-            interface = DatabaseInterface(db)
-            operation(interface)
-            db.close()
-            self.__lock.release()  # Release lock once operation completed
-
-        t = threading.Thread(target=worker)
-        if autostart:
-            t.start()
-        return t
+    def open(self) -> DatabaseInterface:
+        self.__lock.acquire()
+        db = shelve.open(self.__name)
+        return DatabaseInterface(self.__lock, db)
