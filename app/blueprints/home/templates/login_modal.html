@@ -1,0 +1,16 @@
+{% from 'button.html' import focus_button %}
+{% from 'input.html' import input %}
+
+{% extends 'modal.html' %}
+{% set name = 'login' %}
+{% block content %}
+<div class="flex flex-col space-y-10 w-96">
+    <p class="text-3xl font-bold underline decoration-primary">Log In</p>
+    <div class="flex flex-col space-y-5">
+        {{ input('Email address', type='email') }}
+        {{ input('Password', type='password') }}
+    </div>
+    {{ focus_button('Log In') }}
+</div>
+
+{% endblock %}

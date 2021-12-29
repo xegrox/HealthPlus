@@ -17,8 +17,9 @@
         {{ nav_link('Contact') }}
     </div>
     <div class="flex flex-none items-center space-x-5">
-        {{ button('Log In') }}
+        {{ button('Log In', onclick='show_modal_login()') }}
         {{ focus_button('Sign Up', onclick='show_modal_signup()') }}
     </div>
 </div>
 {% include 'signup_modal.html' %}
+{% include 'login_modal.html' %}
