@@ -1,2 +1,2 @@
-from patient import Patient
-from user import User
+from .patient import Patient
+from .user import User

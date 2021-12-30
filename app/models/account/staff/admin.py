@@ -1,4 +1,4 @@
-from staff import Staff
+from .staff import Staff
 
 
 class Admin(Staff):
