@@ -4,18 +4,25 @@
 {% extends 'modal.html' %}
 {% set name = 'signup' %}
 {% block content %}
-<div class="flex flex-col space-y-10 w-96">
+<form class="flex flex-col space-y-10 w-96" hx-post="/users" hx-swap="none">
     <p class="text-3xl font-bold underline decoration-primary">Sign Up</p>
     <div class="flex flex-col space-y-5">
         <div class="flex space-x-5">
-            <div class="min-w-0"> {{ input('First name') }} </div>
-            <div class="min-w-0"> {{ input('Last name') }} </div>
+            <div class="min-w-0"> {{ input('First name', name='first_name', required=True) }} </div>
+            <div class="min-w-0"> {{ input('Last name', name='last_name', required=True) }} </div>
         </div>
-        {{ input('Email address', type='email') }}
-        {{ input('Password', type='password') }}
-        {{ input('Repeat password', type='password') }}
+        {{ input('Email address', type='email', name='email', required=True) }}
+        <div id="input_pass">{{ input('Password', type='password', name='password', required=True) }}</div>
+        <div _="
+        set :pass to (<input/> in #input_pass)[0]
+        set :pass_rep to (<input/> in me)[0]
+        on input from :pass_rep
+            if :pass_rep.value != :pass.value
+                call :pass_rep.setCustomValidity('Passwords do not match')
+            else
+                call :pass_rep.setCustomValidity('')
+        ">{{ input('Repeat password', type='password', required=True) }}</div>
     </div>
-    {{ focus_button('Sign Up') }}
-</div>
-
+    {{ focus_button('Sign Up', submit=True) }}
+</form>
 {% endblock %}

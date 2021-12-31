@@ -1,11 +1,11 @@
-{% macro button(name, link='#', onclick='') %}
-<a class="outline outline-2 outline-secondary p-2 px-5 rounded hover:bg-secondary/20 transition-colors" href="{{ link }}" onclick="{{ onclick }}">
-    <p class="text-secondary truncate">{{ name }}</p>
-</a>
+{% macro button(name, onclick='', submit=False) %}
+<input type="{{'submit' if submit else 'button'}}" class="outline outline-2 outline-secondary p-2 px-5 rounded hover:bg-secondary/20 transition-colors text-secondary truncate"
+       onclick="{{ onclick }}"
+       value="{{ name }}">
 {% endmacro %}
 
-{% macro focus_button(name, link='#', onclick='') %}
-<a class="outline outline-2 outline-secondary bg-secondary py-2 px-5 rounded hover:bg-secondary/80 hover:outline-secondary/80 transition-colors" href="{{ link }}" onclick="{{ onclick }}">
-    <p class="text-white text-center truncate">{{ name }}</p>
-</a>
+{% macro focus_button(name, onclick='', submit=False) %}
+<input type="{{'submit' if submit else 'button'}}" class="outline outline-2 outline-secondary bg-secondary py-2 px-5 rounded hover:bg-secondary/80 hover:outline-secondary/80 transition-colors text-white text-center truncate"
+       onclick="{{ onclick }}"
+       value="{{ name }}"/>
 {% endmacro %}
