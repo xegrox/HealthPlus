@@ -20,6 +20,7 @@ class TestUserInfoRestApi(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         os.remove('user_accounts')
+        os.remove('user_emails_map')
 
     def test_01_add_user(self):
         res = self.client.post('/users', data=self.user_data)
