@@ -17,8 +17,14 @@
         {{ nav_link('Contact') }}
     </div>
     <div class="flex flex-none items-center space-x-5">
-        {{ button('Log In', onclick='show_modal_login()') }}
-        {{ focus_button('Sign Up', onclick='show_modal_signup()') }}
+        {% if current_user.is_authenticated %}
+            <form hx-delete="/user_sessions" hx-swap="none">
+                {{ button('Logout', submit=True) }}
+            </form>
+        {% else %}
+            {{ button('Log In', onclick='show_modal_login()') }}
+            {{ focus_button('Sign Up', onclick='show_modal_signup()') }}
+        {% endif %}
     </div>
 </div>
 {% include 'signup_modal.html' %}
