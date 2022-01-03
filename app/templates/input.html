@@ -1,6 +1,41 @@
 {% macro input(label, type='text', name='', required=False) %}
-<label class="flex flex-col space-y-2">
-    {{ label }}
-    <input class="bg-gray-100 rounded-lg p-2 focus:outline-secondary hover:bg-gray-200 focus:bg-gray-200 transition-colors" type="{{ type }}" name="{{ name }}" {{ 'required' if required }}>
-</label>
+<div>
+    <label class="flex flex-col space-y-2">
+        {{ label }}
+        <input class="test bg-gray-100 rounded-lg p-2 focus:outline-secondary hover:bg-gray-200 focus:bg-gray-200 transition-colors"
+               type="{{ type }}" name="{{ name }}" _="
+               set :errorLabel to the first <p/> in parentElement of me
+               set :liveCheck to false
+               on invalid
+                 call event.preventDefault()
+                 trigger updateError()
+               end
+               on input
+                 if :liveCheck trigger updateError() end
+               end
+               on updateError(msg)
+                 set :liveCheck to true
+                 if not msg then set msg to me.validationMessage end
+                 send updateMsg(msg: msg) to :errorLabel
+               end
+               "{{ 'required' if required }}/>
+        <div class="h-0 overflow-hidden transition-height" _="
+        set :label to first <p/> in me
+        on updateMsg(msg)
+            if :label.innerHtml != msg
+                if msg is empty
+                    put '' into :label
+                    set me.style.height to '0px'
+                else
+                    put msg into :label
+                    measure my scrollHeight
+                    set me.style.height to `${scrollHeight}px`
+                end
+            end
+        end
+        ">
+            <p class="text-red-600"></p>
+        </div>
+    </label>
+</div>
 {% endmacro %}
