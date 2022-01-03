@@ -4,10 +4,16 @@
 {% extends 'modal.html' %}
 {% set name = 'login' %}
 {% block content %}
-<form class="flex flex-col space-y-10 w-96" hx-post="/user_sessions" hx-swap="none">
+<form class="flex flex-col space-y-10 w-96" hx-post="/user_sessions" hx-swap="none" _="
+    on htmx:responseError(detail)
+        if detail.xhr.status == 401
+            set pass_field to first of <input[name='password']/> in me
+            send updateError(msg: 'Oops! Incorrect email or password, try again?') to pass_field
+        end
+    end
+    ">
     <p class="text-3xl font-bold underline decoration-primary">Log In</p>
     <div class="flex flex-col space-y-5">
-        <!-- TODO: alert if credentials invalid -->
         {{ input('Email address', type='email', name='email', required=True) }}
         {{ input('Password', type='password', name='password', required=True) }}
     </div>
