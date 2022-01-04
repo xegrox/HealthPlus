@@ -8,13 +8,13 @@
     on htmx:responseError(detail)
         if detail.xhr.status == 401
             set pass_field to first of <input[name='password']/> in me
-            send updateError(msg: 'Oops! Incorrect email or password, try again?') to pass_field
+            send updateError(msg: 'Oops! Incorrect nric or password, try again?') to pass_field
         end
     end
     ">
     <p class="text-3xl font-bold underline decoration-primary">Log In</p>
     <div class="flex flex-col space-y-5">
-        {{ input('Email address', type='email', name='email', required=True) }}
+        {{ input('NRIC number', type='text', name='nric', required=True) }}
         {{ input('Password', type='password', name='password', required=True) }}
     </div>
     {{ focus_button('Log In', submit=True) }}

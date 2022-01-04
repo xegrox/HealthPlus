@@ -2,8 +2,8 @@ from .user import User
 
 
 class Patient(User):
-    def __init__(self, account_id, first_name, last_name, email, password_hash, appointments):
-        super().__init__(account_id, first_name, last_name, email, password_hash)
+    def __init__(self, nric, first_name, last_name, password_hash, appointments):
+        super().__init__(nric, first_name, last_name, password_hash)
         self.__appointments = appointments
 
     def get_appointments(self):

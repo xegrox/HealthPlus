@@ -11,7 +11,7 @@
             <div class="min-w-0"> {{ input('First name', name='first_name', required=True) }} </div>
             <div class="min-w-0"> {{ input('Last name', name='last_name', required=True) }} </div>
         </div>
-        {{ input('Email address', type='email', name='email', required=True) }}
+        {{ input('NRIC number', type='text', name='nric', required=True) }}
         <div id="input_pass">{{ input('Password', type='password', name='password', required=True) }}</div>
         <div _="
         set :pass to (<input/> in #input_pass)[0]

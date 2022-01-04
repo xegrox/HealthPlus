@@ -12,7 +12,7 @@ app.register_blueprint(home)
 
 api = Api(app)
 api.add_resource(UserAccountList, '/users')
-api.add_resource(UserAccount, '/users/<account_id>')
+api.add_resource(UserAccount, '/users/<nric>')
 api.add_resource(UserSessions, '/user_sessions')
 
 login_manager = LoginManager()
