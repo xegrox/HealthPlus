@@ -4,7 +4,12 @@
 {% extends 'modal.html' %}
 {% set name = 'signup' %}
 {% block content %}
-<form class="flex flex-col space-y-10 w-96" hx-post="/users" hx-swap="none">
+<form class="flex flex-col space-y-10 w-96" hx-post="/users" hx-swap="none" _="
+    on htmx:responseError(detail)
+        if detail.xhr.status is 409
+            set nric to first <input[name='nric']/> in me
+            send updateError(msg: 'This NRIC number has already been registered') to nric
+    ">
     <p class="text-3xl font-bold underline decoration-primary">Sign Up</p>
     <div class="flex flex-col space-y-5">
         <div class="flex space-x-5">
@@ -12,10 +17,10 @@
             <div class="min-w-0"> {{ input('Last name', name='last_name', required=True) }} </div>
         </div>
         {{ input('NRIC number', type='text', name='nric', required=True) }}
-        <div id="input_pass">{{ input('Password', type='password', name='password', required=True) }}</div>
+        {{ input('Password', type='password', name='password', required=True) }}
         <div _="
-        set :pass to (<input/> in #input_pass)[0]
-        set :pass_rep to (<input/> in me)[0]
+        set :pass to first <input[name='password']/> in my parentElement
+        set :pass_rep to first <input/> in me
         on input from :pass_rep
             if :pass_rep.value != :pass.value
                 call :pass_rep.setCustomValidity('Passwords do not match')
