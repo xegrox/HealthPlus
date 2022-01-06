@@ -18,12 +18,12 @@
     </div>
     <div class="flex flex-none items-center space-x-5">
         {% if current_user.is_authenticated %}
-            {% include 'profile_dropdown.html' %}
+            {% include 'home/profile_dropdown.html' %}
         {% else %}
             {{ button('Log In', onclick='show_modal_login()') }}
             {{ focus_button('Sign Up', onclick='show_modal_signup()') }}
         {% endif %}
     </div>
 </div>
-{% include 'signup_modal.html' %}
-{% include 'login_modal.html' %}
+{% include 'home/signup_modal.html' %}
+{% include 'home/login_modal.html' %}
