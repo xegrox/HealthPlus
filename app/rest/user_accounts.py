@@ -1,7 +1,7 @@
 from hashlib import sha256
 from app.database import user_accounts, DatabaseInterface
 from flask_restful import Resource, abort, reqparse
-from app.models.account.user import User
+from app.models.account.user import Patient
 
 
 class UserAccountList(Resource):
@@ -21,7 +21,7 @@ class UserAccountList(Resource):
             args = parser.parse_args()
             if args['nric'] in db.keys():
                 abort(409)
-            user = User(
+            user = Patient(
                 nric=args['nric'],
                 first_name=args['first_name'],
                 last_name=args['last_name'],
