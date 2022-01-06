@@ -16,3 +16,7 @@ class Account(DatabaseObject, UserMixin, metaclass=ABCMeta):
 
     def get_id(self):
         return self.__account_id
+
+    @property
+    def full_name(self) -> str:
+        return f'{self.first_name} {self.last_name}'

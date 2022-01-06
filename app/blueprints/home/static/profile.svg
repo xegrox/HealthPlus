@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="185.97mm" height="185.97mm" version="1.1" viewBox="0 0 185.97 185.97" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <clipPath id="clipPath1150">
+   <circle cx="105" cy="91.578" r="28.401" fill="#999" stroke="#cad2fe" stroke-linecap="round" stroke-linejoin="round" stroke-width=".728"/>
+   <ellipse cx="105" cy="184.87" rx="61.924" ry="52.542" fill="#999" stroke="#cad2fe" stroke-linecap="round" stroke-linejoin="round" stroke-width=".728"/>
+  </clipPath>
+ </defs>
+ <g transform="translate(-12.016 -19.888)">
+  <circle cx="105" cy="112.87" r="92.984" fill="#8c9eff"/>
+  <circle cx="105" cy="112.87" r="92.984" clip-path="url(#clipPath1150)" fill="#fff" fill-opacity=".8"/>
+ </g>
+</svg>
