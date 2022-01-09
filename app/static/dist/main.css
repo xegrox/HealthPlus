@@ -988,6 +988,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   transition-duration: 150ms !important;
 }
 
+.preload * {
+  transition-property: none !important;
+}
+
 .dashboard-navbar-selected {
   --tw-bg-opacity: 1;
   background-color: rgb(61 90 254 / var(--tw-bg-opacity));

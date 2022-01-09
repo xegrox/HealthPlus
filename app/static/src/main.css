@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.preload * {
+    @apply !transition-none
+}
+
 .dashboard-navbar-selected {
     @apply bg-secondary shadow-lg text-white;
 }
