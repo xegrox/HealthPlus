@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" class="text-gray-700">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    {% include 'base_style.html' %}
+    <script type="text/hyperscript">
+        def showView(view)
+            show view
+            transition the view's opacity to 1
+        def hideView(view)
+            transition the view's opacity to 0
+            hide view
+        def syncView()
+            set fragments to {{ pages | map(attribute='fragment') | list | tojson }}
+            set fragment to location.hash.substring(1)
+            if fragments do not contain fragment
+                set default to first of fragments
+                set fragment to default
+                set location.hash to default
+            end
+            set views to children of #content
+            for view in views
+                if view.id is ('content-' + fragment)
+                    js(view)
+                        setTimeout(() => showView(view))
+                    end
+                else
+                    js(view)
+                        setTimeout(() => hideView(view))
+                    end
+                end
+            end
+        end
+        init
+            call syncView()
+        end
+        on hashchange from window call syncView()
+    </script>
+</head>
+<body>
+<div class="flex w-screen h-screen">
+    <div class="w-80">
+        {% include 'dashboard/side_navbar.html' %}
+    </div>
+    <div id="content" class="flex-1 relative bg-gray-200">
+        {% for page in pages %}
+            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 overflow-hidden w-full h-full !duration-150">
+                {% include page.template %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

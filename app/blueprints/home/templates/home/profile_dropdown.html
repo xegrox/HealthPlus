@@ -4,7 +4,7 @@
 
 {% block button %}
 <div class="flex items-center space-x-2 px-2">
-    <img class="w-8" src="{{ url_for('home.static', filename='profile.svg') }}"/>
+    <img class="w-8" src="{{ url_for('static', filename='profile.svg') }}"/>
     <i class="ti ti-chevron-down text-xl text-gray-500"></i>
 </div>
 {% endblock %}
@@ -12,7 +12,7 @@
 {% block dropdown %}
 <div class="flex flex-col w-60">
     <div class="flex space-x-5 p-4">
-        <img class="w-12" src="{{ url_for('home.static', filename='profile.svg') }}"/>
+        <img class="w-12" src="{{ url_for('static', filename='profile.svg') }}"/>
         <div class="min-w-0 flex flex-col space-y-1">
             <p class="whitespace-nowrap text-gray-800 text-ellipsis overflow-hidden font-medium">{{ current_user.full_name }}</p>
             <p class="text-xs text-gray-700">{{ current_user.get_id() }}</p>

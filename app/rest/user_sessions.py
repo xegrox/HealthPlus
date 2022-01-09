@@ -29,4 +29,4 @@ class UserSessions(Resource):
     @login_required
     def delete(self):
         logout_user()
-        return '', 200, {'HX-Refresh': "true"}
+        return '', 200, {'HX-Redirect': "/"}
