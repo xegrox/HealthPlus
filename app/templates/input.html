@@ -1,9 +1,9 @@
-{% macro input(label, type='text', name='', required=False) %}
+{% macro input(label, type='text', name='', value="", required=False) %}
 <div>
     <label class="flex flex-col space-y-2">
         {{ label }}
         <input class="test bg-gray-100 rounded-lg p-2 focus:outline-secondary hover:bg-gray-200 focus:bg-gray-200 transition-colors"
-               type="{{ type }}" name="{{ name }}" _="
+               type="{{ type }}" name="{{ name }}" value="{{ value }}" _="
                set :errorLabel to the first <p/> in parentElement of me
                set :liveCheck to false
                on invalid

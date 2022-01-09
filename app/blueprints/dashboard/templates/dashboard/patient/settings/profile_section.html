@@ -1,0 +1,20 @@
+{% from 'button.html' import button, focus_button %}
+{% from 'input.html' import input %}
+
+{% extends 'card.html' %}
+
+{% block content %}
+<div class="flex flex-col space-y-10">
+    <p class="font-bold text-2xl">Edit profile</p>
+    <div class="flex flex-col space-y-5">
+        {{ input('First name', value=current_user.first_name) }}
+        {{ input('Last name', value=current_user.last_name) }}
+        {{ input('Phone number') }}
+        {{ input('Email') }}
+    </div>
+    <div class="ml-auto justify-self-end flex space-x-5">
+        {{ button('Reset') }}
+        {{ focus_button('Save changes') }}
+    </div>
+</div>
+{% endblock %}

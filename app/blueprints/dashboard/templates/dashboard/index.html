@@ -40,13 +40,13 @@
     </script>
 </head>
 <body class="preload">
-<div class="flex w-screen h-screen">
+<div class="flex h-screen">
     <div class="w-80">
         {% include 'dashboard/side_navbar.html' %}
     </div>
-    <div id="content" class="flex-1 relative bg-gray-200">
+    <div id="content" class="flex-1 relative bg-gray-200 overflow-auto">
         {% for page in pages %}
-            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 overflow-hidden w-full h-full hidden !duration-150">
+            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 min-h-full w-full hidden !duration-150 px-20 py-16">
                 {% include page.template %}
             </div>
         {% endfor %}

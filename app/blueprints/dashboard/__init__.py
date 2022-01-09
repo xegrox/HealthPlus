@@ -22,5 +22,6 @@ def dashboard():
     if isinstance(current_user, Patient):
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/patient/appointments/index.html'),
-            _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/patient/prescriptions/index.html')
+            _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/patient/prescriptions/index.html'),
+            _Page('Settings', 'settings', 'settings', 'dashboard/patient/settings/index.html')
         ])
