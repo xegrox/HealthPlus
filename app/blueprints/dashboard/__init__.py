@@ -4,7 +4,8 @@ from app.models.account import User
 
 blueprint = Blueprint(
     'dashboard', __name__,
-    template_folder='templates'
+    template_folder='templates',
+    static_folder='static'
 )
 
 
@@ -16,7 +17,7 @@ class _Page:
         self.template = template
 
 
-@blueprint.route('/dashboard')
+@blueprint.route('/')
 @login_required
 def dashboard():
     if isinstance(current_user, User):

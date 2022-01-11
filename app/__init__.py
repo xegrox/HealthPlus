@@ -3,15 +3,14 @@ from flask_login import LoginManager
 
 from app.database.accounts.exceptions import AccountAlreadyExistsError
 from app.rest import register_api
-from app.blueprints import home, dashboard
+from app.blueprints import register_blueprints
 from app.database.accounts import user_accounts, staff_accounts
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.static_folder = 'static/dist'
 register_api(app)
-app.register_blueprint(home)
-app.register_blueprint(dashboard)
+register_blueprints(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
