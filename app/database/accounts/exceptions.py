@@ -1,0 +1,9 @@
+class AccountAlreadyExistsError(Exception):
+    ...
+
+
+class AccountNotFoundError(Exception):
+    ...
+
+class InvalidStaffRoleError(Exception):
+    ...

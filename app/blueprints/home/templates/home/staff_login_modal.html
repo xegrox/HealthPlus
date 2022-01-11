@@ -2,21 +2,21 @@
 {% from 'input.html' import input %}
 
 {% extends 'modal.html' %}
-{% set name = 'login' %}
+{% set name = 'staff_login' %}
 {% block content %}
 <form class="flex flex-col space-y-10 w-96" hx-post="/session" hx-swap="none" _="
     on htmx:responseError(detail)
         if detail.xhr.status == 401
             set pass_field to first of <input[name='password']/> in me
-            send updateError(msg: 'Oops! Incorrect nric or password, try again?') to pass_field
+            send updateError(msg: 'Oops! Incorrect staff id or password, try again?') to pass_field
         end
     end
     ">
-    <p class="text-3xl font-bold underline decoration-primary">Log In</p>
+    <p class="text-3xl font-bold underline decoration-primary">Staff Log In</p>
     <div class="flex flex-col space-y-5">
-        {{ input('NRIC number', type='text', name='nric', required=True) }}
+        {{ input('Staff ID', type='text', name='staff_id', required=True) }}
         {{ input('Password', type='password', name='password', required=True) }}
-        <a href="#" class="underline text-blue-700" onclick="show_modal_staff_login(); hide_modal_login()">Not a user? Click here to login as staff</a>
+        <a href="#" class="underline text-blue-700" onclick="show_modal_login(); hide_modal_staff_login()">Not a staff? Click here to login as user</a>
     </div>
     {{ focus_button('Log In', submit=True) }}
 </form>
