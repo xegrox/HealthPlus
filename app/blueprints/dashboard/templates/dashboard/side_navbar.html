@@ -22,7 +22,7 @@
     <div class="mt-auto flex items-center space-x-4">
         <img class="flex-none w-10" src="{{ url_for('static', filename='profile.svg') }}"/>
         <p class="flex-1 font-medium">{{ current_user.full_name }}</p>
-        <div class="flex-none bg-black/5 rounded-full w-8 h-8 flex items-center group hover:bg-secondary/50 transition-colors cursor-pointer" hx-delete="/sessions">
+        <div class="flex-none bg-black/5 rounded-full w-8 h-8 flex items-center group hover:bg-secondary/50 transition-colors cursor-pointer" hx-delete="/session">
             <i class="text-gray-400 m-auto text-xl ti ti-logout group-hover:text-white transition-colors"></i>
         </div>
     </div>
