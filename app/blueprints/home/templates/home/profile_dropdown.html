@@ -15,7 +15,7 @@
         <img class="w-12" src="{{ url_for('static', filename='profile.svg') }}"/>
         <div class="min-w-0 flex flex-col space-y-1">
             <p class="whitespace-nowrap text-gray-800 text-ellipsis overflow-hidden font-medium">{{ current_user.full_name }}</p>
-            <p class="text-xs text-gray-700">{{ current_user.get_id() }}</p>
+            <p class="text-xs text-gray-700">{{ current_user.nric }}</p>
         </div>
     </div>
     <hr class="text-gray-200/60">
