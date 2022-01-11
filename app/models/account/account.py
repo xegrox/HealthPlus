@@ -4,7 +4,7 @@ from app.database import DatabaseObject
 
 
 class Account(DatabaseObject, UserMixin, metaclass=ABCMeta):
-    def __init__(self, account_id, first_name, last_name, password_hash):
+    def __init__(self, account_id: str, first_name: str, last_name: str, password_hash: str):
         self.__account_id = account_id
         self.first_name = first_name
         self.last_name = last_name
@@ -20,3 +20,5 @@ class Account(DatabaseObject, UserMixin, metaclass=ABCMeta):
     @property
     def full_name(self) -> str:
         return f'{self.first_name} {self.last_name}'
+
+    

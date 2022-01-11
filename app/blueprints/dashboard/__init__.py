@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from app.models.account.user import Patient
+from app.models.account import User
 
 blueprint = Blueprint(
     'dashboard', __name__,
@@ -19,7 +19,7 @@ class _Page:
 @blueprint.route('/dashboard')
 @login_required
 def dashboard():
-    if isinstance(current_user, Patient):
+    if isinstance(current_user, User):
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/patient/appointments/index.html'),
             _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/patient/prescriptions/index.html'),

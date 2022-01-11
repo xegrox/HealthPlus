@@ -23,7 +23,7 @@
     {{ menu_item('Prescriptions') }}
     {{ menu_item('Settings') }}
     <hr class="text-gray-200/60">
-    <form hx-delete="/user_sessions" hx-swap="none">
+    <form hx-delete="/session" hx-swap="none">
         {{ menu_item('Logout', submit=True) }}
     </form>
 </div>
