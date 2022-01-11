@@ -6,9 +6,14 @@ T = TypeVar('T', bound='DatabaseObject')
 
 
 class DatabaseInterface:
-    def __init__(self, lock: threading.Lock, db: shelve.Shelf):
+    def __init__(self, db: shelve.Shelf):
         self.__db = db
-        self.__lock = lock
+
+    def __contains__(self, item):
+        return self.__db.__contains__(item)
+
+    def __getitem__(self, item):
+        return self.__db[item]
 
     def __enter__(self):
         return self
@@ -23,7 +28,7 @@ class DatabaseInterface:
         del self.__db[key]
 
     def get(self, key: str) -> T:
-        return self.__db[key]
+        return self.__db.get(key)
 
     def keys(self) -> KeysView[str]:
         return self.__db.keys()
@@ -31,12 +36,8 @@ class DatabaseInterface:
     def values(self) -> ValuesView[T]:
         return self.__db.values()
 
-    def exists(self, key: str) -> bool:
-        return key in self.__db
-
     def close(self):
         self.__db.close()
-        self.__lock.release()
 
 
 """Wrapper around a shelve database to support concurrency
@@ -48,12 +49,28 @@ The lock delays each operation until the previous one has completed, preventing 
 """
 
 
-class Database:
+class BasicDatabase:
     def __init__(self, name: str):
         self.__name = name
         self.__lock = threading.Lock()
 
-    def open(self) -> DatabaseInterface:
+    def open(self):
         self.__lock.acquire()
         db = shelve.open(self.__name)
-        return DatabaseInterface(self.__lock, db)
+
+        def close(it):
+            shelve.Shelf.close(it)
+            if self.__lock.locked():
+                self.__lock.release()
+
+        db.close = close.__get__(db, shelve.Shelf)
+        return db
+
+
+class Database(BasicDatabase):
+    def __init__(self, name: str):
+        super().__init__(name)
+
+    def open(self):
+        db = super().open()
+        return DatabaseInterface(db)
