@@ -1,4 +1,8 @@
 from flask import Blueprint, render_template
+from flask_login import current_user
+from werkzeug.utils import redirect
+
+from app.models.account import Staff
 
 blueprint = Blueprint(
     'home', __name__,
@@ -10,4 +14,7 @@ blueprint = Blueprint(
 
 @blueprint.route('/')
 def home():
-    return render_template('home/index.html')
+    if isinstance(current_user, Staff):
+        return redirect('/dashboard')
+    else:
+        return render_template('home/index.html')
