@@ -750,6 +750,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(61 90 254 / var(--tw-bg-opacity));
 }
 
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -933,9 +938,19 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(229 231 235 / 0.6);
 }
 
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+}
+
 .text-gray-200 {
   --tw-text-opacity: 1;
   color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+.text-red-300 {
+  --tw-text-opacity: 1;
+  color: rgb(252 165 165 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -979,6 +994,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .outline-secondary {
   outline-color: #3d5afe;
+}
+
+.outline-red-500 {
+  outline-color: #ef4444;
 }
 
 .outline-gray-100 {
@@ -1061,6 +1080,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(61 90 254 / 0.8);
 }
 
+.hover\:bg-red-500\/80:hover {
+  background-color: rgb(239 68 68 / 0.8);
+}
+
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
@@ -1085,6 +1108,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .hover\:outline-secondary\/80:hover {
   outline-color: rgb(61 90 254 / 0.8);
+}
+
+.hover\:outline-red-500\/80:hover {
+  outline-color: rgb(239 68 68 / 0.8);
 }
 
 .focus\:bg-gray-200:focus {

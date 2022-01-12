@@ -9,3 +9,9 @@
        onclick="{{ onclick }}"
        value="{{ name }}"/>
 {% endmacro %}
+
+{% macro warn_button(name, onclick='', submit=False) %}
+<input type="{{'submit' if submit else 'button'}}" class="outline outline-2 outline-red-500 bg-red-500 py-2 px-5 rounded hover:bg-red-500/80 hover:outline-red-500/80 transition-colors text-white text-center truncate"
+       onclick="{{ onclick }}"
+       value="{{ name }}"/>
+{% endmacro %}

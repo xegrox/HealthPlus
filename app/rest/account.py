@@ -1,4 +1,4 @@
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 from flask_restful import Resource, reqparse, abort
 from app.database.accounts import user_accounts, staff_accounts
 from app.database.accounts.exceptions import AccountAlreadyExistsError
@@ -61,8 +61,9 @@ class AccountManagement(Resource):
             args = parser.parse_args()
             if hash_sha256(args['password']) != current_user.password_hash:
                 abort(401)
+            logout_user()
             user_accounts.delete(account_id=current_user.get_id())
-            return '', 200
+            return '', 200, {'HX-Redirect': "/"}
         else:
             # Staff cannot delete account
             abort(401)
