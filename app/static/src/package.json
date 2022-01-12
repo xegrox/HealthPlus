@@ -1,9 +1,0 @@
-{
-  "scripts": {
-    "watch": "tailwindcss -i main.css -o ../dist/main.css --watch",
-    "build": "tailwindcss -i main.css -o ../dist/main.css"
-  },
-  "dependencies": {
-    "tailwindcss": "^3.0.7"
-  }
-}

@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "watch": "tailwindcss -i src/main.css -o dist/main.css --watch",
+    "build": "tailwindcss -i src/main.css -o dist/main.css && copyfiles -u 3 node_modules/htmx.org/dist/htmx.min.js node_modules/hyperscript.org/dist/_hyperscript_w9y.min.js \"node_modules/@tabler/icons/iconfont/**/*\" dist && copyfiles -f \"src/static/*\" dist"
+  },
+  "dependencies": {
+    "@tabler/icons": "^1.51.0",
+    "copyfiles": "^2.4.1",
+    "htmx.org": "^1.6.1",
+    "hyperscript.org": "^0.9.3",
+    "tailwindcss": "^3.0.7"
+  }
+}
