@@ -20,7 +20,7 @@ class AccountManagement(Resource):
             .add_argument('nric', required=True) \
             .add_argument('first_name', required=True) \
             .add_argument('last_name', required=True) \
-            .add_argument('password', required=True)
+            .add_argument('password', trim=False, required=True)
         args = parser.parse_args()
         try:
             user = user_accounts.create(args['nric'], args['first_name'], args['last_name'], args['password'])
@@ -36,15 +36,14 @@ class AccountManagement(Resource):
 
     @login_required
     def put(self):
-        # FIXME: don't trim password
         if isinstance(current_user, User):
             parser = reqparse.RequestParser(trim=True) \
                 .add_argument('first_name') \
                 .add_argument('last_name') \
-                .add_argument('password')
+                .add_argument('password', trim=False)
         else:
             # Staff can only change password
-            parser = reqparse.RequestParser(trim=True) \
+            parser = reqparse.RequestParser() \
                 .add_argument('password')
         args = parser.parse_args()
         database = self.__database_of_account(current_user)

@@ -7,7 +7,7 @@ from app.database.accounts.exceptions import AccountNotFoundError
 parser = reqparse.RequestParser(trim=True)
 parser.add_argument('nric')
 parser.add_argument('staff_id')
-parser.add_argument('password', required=True)
+parser.add_argument('password', trim=False, required=True)
 
 
 class SessionManagement(Resource):
