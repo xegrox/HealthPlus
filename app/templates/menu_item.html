@@ -1,3 +1,5 @@
-{% macro menu_item(name, submit=False) %}
-<input type="{{'submit' if submit else 'button'}}" class="w-full text-left py-3 px-4 text-gray-800 hover:bg-secondary/5 transition-colors" value="{{ name }}"/>
+{% macro menu_item(name, href='#') %}
+<a href="{{ href }}" class="w-full text-left py-3 px-4 text-gray-800 hover:bg-secondary/5 transition-colors">
+    {{ name }}
+</a>
 {% endmacro %}

@@ -19,12 +19,15 @@
         </div>
     </div>
     <hr class="text-gray-200/60">
-    {{ menu_item('Appointments') }}
-    {{ menu_item('Prescriptions') }}
-    {{ menu_item('Settings') }}
+    {{ menu_item('Appointments', href='/dashboard#appointments') }}
+    {{ menu_item('Prescriptions', href='/dashboard#prescriptions') }}
+    {{ menu_item('Settings', href='/dashboard#settings') }}
     <hr class="text-gray-200/60">
-    <form hx-delete="/session" hx-swap="none">
-        {{ menu_item('Logout', submit=True) }}
+    <form class="flex" hx-delete="/session" _="
+        on click from first children of me
+            halt the event
+            call me.requestSubmit()">
+        {{ menu_item('Logout') }}
     </form>
 </div>
 {% endblock %}
