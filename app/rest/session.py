@@ -1,8 +1,8 @@
-from hashlib import sha256
 from flask_login import login_user, logout_user, login_required
 from flask_restful import Resource, reqparse, abort
 from app.database.accounts import user_accounts, staff_accounts
 from app.database.accounts.exceptions import AccountNotFoundError
+from .utils import hash_sha256
 
 parser = reqparse.RequestParser(trim=True)
 parser.add_argument('nric')
@@ -25,8 +25,7 @@ class SessionManagement(Resource):
             account = user_accounts.read(nric=nric) if nric \
                 else staff_accounts.read(staff_id=staff_id)
             # Verify password and login
-            password_hash = sha256(password.encode()).hexdigest()
-            if password_hash != account.password_hash:
+            if hash_sha256(password) != account.password_hash:
                 abort(401)
             login_user(account)
             return '', 200, {'HX-Refresh': "true"}

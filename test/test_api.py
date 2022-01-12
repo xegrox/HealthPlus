@@ -64,7 +64,7 @@ class TestUserAccount(unittest.TestCase):
 
     def test_06_delete_account(self):
         self.test_02_login()
-        res = self.client.delete('/account')
+        res = self.client.delete('/account', data={'password': self.user_data['password']})
         self.assertEqual(200, res.status_code)
         res = self.client.post('session', data=self.user_data)
         self.assertEqual(401, res.status_code)

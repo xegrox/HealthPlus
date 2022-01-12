@@ -4,6 +4,7 @@ from app.database.accounts import user_accounts, staff_accounts
 from app.database.accounts.exceptions import AccountAlreadyExistsError
 from app.models.account.user import User
 from app.models.account.staff import Staff
+from .utils import hash_sha256
 
 
 class AccountManagement(Resource):
@@ -56,6 +57,10 @@ class AccountManagement(Resource):
     @login_required
     def delete(self):
         if isinstance(current_user, User):
+            parser = reqparse.RequestParser().add_argument('password', required=True)
+            args = parser.parse_args()
+            if hash_sha256(args['password']) != current_user.password_hash:
+                abort(401)
             user_accounts.delete(account_id=current_user.get_id())
             return '', 200
         else:
