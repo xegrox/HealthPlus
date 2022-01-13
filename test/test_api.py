@@ -335,5 +335,50 @@ class TestUserMedicineOrder(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
 
+class TestUserAvailableMedicine(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        user_data = {
+            'nric': 'test',
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'password': '123'
+        }
+        user_accounts.create(**user_data)
+        cls.user_data = user_data
+
+        medicine_data = {
+            'atc_code': 'L01XE45',
+            'name': 'Amlodipine',
+            'description': 'calcium channel blocker medication used to treat high blood pressure and coronary artery disease',
+            'license_holder': 'Specialised Therapeutics Asia Pte. Ltd.',
+            'quantity': 701
+        }
+        cls.medicine = medicine_inventory.create(**medicine_data)
+        cls.client = app.test_client()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove('user_accounts')
+        os.remove('user_nric_map')
+        os.remove('medicine_inventory')
+
+    def __login(self):
+        res = self.client.post('/session', data=self.user_data)
+        self.assertEqual(res.status_code, 200)
+
+    def test_01_get_all_medicine(self):
+        self.__login()
+        res = self.client.get('/available_medicine')
+        data = json.loads(res.data)
+        medicine_data = data[0]
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(medicine_data['medicine_id'], self.medicine.medicine_id)
+        self.assertEqual(medicine_data['name'], self.medicine.name)
+        self.assertEqual(medicine_data['description'], self.medicine.description)
+        self.assertEqual(medicine_data['atc_code'], self.medicine.atc_code)
+
+
 if __name__ == "__main__":
     unittest.main(failfast=True)

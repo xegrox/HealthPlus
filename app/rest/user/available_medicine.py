@@ -1,4 +1,5 @@
-from importlib.resources import Resource
+from flask_restful import Resource
+
 from app.database.pharmacist import medicine_inventory
 from .utils import serialize_medicine
 
