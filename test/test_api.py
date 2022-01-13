@@ -3,7 +3,8 @@ import os
 from app import app
 import unittest
 
-from app.database.accounts import staff_accounts
+from app.database.accounts import staff_accounts, user_accounts
+from app.database.pharmacist import medicine_inventory
 
 
 class TestUserAccount(unittest.TestCase):
@@ -210,6 +211,127 @@ class TestPharmacistMedicineInventory(unittest.TestCase):
     def test_05_delete_medicine(self):
         self.__login()
         res = self.client.delete(f'/medicine/{self.medicine_data["medicine_id"]}')
+        self.assertEqual(res.status_code, 200)
+
+
+class TestUserMedicineOrder(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        user_data = {
+            'nric': 'test',
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'password': '123'
+        }
+        user_accounts.create(**user_data)
+        cls.user_data = user_data
+
+        medicine_data_1 = {
+            'atc_code': 'L01XE45',
+            'name': 'Amlodipine',
+            'description': 'calcium channel blocker medication used to treat high blood pressure and coronary artery disease',
+            'license_holder': 'Specialised Therapeutics Asia Pte. Ltd.',
+            'quantity': 701
+        }
+
+        medicine_data_2 = {
+            'atc_code': 'C10AA08',
+            'name': 'Aspirin',
+            'description': 'medication used to reduce pain, fever, or inflammation',
+            'license_holder': 'DKSH Singapore Pte. Ltd.',
+            'quantity': 980
+        }
+
+        medicine_1 = medicine_inventory.create(**medicine_data_1)
+        medicine_2 = medicine_inventory.create(**medicine_data_2)
+        cls.medicine_1 = medicine_1
+        cls.medicine_2 = medicine_2
+
+        order_request_data = {
+            medicine_1.medicine_id: 5,
+            medicine_2.medicine_id: 10
+        }
+        cls.order_request_data = order_request_data
+        cls.client = app.test_client()
+        cls.order_data = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove('user_accounts')
+        os.remove('user_nric_map')
+        os.remove('medicine_inventory')
+        os.remove('user_medicine_orders')
+
+    def __login(self):
+        res = self.client.post('/session', data=self.user_data)
+        self.assertEqual(res.status_code, 200)
+
+    def test_01_add_order(self):
+        self.__login()
+        res = self.client.post('/medicine_order', data=self.order_request_data)
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        medicine_1_data = data['medicines'][0]
+        self.assertEqual(medicine_1_data['medicine_id'], self.medicine_1.medicine_id)
+        self.assertEqual(medicine_1_data['name'], self.medicine_1.name)
+        self.assertEqual(medicine_1_data['description'], self.medicine_1.description)
+        self.assertEqual(medicine_1_data['atc_code'], self.medicine_1.atc_code)
+        self.assertEqual(medicine_1_data['quantity'], self.order_request_data[self.medicine_1.medicine_id])
+
+        medicine_2_data = data['medicines'][1]
+        self.assertEqual(medicine_2_data['medicine_id'], self.medicine_2.medicine_id)
+        self.assertEqual(medicine_2_data['name'], self.medicine_2.name)
+        self.assertEqual(medicine_2_data['description'], self.medicine_2.description)
+        self.assertEqual(medicine_2_data['atc_code'], self.medicine_2.atc_code)
+        self.assertEqual(medicine_2_data['quantity'], self.order_request_data[self.medicine_2.medicine_id])
+        self.order_data.update(data)
+
+    def test_02_get_all_orders(self):
+        self.__login()
+        res = self.client.get('/medicine_order')
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertEqual(data[0]['status'], 'pending')
+
+        medicine_1_data = data[0]['medicines'][0]
+        self.assertEqual(medicine_1_data['medicine_id'], self.medicine_1.medicine_id)
+        self.assertEqual(medicine_1_data['name'], self.medicine_1.name)
+        self.assertEqual(medicine_1_data['description'], self.medicine_1.description)
+        self.assertEqual(medicine_1_data['atc_code'], self.medicine_1.atc_code)
+        self.assertEqual(medicine_1_data['quantity'], self.order_request_data[self.medicine_1.medicine_id])
+
+        medicine_2_data = data[0]['medicines'][1]
+        self.assertEqual(medicine_2_data['medicine_id'], self.medicine_2.medicine_id)
+        self.assertEqual(medicine_2_data['name'], self.medicine_2.name)
+        self.assertEqual(medicine_2_data['description'], self.medicine_2.description)
+        self.assertEqual(medicine_2_data['atc_code'], self.medicine_2.atc_code)
+        self.assertEqual(medicine_2_data['quantity'], self.order_request_data[self.medicine_2.medicine_id])
+
+    def test_03_get_order(self):
+        self.__login()
+        res = self.client.get(f'/medicine_order/{self.order_data["order_id"]}')
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertEqual(data['status'], 'pending')
+
+        medicine_1_data = data['medicines'][0]
+        self.assertEqual(medicine_1_data['medicine_id'], self.medicine_1.medicine_id)
+        self.assertEqual(medicine_1_data['name'], self.medicine_1.name)
+        self.assertEqual(medicine_1_data['description'], self.medicine_1.description)
+        self.assertEqual(medicine_1_data['atc_code'], self.medicine_1.atc_code)
+        self.assertEqual(medicine_1_data['quantity'], self.order_request_data[self.medicine_1.medicine_id])
+
+        medicine_2_data = data['medicines'][1]
+        self.assertEqual(medicine_2_data['medicine_id'], self.medicine_2.medicine_id)
+        self.assertEqual(medicine_2_data['name'], self.medicine_2.name)
+        self.assertEqual(medicine_2_data['description'], self.medicine_2.description)
+        self.assertEqual(medicine_2_data['atc_code'], self.medicine_2.atc_code)
+        self.assertEqual(medicine_2_data['quantity'], self.order_request_data[self.medicine_2.medicine_id])
+
+    def test_04_delete_order(self):
+        self.__login()
+        res = self.client.delete(f'/medicine_order/{self.order_data["order_id"]}')
         self.assertEqual(res.status_code, 200)
 
 
