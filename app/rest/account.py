@@ -61,8 +61,8 @@ class AccountManagement(Resource):
             args = parser.parse_args()
             if hash_sha256(args['password']) != current_user.password_hash:
                 abort(401)
-            logout_user()
             user_accounts.delete(account_id=current_user.get_id())
+            logout_user()
             return '', 200, {'HX-Redirect': "/"}
         else:
             # Staff cannot delete account
