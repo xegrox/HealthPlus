@@ -105,4 +105,4 @@ def delete(account_id=None, staff_id=None):
 
 def read_all():
     with staff_accounts_db.open() as accounts:
-        return accounts.values()
+        return list(accounts.values())

@@ -95,4 +95,4 @@ def delete(account_id=None, nric=None):
 
 def read_all():
     with user_accounts_db.open() as accounts:
-        return accounts.values()
+        return list(accounts.values())
