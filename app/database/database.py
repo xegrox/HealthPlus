@@ -15,6 +15,9 @@ class DatabaseInterface:
     def __getitem__(self, item):
         return self.__db[item]
 
+    def __delitem__(self, key):
+        self.remove(key)
+
     def __enter__(self):
         return self
 

@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 
-from app.database.accounts.exceptions import AccountAlreadyExistsError
+from app.database.exceptions import AccountAlreadyExistsError
 from app.rest import register_api
 from app.blueprints import register_blueprints
 from app.database.accounts import user_accounts, staff_accounts

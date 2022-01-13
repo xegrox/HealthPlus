@@ -1,7 +1,7 @@
 from flask_login import login_user, logout_user, login_required
 from flask_restful import Resource, reqparse, abort
 from app.database.accounts import user_accounts, staff_accounts
-from app.database.accounts.exceptions import AccountNotFoundError
+from app.database.exceptions import AccountNotFoundError
 from .utils import hash_sha256
 
 parser = reqparse.RequestParser(trim=True)

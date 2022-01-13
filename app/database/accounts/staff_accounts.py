@@ -1,6 +1,6 @@
 from app.database.database import Database, BasicDatabase
 from app.models.account.staff import Staff, StaffRole
-from .exceptions import AccountNotFoundError, AccountAlreadyExistsError, InvalidStaffRoleError
+from app.database.exceptions import AccountNotFoundError, AccountAlreadyExistsError, InvalidStaffRoleError
 from .utils import has_one_of, hash_sha256, generate_staff_id
 
 staff_accounts_db = Database('staff_accounts')

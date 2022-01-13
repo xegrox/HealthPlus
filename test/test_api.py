@@ -129,5 +129,89 @@ class TestStaffAccount(unittest.TestCase):
         self.assertEqual(200, res.status_code)
 
 
+class TestPharmacistMedicineInventory(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        staff_data = {
+            'role': 'pharmacist',
+            'staff_id': 'test',
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'password': '123'
+        }
+        cls.staff_data = staff_data
+        staff_accounts.create(**staff_data)
+        cls.client = app.test_client()
+        cls.medicine_data = {
+            'atc_code': 'L01XE45',
+            'name': 'Amlodipine',
+            'description': 'calcium channel blocker medication used to treat high blood pressure and coronary artery disease',
+            'license_holder': 'Specialised Therapeutics Asia Pte. Ltd.',
+            'quantity': 701
+        }
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove('staff_accounts')
+        os.remove('staff_id_map')
+        os.remove('medicine_inventory')
+
+    def __login(self):
+        res = self.client.post('/session', data=self.staff_data)
+        self.assertEqual(res.status_code, 200)
+
+    def test_01_add_medicine(self):
+        self.__login()
+        res = self.client.post('/medicine', data=self.medicine_data)
+        self.assertEqual(res.status_code, 200)
+        self.medicine_data['medicine_id'] = json.loads(res.data)['medicine_id']
+
+    def test_02_get_all_medicine(self):
+        self.__login()
+        res = self.client.get('/medicine')
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertEqual(len(data), 1)
+        medicine_data = data[0]
+        self.assertEqual(medicine_data['medicine_id'], self.medicine_data['medicine_id'])
+        self.assertEqual(medicine_data['atc_code'], self.medicine_data['atc_code'])
+        self.assertEqual(medicine_data['name'], self.medicine_data['name'])
+        self.assertEqual(medicine_data['description'], self.medicine_data['description'])
+        self.assertEqual(medicine_data['license_holder'], self.medicine_data['license_holder'])
+        self.assertEqual(medicine_data['quantity'], self.medicine_data['quantity'])
+
+    def test_03_get_medicine(self):
+        self.__login()
+        res = self.client.get(f'/medicine/{self.medicine_data["medicine_id"]}')
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertEqual(data['medicine_id'], self.medicine_data['medicine_id'])
+        self.assertEqual(data['atc_code'], self.medicine_data['atc_code'])
+        self.assertEqual(data['name'], self.medicine_data['name'])
+        self.assertEqual(data['description'], self.medicine_data['description'])
+        self.assertEqual(data['license_holder'], self.medicine_data['license_holder'])
+        self.assertEqual(data['quantity'], self.medicine_data['quantity'])
+
+    def test_04_update_medicine(self):
+        new_quantity = 703
+        self.__login()
+        res = self.client.put(f'/medicine/{self.medicine_data["medicine_id"]}', data={'quantity': new_quantity})
+        self.medicine_data['quantity'] = new_quantity
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertEqual(data['medicine_id'], self.medicine_data['medicine_id'])
+        self.assertEqual(data['atc_code'], self.medicine_data['atc_code'])
+        self.assertEqual(data['name'], self.medicine_data['name'])
+        self.assertEqual(data['description'], self.medicine_data['description'])
+        self.assertEqual(data['license_holder'], self.medicine_data['license_holder'])
+        self.assertEqual(data['quantity'], self.medicine_data['quantity'])
+
+    def test_05_delete_medicine(self):
+        self.__login()
+        res = self.client.delete(f'/medicine/{self.medicine_data["medicine_id"]}')
+        self.assertEqual(res.status_code, 200)
+
+
 if __name__ == "__main__":
     unittest.main(failfast=True)

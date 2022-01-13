@@ -1,7 +1,7 @@
 from flask_login import login_required, current_user, logout_user
 from flask_restful import Resource, reqparse, abort
 from app.database.accounts import user_accounts, staff_accounts
-from app.database.accounts.exceptions import AccountAlreadyExistsError
+from app.database.exceptions import AccountAlreadyExistsError
 from app.models.account.user import User
 from app.models.account.staff import Staff
 from .utils import hash_sha256
