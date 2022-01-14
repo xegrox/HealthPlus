@@ -15,6 +15,16 @@ class AccountManagement(Resource):
         elif isinstance(account, Staff):
             return staff_accounts
 
+    def __verify_password_change(self, current, new):
+        if new:
+            if current:
+                if hash_sha256(current) == current_user.password_hash:
+                    return new
+                else:
+                    abort(401)
+            else:
+                abort(400)
+
     # Post method is for creating users only; staff is created by admin
     def post(self):
         parser = reqparse.RequestParser(trim=True) \
@@ -41,15 +51,24 @@ class AccountManagement(Resource):
             parser = reqparse.RequestParser(trim=True) \
                 .add_argument('first_name') \
                 .add_argument('last_name') \
-                .add_argument('password', trim=False)
+                .add_argument('current_password', trim=False) \
+                .add_argument('new_password', trim=False)
         else:
             # Staff can only change password
             parser = reqparse.RequestParser() \
-                .add_argument('password')
+                .add_argument('current_password') \
+                .add_argument('new_password')
         args = parser.parse_args()
         database = self.__database_of_account(current_user)
         try:
-            account = database.update(account_id=current_user.get_id(), data=args)
+            account = database.update(account_id=current_user.get_id(), data={
+                'first_name': args.get('first_name'),
+                'last_name': args.get('last_name'),
+                'password': self.__verify_password_change(
+                    current=args.get('current_password'),
+                    new=args.get('new_password')
+                )
+            })
             return account.serializable, 200
         except AccountAlreadyExistsError:
             abort(409)
