@@ -383,10 +383,10 @@ htmx.org@^1.6.1:
   resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-1.6.1.tgz#6f0d59a93fa61cbaa15316c134a2f179045a5778"
   integrity sha512-i+1k5ee2eFWaZbomjckyrDjUpa3FMDZWufatUSBmmsjXVksn89nsXvr1KLGIdAajiz+ZSL7TE4U/QaZVd2U2sA==
 
-hyperscript.org@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/hyperscript.org/-/hyperscript.org-0.9.3.tgz#08cef54da68405a0af59f80acbc78a9e359b4755"
-  integrity sha512-u3JL0FtLiPn8cWVDIpEd6yhXvVGrwHYi8BjGSGvlDrnMUSYOPu+6c87S0Y+JvSWSB1eEMiPIHvL3RrA5gTqHCQ==
+hyperscript.org@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/hyperscript.org/-/hyperscript.org-0.9.4.tgz#a8d92f52768513d758cd6d7225dbf73b6e373fe9"
+  integrity sha512-ttGMzy4J9u7mMLz+/NnFZJ0rSSBp5UmuDfu/1KOL3V5ngPLFhjWERFzVU02MEmNfgIwpWMu64GP3ApBfu/Y9CA==
 
 import-cwd@^3.0.0:
   version "3.0.0"
