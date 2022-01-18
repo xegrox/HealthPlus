@@ -1,33 +1,31 @@
 {% from 'menu_item.html' import menu_item %}
-
-{% extends 'dropdown_button.html' %}
-
-{% block button %}
-<div class="flex items-center space-x-2 px-2">
-    <img class="w-8" src="{{ url_for('static', filename='profile.svg') }}"/>
-    <i class="ti ti-chevron-down text-xl text-gray-500"></i>
-</div>
-{% endblock %}
-
-{% block dropdown %}
-<div class="flex flex-col w-60">
-    <div class="flex space-x-5 p-4">
-        <img class="w-12" src="{{ url_for('static', filename='profile.svg') }}"/>
-        <div class="min-w-0 flex flex-col space-y-1">
-            <p class="whitespace-nowrap text-gray-800 text-ellipsis overflow-hidden font-medium">{{ current_user.full_name }}</p>
-            <p class="text-xs text-gray-700">{{ current_user.nric }}</p>
-        </div>
+<div class="relative" _="
+    install DropdownBehaviour(button: .profile_btn, content: .profile_dropdown)
+    on showContent show .profile_dropdown in me with opacity
+    on hideContent hide .profile_dropdown in me with opacity
+    ">
+    <div class="profile_btn flex items-center space-x-2 px-2 cursor-pointer">
+        <img class="w-8" src="{{ url_for('static', filename='profile.svg') }}"/>
+        <i class="ti ti-chevron-down text-xl text-gray-500"></i>
     </div>
-    <hr class="text-gray-200/60">
-    {{ menu_item('Appointments', href='/dashboard#appointments') }}
-    {{ menu_item('Prescriptions', href='/dashboard#prescriptions') }}
-    {{ menu_item('Settings', href='/dashboard#settings') }}
-    <hr class="text-gray-200/60">
-    <form class="flex" hx-delete="/session" _="
-        on click from first children of me
-            halt the event
-            call me.requestSubmit()">
-        {{ menu_item('Logout') }}
-    </form>
+    <div class="profile_dropdown flex flex-col w-60 absolute rounded-lg right-0 top-full rounded-lg bg-gray-50 mt-2 shadow-xl cursor-auto outline outline-2 outline-gray-100 transition-opacity opacity-0">
+        <div class="flex space-x-5 p-4">
+            <img class="w-12" src="{{ url_for('static', filename='profile.svg') }}"/>
+            <div class="min-w-0 flex flex-col space-y-1">
+                <p class="whitespace-nowrap text-gray-800 text-ellipsis overflow-hidden font-medium">{{ current_user.full_name }}</p>
+                <p class="text-xs text-gray-700">{{ current_user.nric }}</p>
+            </div>
+        </div>
+        <hr class="text-gray-200/60">
+        {{ menu_item('Appointments', href='/dashboard#appointments') }}
+        {{ menu_item('Prescriptions', href='/dashboard#prescriptions') }}
+        {{ menu_item('Settings', href='/dashboard#settings') }}
+        <hr class="text-gray-200/60">
+        <form class="flex" hx-delete="/session" _="
+            on click from first children of me
+                halt the event
+                call me.requestSubmit()">
+            {{ menu_item('Logout') }}
+        </form>
+    </div>
 </div>
-{% endblock %}

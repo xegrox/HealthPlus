@@ -3,4 +3,35 @@
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css"> <!-- Font -->
 <script src="{{ url_for('static', filename='htmx.min.js') }}" ></script> <!-- htmx -->
 <script src="{{ url_for('static', filename='_hyperscript_w9y.min.js') }}"></script> <!-- hyperscript -->
+<script type="text/hyperscript">
+behavior DropdownBehaviour(button, content)
+  set :shown to false
+  init add .invisible to content end
+  on click from button in me
+    if not :shown
+      trigger showContent
+    end
+  end
+  on click from document
+    if :shown and no event.target in (content in me)
+      trigger hideContent
+    end
+  end
+  on showContent
+    remove .invisible from content in me
+    settle then set :shown to true
+  end
+  on hideContent
+    settle then set :shown to false
+    add .invisible to content in me
+  end
+end
+
+behavior TransitionAutoHeightBehaviour
+    on show
+        measure my scrollHeight
+        set my style's height to `${scrollHeight}px`
+    on hide
+        set my style's height to 0px
+</script>
 

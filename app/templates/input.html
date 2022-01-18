@@ -20,16 +20,16 @@
                end
                "{{ 'required' if required }}/>
         <div class="h-0 overflow-hidden transition-height" _="
+        install TransitionAutoHeightBehaviour
         set :label to first <p/> in me
         on updateMsg(msg)
             if :label.innerHtml != msg
                 if msg is empty
                     put '' into :label
-                    set me.style.height to '0px'
+                    trigger hide
                 else
                     put msg into :label
-                    measure my scrollHeight
-                    set me.style.height to `${scrollHeight}px`
+                    trigger show
                 end
             end
         end

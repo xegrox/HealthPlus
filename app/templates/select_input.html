@@ -1,0 +1,55 @@
+{% macro select_input(options, name='', defaultValue=None) %}
+{% if not defaultValue %}
+{% set defaultValue = options.keys()|first %}
+{% endif %}
+<div class="select relative" _="
+set :selectedValue to '{{ defaultValue }}'
+set :selectedElem to null
+install DropdownBehaviour(button: .select_button, content: .select_dropdown)
+on showContent
+    send show to .select_dropdown in me
+    remove .rounded-b-lg from .select_button in me
+on hideContent
+    send hide to .select_dropdown in me
+    add .rounded-b-lg to .select_button in me
+on selectItem(name, value, elem)
+    put name into innerHTML of .select_name in me
+    set input to <input/> in me
+    set the input's @value to the value
+    if :selectedElem show :selectedElem end
+    set :selectedElem to elem
+    hide :selectedElem
+    trigger hideContent
+end
+">
+    <input name="{{ name }}" type="hidden"/>
+    <div class="select_button bg-gray-100 rounded-t-lg rounded-b-lg hover:bg-gray-200 transition-all">
+        <div class="flex items-center px-2 py-3">
+            <p class="flex-1 select_name">{{ options[defaultValue] }}</p>
+            <i class="ti ti-caret-down"></i>
+        </div>
+    </div>
+    <div class="select_dropdown bg-gray-100 top-full w-full absolute rounded-b-lg overflow-hidden transition-height z-10" _="install TransitionAutoHeightBehaviour">
+        {% for value, name in options.items() %}
+            <p class="px-2 py-3 hover:bg-black/5 transition-colors" _="
+                init if '{{ value }}' is '{{ defaultValue }}' then trigger click end end
+                on click trigger selectItem(name: '{{ name }}', value: '{{ value }}', elem: me)
+            ">{{ name }}</p>
+        {% endfor %}
+    </div>
+    <div class="pointer-events-none absolute top-0 w-full shadow-lg rounded-lg z-10 transition-[height,opacity]" _="
+    set :btn_height to 0
+    set :dropdown_height to 0
+    set :dropdown to .select_dropdown in my parentElement
+    set :button to .select_button in my parentElement
+    init
+        wait 0s
+        measure the :dropdown's scrollHeight then set :dropdown_height to scrollHeight
+        measure the :button's scrollHeight then set :btn_height to scrollHeight
+        set my style's height to `${:btn_height}px`
+    end
+    on show from :dropdown set my style's height to `${:btn_height + :dropdown_height}px` then show with opacity
+    on hide from :dropdown set my style's height to `${:btn_height}px` then hide with opacity
+    "></div>
+</div>
+{% endmacro %}
