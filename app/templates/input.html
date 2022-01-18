@@ -13,6 +13,9 @@
                on input
                  if :liveCheck trigger updateError() end
                end
+               on submit from my form
+                 trigger updateError()
+               end
                on updateError(msg)
                  set :liveCheck to true
                  if not msg then set msg to me.validationMessage end
