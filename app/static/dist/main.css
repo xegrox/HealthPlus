@@ -604,6 +604,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 66.666667%;
 }
 
+.w-5\/12 {
+  width: 41.666667%;
+}
+
+.w-7\/12 {
+  width: 58.333333%;
+}
+
 .min-w-0 {
   min-width: 0px;
 }
@@ -932,6 +940,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   line-height: 1rem;
 }
 
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -946,6 +959,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .leading-snug {
   line-height: 1.375;
+}
+
+.leading-10 {
+  line-height: 2.5rem;
 }
 
 .text-secondary {
@@ -1210,4 +1227,28 @@ Ensure the default browser behavior of the `hidden` attribute.
 .group:hover .group-hover\:text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px) {
+  .sm\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
 }
