@@ -1,31 +1,43 @@
-{% macro button(name, onclick='', submit=False, hx={}) %}
-<button type="{{'submit' if submit else 'button'}}" class="outline outline-2 outline-secondary p-2 px-5 rounded hover:bg-secondary/20 transition-colors text-secondary truncate"
-       onclick="{{ onclick }}"
+{% macro button(name, onclick='', submit=False, hx={}, icon='', _='') %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 outline outline-2 outline-secondary rounded hover:bg-secondary/20 transition-colors text-secondary truncate"
+       onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
          hx-{{name}}="{{val}}"
        {% endfor %}>
-    {{ name }}
+    <i class="ti ti-{{icon}} pr-2 pl-3"></i>
+    <p class="flex-1 pr-5 text-center">{{ name }}</p>
 </button>
 {% endmacro %}
 
-{% macro focus_button(name, onclick='', submit=False, hx={}) %}
-<button type="{{'submit' if submit else 'button'}}" class="outline outline-2 outline-secondary bg-secondary py-2 px-5 rounded hover:bg-secondary/80 hover:outline-secondary/80 transition-colors text-white text-center truncate"
-       onclick="{{ onclick }}"
-       value="{{ name }}"
+{% macro focus_button(name, onclick='', submit=False, hx={}, icon='', _='') %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 outline outline-2 outline-secondary bg-secondary rounded hover:bg-secondary/80 hover:outline-secondary/80 transition-colors text-white text-center truncate"
+       onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
        hx-{{name}}="{{val}}"
        {% endfor %}>
-    {{ name }}
+    <i class="ti ti-{{icon}} pr-2 pl-3"></i>
+    <p class="pr-5 flex-1 text-center">{{ name }}</p>
 </button>
 {% endmacro %}
 
-{% macro warn_button(name, onclick='', submit=False) %}
-<button type="{{'submit' if submit else 'button'}}" class="outline outline-2 outline-red-500 bg-red-500 py-2 px-5 rounded hover:bg-red-500/80 hover:outline-red-500/80 transition-colors text-white text-center truncate"
-       onclick="{{ onclick }}"
-       value="{{ name }}"
+{% macro warn_button(name, onclick='', submit=False, hx={}, icon='') %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 outline outline-2 outline-red-500 bg-red-500 rounded hover:bg-red-500/80 hover:outline-red-500/80 transition-colors text-white text-center truncate"
+       onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
        hx-{{name}}="{{val}}"
        {% endfor %}>
-    {{ name }}
+    <i class="ti ti-{{icon}} pr-2 pl-3"></i>
+    <p class="pr-5 flex-1 text-center">{{ name }}</p>
+</button>
+{% endmacro %}
+
+{% macro text_button(name, onclick='', submit=False, hx={}, icon='') %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 rounded hover:bg-secondary/10 transition-colors text-secondary truncate"
+        onclick="{{ onclick }}" _="{{ _ }}"
+        {% for name, val in hx.items() %}
+        hx-{{name}}="{{val}}"
+        {% endfor %}>
+    <i class="ti ti-{{icon}} pr-2 pl-3"></i>
+    <p class="pr-5 flex-1 text-center">{{ name }}</p>
 </button>
 {% endmacro %}

@@ -1,25 +1,16 @@
-<div id="{{ 'modal_' + name }}" class="z-20 hidden opacity-0 fixed right-0 top-0 bg-black/20 w-screen h-screen flex transition-opacity duration-500">
+<div id="{{ 'modal_' + name }}" class="z-20 hidden opacity-0 fixed right-0 top-0 bg-black/20 w-screen h-screen flex transition-opacity duration-500" _="
+on show
+   remove .hidden
+   wait 0s then show with opacity
+on hide
+    hide with opacity then settle
+    add .hidden
+">
     <div class="bg-white rounded-lg m-auto p-10 relative">
-        <i class="text-xl ti ti-x absolute top-0 right-0 m-4 text-gray-400 hover:text-gray-800 transition-colors" onclick="{{ 'hide_modal_' + name + '()' }}"></i>
+        <i class="text-xl ti ti-x absolute top-0 right-0 m-4 text-gray-400 hover:text-gray-800 transition-colors" _="
+        on click trigger hide
+        "></i>
         {% block content %}
         {% endblock %}
     </div>
 </div>
-<script>
-    this['{{ "show_modal_" + name }}'] = function() {
-        var elem = document.getElementById('{{ "modal_" + name }}');
-        elem.classList.remove('hidden');
-        setTimeout(function () {
-            elem.style.opacity = 1;
-        })
-    }
-
-    this['{{ "hide_modal_" + name }}'] = function() {
-        var elem = document.getElementById('{{ "modal_" + name }}');
-        elem.addEventListener("transitionend", function () {
-            elem.classList.add('hidden');
-        }, {once: true});
-        elem.style.opacity = 0;
-    }
-
-</script>

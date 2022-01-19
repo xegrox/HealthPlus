@@ -20,8 +20,12 @@
         {% if current_user.is_authenticated %}
             {% include 'home/profile_dropdown.html' %}
         {% else %}
-            {{ button('Log In', onclick='show_modal_login()') }}
-            {{ focus_button('Sign Up', onclick='show_modal_signup()') }}
+            {{ button('Log In', _='
+                on click send show to #modal_login
+            ') }}
+            {{ focus_button('Sign Up', _='
+                on click send show to #modal_signup
+            ') }}
         {% endif %}
     </div>
 </div>
