@@ -1,0 +1,17 @@
+{% from 'button.html' import warn_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'user_accounts_table' %}
+{% set table_template_url = '/dashboard/ajax/admin/manage_users/accounts_table' %}
+{% set search_categories = {
+    '1': 'Account ID',
+    '2': 'NRIC',
+    'c34': 'Name'
+} %}
+
+{% block select_options %}
+{{ warn_button('Delete', icon='trash', _='
+on action(values)
+    log values
+') }}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% from 'button.html' import focus_button %}
+{% from 'select_input.html' import select_input %}
+
+<div class="flex flex-col max-w-5xl space-y-8" _="
+on refresh send click to .refresh_btn in me
+">
+    <div class="flex mx-2 my-8">
+        <p class="flex-1 text-3xl font-bold">User Accounts</p>
+        <p>{{ focus_button('Create new', icon='plus') }}</p>
+    </div>
+    {% include 'dashboard/admin/manage_users/accounts_table_bar.html' %}
+    <div id="user_accounts_table" class="flex flex-col"></div>
+    {% include 'dashboard/admin/manage_users/edit_account_modal.html' %}
+</div>

@@ -1,0 +1,42 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import text_button %}
+
+<div class="flex bg-white rounded-lg p-5 items-center space-x-5">
+    <div class="flex flex-initial space-x-5 min-w-0">
+        {{ input(placeholder='Search', class='search min-w-0', _='
+        set :category_input to first <input/> in .category in my parentElement
+        on input trigger updateSearch end
+        on htmx:afterSettle from {0} trigger updateSearch end
+        on updateSearch debounced at 500ms
+            set column to :category_input.value
+            set raw_matches to value of first <input/> in me
+            make a RegExp from "[ ,]+", "g" called regex
+            set matches to raw_matches.trim().split(regex)
+            send search(matches: matches, column: column) to <table/> in {0}
+        '.format('#' + table_id)) }}
+        <div class="flex-initial w-40" _="on change send updateSearch to .search in my parentElement">
+            {{ select_input(search_categories, icon='filter', class='category') }}
+        </div>
+    </div>
+    <div class="flex-1 flex relative justify-end">
+        <div class="flex justify-end absolute right-0 w-full bg-white transition-opacity" _="
+        set :values to []
+        init hide me then hide me with opacity end
+        on selectValues(values) from {{ '#' + table_id }}
+            set :values to values
+            if values is not empty
+                show me then wait 0s then show me with opacity
+                add .pointer-events-none to .refresh_btn in my parentElement
+            else
+                remove .pointer-events-none from .refresh_btn in my parentElement
+                hide me with opacity then settle then hide me
+            end
+        on click(target) from <button/> in me
+            send action(values: :values) to it
+        ">
+            {% block select_options %}
+            {% endblock %}
+        </div>
+        {{ text_button('Refresh', icon='refresh', class='refresh_btn flex-none', hx={'post': table_template_url, 'target': '#' + table_id, 'swap': 'innerHTML', 'trigger': 'load, click'}) }}
+    </div>
+</div>

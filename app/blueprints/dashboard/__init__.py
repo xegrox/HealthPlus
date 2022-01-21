@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from app.models.account import User, Staff
 from app.models.account.staff import StaffRole
+from app.rest.admin.user_account_list import AdminUserAccountList
 
 blueprint = Blueprint(
     'dashboard', __name__,
@@ -18,6 +19,14 @@ class _Page:
         self.template = template
 
 
+@blueprint.route('/ajax/admin/manage_users/accounts_table', methods=['POST'])
+@login_required
+def admin_user_accounts_table():
+    if isinstance(current_user, Staff) and current_user.role == StaffRole.ADMIN:
+        accounts = AdminUserAccountList().get()[0]
+        return render_template('dashboard/admin/manage_users/accounts_table.html', accounts=accounts)
+
+
 @blueprint.route('/')
 @login_required
 def dashboard():
@@ -30,6 +39,7 @@ def dashboard():
     elif isinstance(current_user, Staff):
         if current_user.role == StaffRole.ADMIN:
             return render_template('dashboard/index.html', pages=[
+                _Page('Manage users', 'users', 'manage_users', 'dashboard/admin/manage_users/index.html'),
                 _Page('Settings', 'settings', 'settings', 'dashboard/admin/settings/index.html')
             ])
         elif current_user.role == StaffRole.DOCTOR:

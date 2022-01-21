@@ -1,0 +1,42 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import focus_button %}
+
+{% extends 'modal.html' %}
+{% set name = 'edit_account' %}
+
+{% block content %}
+<form class="w-96 flex flex-col space-y-10" _="
+on showModal(account) from #modal_edit_account
+    set $account_id to account['account_id']
+    set placeholder of <input[name='nric']/> in me to account['nric']
+    set placeholder of <input[name='first_name']/> in me to account['first_name']
+    set placeholder of <input[name='last_name']/> in me to account['last_name']
+end
+on submit
+    halt the event's default
+    make a FormData from me called formData
+    set data to Object.fromEntries(formData)
+    fetch `/user_account/${$account_id}` with method:'PUT',
+      body:JSON.stringify(data),
+      headers:{'Content-Type': 'application/json'}
+end
+on fetch:afterResponse(detail)
+    if detail.response.status is 409
+      send updateError(msg: 'NRIC is already being used') to <input[name='nric']/> in me
+    end
+    if detail.response.status is 200
+      send hideModal to #modal_edit_account
+      trigger refresh
+    end
+end
+">
+  <p class="font-bold text-2xl">Edit account</p>
+  <div class="space-y-3">
+    {{ input('NRIC', name='nric') }}
+    {{ input('First name', name='first_name') }}
+    {{ input('Last name', name='last_name') }}
+    {{ input('Password', type='password', name='password') }}
+  </div>
+  {{ focus_button('Apply', submit=True) }}
+</form>
+{% endblock %}

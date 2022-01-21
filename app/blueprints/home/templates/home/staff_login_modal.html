@@ -16,7 +16,11 @@
     <div class="flex flex-col space-y-5">
         {{ input('Staff ID', type='text', name='staff_id', required=True) }}
         {{ input('Password', type='password', name='password', required=True) }}
-        <a href="#" class="underline text-blue-700" onclick="show_modal_login(); hide_modal_staff_login()">Not a staff? Click here to login as user</a>
+        <a href="#" class="underline text-blue-700" _="
+        on click
+            send hideModal to #modal_staff_login
+            send showModal to #modal_login
+        ">Not a staff? Click here to login as user</a>
     </div>
     {{ focus_button('Log In', submit=True) }}
 </form>

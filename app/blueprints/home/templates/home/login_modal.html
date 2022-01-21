@@ -16,7 +16,11 @@
     <div class="flex flex-col space-y-5">
         {{ input('NRIC number', type='text', name='nric', required=True) }}
         {{ input('Password', type='password', name='password', required=True) }}
-        <a href="#" class="underline text-blue-700" onclick="show_modal_staff_login(); hide_modal_login()">Not a user? Click here to login as staff</a>
+        <a href="#" class="underline text-blue-700" _="
+        on click
+            send hideModal to #modal_login
+            send showModal to #modal_staff_login
+        ">Not a user? Click here to login as staff</a>
     </div>
     {{ focus_button('Log In', submit=True) }}
 </form>

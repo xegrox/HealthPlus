@@ -1,6 +1,6 @@
-{% macro input(label, type='text', name='', value='', placeholder='', required=False) %}
-<div>
-    <label class="flex flex-col space-y-2">
+{% macro input(label, type='text', name='', value='', placeholder='', required=False, class='', _='') %}
+<div class="{{class}}" _="{{_}}">
+    <label class="flex flex-col">
         {{ label }}
         <input class="bg-gray-100 rounded-lg p-2 focus:outline-secondary hover:bg-gray-200 focus:bg-gray-200 transition-colors"
                type="{{ type }}" name="{{ name }}" value="{{ value }}" placeholder="{{ placeholder }}" _="
@@ -29,15 +29,15 @@
             if :label.innerHtml != msg
                 if msg is empty
                     put '' into :label
-                    trigger hide
+                    trigger hideElem
                 else
                     put msg into :label
-                    trigger show
+                    trigger showElem
                 end
             end
         end
         ">
-            <p class="text-red-600"></p>
+            <p class="mt-2 text-red-600"></p>
         </div>
     </label>
 </div>

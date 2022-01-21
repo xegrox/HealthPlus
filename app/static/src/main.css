@@ -13,3 +13,27 @@
 .dashboard-navbar-unselected {
     @apply text-gray-500;
 }
+
+table {
+    @apply text-left overflow-hidden rounded-lg
+}
+
+tbody tr:nth-child(even) {
+    @apply bg-white
+}
+
+tbody tr:nth-child(odd) {
+    @apply bg-gray-100
+}
+
+thead tr {
+    @apply bg-white
+}
+
+td {
+    @apply p-4
+}
+
+th {
+    @apply px-4 py-5
+}

@@ -1,14 +1,14 @@
-<div id="{{ 'modal_' + name }}" class="z-20 hidden opacity-0 fixed right-0 top-0 bg-black/20 w-screen h-screen flex transition-opacity duration-500" _="
-on show
+<div id="{{ 'modal_' + name }}" class="z-20 hidden opacity-0 !m-0 fixed right-0 top-0 bg-black/20 w-screen h-screen flex transition-opacity duration-500" _="
+on showModal
    remove .hidden
    wait 0s then show with opacity
-on hide
+on hideModal
     hide with opacity then settle
     add .hidden
 ">
     <div class="bg-white rounded-lg m-auto p-10 relative">
         <i class="text-xl ti ti-x absolute top-0 right-0 m-4 text-gray-400 hover:text-gray-800 transition-colors" _="
-        on click trigger hide
+        on click trigger hideModal
         "></i>
         {% block content %}
         {% endblock %}

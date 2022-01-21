@@ -10,7 +10,7 @@ class PharmacistMedicineList(Resource):
     @login_required
     def get(self):
         check_is_pharmacist()
-        return list(map(lambda x: x.serializable, medicine_inventory.read_all()))
+        return list(map(lambda x: x.serializable, medicine_inventory.read_all())), 200
 
     @login_required
     def post(self):

@@ -28,10 +28,63 @@ behavior DropdownBehaviour(button, content)
 end
 
 behavior TransitionAutoHeightBehaviour
-    on show
+    on showElem
         measure my scrollHeight
         set my style's height to `${scrollHeight}px`
-    on hide
+    on hideElem
         set my style's height to 0px
+
+behavior TableSearchBehaviour
+    set :tbody to <tbody/> in me
+    set :rows to <tr/> in :tbody
+    on search(matches, column)
+        for row in :rows
+            set details to <td/> in row
+            set terms to []
+            if column[0] is 'c'
+                repeat in column
+                    if it is 'c' continue end
+                    append details[it as Int].innerHTML to terms
+                end
+            else
+                append details[column as Int].innerHTML to terms
+            end
+            set hasMatch to false
+            for match in matches
+                for term in terms
+                    if term.toUpperCase().includes(match.toUpperCase())
+                        set hasMatch to true
+                        break
+                    end
+                end
+                if hasMatch break end
+            end
+            if hasMatch show row else hide row end
+        end
+    end
+
+behavior TableCheckboxBehaviour
+    set :check_all to first <input[name='check_all']/> in <thead/> in me
+    set :check_body to <input[type='checkbox']/> in <tbody/> in me
+    init
+        make Map then set :values to it
+    end
+    on change(target) queue all
+        if target is :check_all
+            repeat for el in :check_body
+                set el.checked to target.checked
+                make Event from 'change', {'bubbles': true} called event
+                call el.dispatchEvent(event)
+            end
+        else
+            if target.checked
+                call :values.set(target, target.value)
+            else
+                call :values.delete(target)
+            end
+            set is_all_checked to (length of :check_body) is (size of :values)
+            set checked of :check_all to is_all_checked
+            trigger selectValues(values: Array.from(:values.values()))
+        end
 </script>
 
