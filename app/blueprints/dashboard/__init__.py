@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from app.models.account import User, Staff
 from app.models.account.staff import StaffRole
 from app.rest.admin.user_account_list import AdminUserAccountList
+from app.rest.user.available_medicine import UserAvailableMedicine
+from app.rest.user.medicine_order_list import UserMedicineOrderList
 
 blueprint = Blueprint(
     'dashboard', __name__,
@@ -34,6 +36,8 @@ def dashboard():
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/user/appointments/index.html'),
             _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/user/prescriptions/index.html'),
+            _Page('Buy Medicine', 'medicine-syrup', 'buy_medicine','dashboard/user/buy_medicine/index.html'),
+            _Page('Medicine Orders', 'clipboard-list', 'medicine_orders', 'dashboard/user/medicine_orders/table_orders.html'),
             _Page('Settings', 'settings', 'settings', 'dashboard/user/settings/index.html')
         ])
     elif isinstance(current_user, Staff):
@@ -48,9 +52,22 @@ def dashboard():
             ])
         elif current_user.role == StaffRole.PHARMACIST:
             return render_template('dashboard/index.html', pages=[
+                _Page('Collection Status', 'settings', 'collection_status', 'dashboard/pharmacist/collection_status/update_status.html'),
                 _Page('Settings', 'settings', 'settings', 'dashboard/pharmacist/settings/index.html')
             ])
         elif current_user.role == StaffRole.VACCINE_MANAGER:
             return render_template('dashboard/index.html', pages=[
                 _Page('Settings', 'settings', 'settings', 'dashboard/vaccine_manager/settings/index.html')
             ])
+
+
+@blueprint.route('/ajax/user/buy_medicine/med_available', methods=['POST'])
+def medicine_list():
+    medicines = UserAvailableMedicine().get()[0]
+    return render_template('/dashboard/user/buy_medicine/med_available.html', medicines=medicines)
+
+
+@blueprint.route('/ajax/user/medicine_orders/table_orders', methods=['POST'])
+def store_order():
+    order = UserMedicineOrderList().get()[0]
+    return render_template('/dashboard/user/medicine_orders/table_orders.html', order=order)

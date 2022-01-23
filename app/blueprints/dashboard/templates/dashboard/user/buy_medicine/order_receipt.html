@@ -1,0 +1,26 @@
+{% from 'button.html' import focus_button %}
+
+<div class="w-full p-2">
+    <div class="flex flex-wrap m-auto">
+        <div class='flex flex-col w-80 side_bar border-2 border-gray-500 rounded-md'>
+            <div class="pl-6 side_bar_item">
+                <p class="text-sm flex ">Medicine</p>
+                <p class="font-extrabold text-xl">Fluoxetine (Prozac)</p>
+            </div>
+            <br>
+            <div class="pl-6 side_bar_item">
+                <p class="text-sm flex ">ATC Code</p>
+                <p class="font-extrabold text-xl">B03AC09</p>
+            </div>
+            <br>
+            <div class="pl-6 side_bar_item">
+                <p class="text-sm flex ">Quantity</p>
+                <p class="font-extrabold text-xl">3</p>
+            </div>
+            <br>
+            <div class="justify-center w-60 border-t border-gray-500"></div>
+            <br><br>
+            <a href="#medicine_orders">{{ focus_button('Order') }}</a>
+        </div>
+    </div>
+</div>

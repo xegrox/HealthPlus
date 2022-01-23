@@ -1,0 +1,31 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import focus_button %}
+
+{% extends 'modal.html' %}
+{% set name = 'delivery' %}
+{% block content %}
+<form class="flex flex-col space-y-10 w-96" hx-post="/session" hx-swap="none" _="
+    on htmx:responseError(detail)
+        if detail.xhr.status == 401
+            set pass_field to first of <input[name='Postal_Code']/> in me
+            send updateError(msg: 'Oops! Invalid Address or Postal Code.') to pass_field
+        end
+    end
+    ">
+    <p class="text-3xl font-bold underline decoration-primary">Delivery</p>
+    <br>
+    <div class="flex flex-col space-y-5">
+    <div class="form-group row">
+        {{ input('Address', type='text', name='Address', required=True) }}
+        {{ input('Postal Code', type='text', name='Postal_Code', required=True) }}
+    </div>
+    <a href="#" class="underline text-blue-700" _="
+                    on click
+                    send hideModal to #modal_delivery
+                    send showModal to #modal_self_collection
+     ">Obtain via Self-collection? Click here</a>
+    </div>
+    <br>
+    {{ focus_button('Order', submit=True) }}
+</form>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% from 'button.html' import focus_button %}
+
+<form hx-post="/dashboard/ajax/user/buy_medicine/med_available" hx-target="#available_medicine">
+    {{ focus_button('Refresh', submit=True) }}
+</form>
+<div id="available_medicine"></div>

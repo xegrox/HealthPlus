@@ -1,0 +1,29 @@
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+    <thead>
+        <tr>
+            <th>Medicine Name</th>
+            <th>Description</th>
+            <th>ATC Code</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for medicine in medicines %}
+        <tr>
+            <td>{{ medicine.name }}</td>
+            <td>{{ medicine.description }}</td>
+            <td>{{ medicine.atc_code }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900 flex items-center">
+            <select name="quantity" class="h-full py-2 pr-7 border-transparent bg-transparent sm:text-sm rounded-md">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
