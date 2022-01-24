@@ -1,33 +1,24 @@
-{% extends 'modal.html' %}
-{% set name = 'self_collection' %}
+{% from 'button.html' import focus_button %}
+
 {% block content %}
 <p class="text-3xl font-bold underline decoration-primary">Obtain via: Self-collection</p>
 <br>
-<form class="flex flex-col space-y-10 w-96" hx-post="/rest/user/medicine_order_list" hx-swap="none" _="
-    on htmx:responseError(detail)
-        if detail.xhr.status == 401
-            set pass_field to first of <input[name='select_clinic']/> in me
-            send updateError(msg: 'Invalid clinic selected') to pass_field
-        end
-    end
-    ">
+<form>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label">Collect From</label>
         <div class="py-4 text-sm text-gray-900">
             <div class="flex flex-col space-y-5">
-                <select name="select_clinic" class="h-full py-2 pr-7 border-transparent bg-white sm:text-sm rounded-md" id="FormControlSelect1">
+                <select name="select_clinic" class="h-full py-2 pr-7 border-transparent bg-white sm:text-sm rounded-md"
+                        id="FormControlSelect1">
                     <option>Select Clinic</option>
                     <option>Clinic 1</option>
                     <option>Clinic 2</option>
                 </select>
-                <a href="#" class="underline text-blue-700" _="
-                    on click
-                    send hideModal to #modal_self_collection
-                    send showModal to #modal_delivery
-                ">Obtain via Delivery? Click here</a>
+                <a href="#" class="underline text-blue-700">Obtain via Delivery? Click here</a>
             </div>
         </div>
     </div>
+    <br>
+    {{ focus_button('Order', submit=True) }}
 </form>
-
 {% endblock %}

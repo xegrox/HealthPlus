@@ -1,3 +1,7 @@
+{% from 'number_input.html' import number_input %}
+{% from 'button.html' import focus_button %}
+
+
 <table _="install TableSearchBehaviour install TableCheckboxBehaviour">
     <thead>
         <tr>
@@ -14,16 +18,11 @@
             <td>{{ medicine.description }}</td>
             <td>{{ medicine.atc_code }}</td>
             <td class="px-6 py-4 text-sm text-gray-900 flex items-center">
-            <select name="quantity" class="h-full py-2 pr-7 border-transparent bg-transparent sm:text-sm rounded-md">
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
+            {{ number_input(name='quantity', min=0, max=5) }}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<br>
+{{ focus_button('Check Out', submit=True) }}
