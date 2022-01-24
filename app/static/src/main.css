@@ -23,7 +23,7 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:nth-child(odd) {
-    @apply bg-gray-100
+    @apply bg-gray-50
 }
 
 thead tr {

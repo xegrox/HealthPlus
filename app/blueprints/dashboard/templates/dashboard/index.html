@@ -6,11 +6,11 @@
     {% include 'base_style.html' %}
     <script type="text/hyperscript">
         def showView(view)
-            remove .hidden from view
+            show view with visibility
             transition the view's opacity to 1
         def hideView(view)
             transition the view's opacity to 0
-            add .hidden to view
+            hide view with visibility
         def syncView()
             set fragments to {{ pages | map(attribute='fragment') | list | tojson }}
             set fragment to location.hash.substring(1)
@@ -46,7 +46,7 @@
     </div>
     <div id="content" class="flex-1 relative bg-gray-200 overflow-auto">
         {% for page in pages %}
-            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 min-h-full w-full hidden !duration-150 px-20 py-16">
+            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 min-h-full w-full invisible !duration-150 px-20 py-16">
                 {% include page.template %}
             </div>
         {% endfor %}

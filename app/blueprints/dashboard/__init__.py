@@ -21,6 +21,26 @@ class _Page:
         self.template = template
 
 
+@blueprint.route('/ajax/user/order_medicine/med_available', methods=['POST'])
+def medicine_list():
+    medicines = UserAvailableMedicine().get()[0]
+    return render_template('/dashboard/user/order_medicine/med_available.html', medicines=medicines)
+
+
+@blueprint.route('/ajax/user/order_history/orders_table', methods=['POST'])
+def store_order():
+    orders = UserMedicineOrderList().get()[0]
+    return render_template('/dashboard/user/order_history/orders_table.html', orders=orders)
+
+
+@blueprint.route('/ajax/admin/manage_staffs/accounts_table', methods=['POST'])
+@login_required
+def admin_staff_accounts_table():
+    if isinstance(current_user, Staff) and current_user.role == StaffRole.ADMIN:
+        accounts = AdminStaffAccountList().get()[0]
+        return render_template('dashboard/admin/manage_staffs/accounts_table.html', accounts=accounts)
+
+
 @blueprint.route('/ajax/admin/manage_users/accounts_table', methods=['POST'])
 @login_required
 def admin_user_accounts_table():
@@ -36,8 +56,8 @@ def dashboard():
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/user/appointments/index.html'),
             _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/user/prescriptions/index.html'),
-            _Page('Buy Medicine', 'medicine-syrup', 'buy_medicine','dashboard/user/buy_medicine/index.html'),
-            _Page('Medicine Orders', 'clipboard-list', 'medicine_orders', 'dashboard/user/medicine_orders/table_orders.html'),
+            _Page('Order Medicine', 'medicine-syrup', 'order_medicine', 'dashboard/user/order_medicine/index.html'),
+            _Page('Order History', 'history', 'order_history', 'dashboard/user/order_history/orders_table.html'),
             _Page('Settings', 'settings', 'settings', 'dashboard/user/settings/index.html')
         ])
     elif isinstance(current_user, Staff):
@@ -59,15 +79,3 @@ def dashboard():
             return render_template('dashboard/index.html', pages=[
                 _Page('Settings', 'settings', 'settings', 'dashboard/vaccine_manager/settings/index.html')
             ])
-
-
-@blueprint.route('/ajax/user/buy_medicine/med_available', methods=['POST'])
-def medicine_list():
-    medicines = UserAvailableMedicine().get()[0]
-    return render_template('/dashboard/user/buy_medicine/med_available.html', medicines=medicines)
-
-
-@blueprint.route('/ajax/user/medicine_orders/table_orders', methods=['POST'])
-def store_order():
-    order = UserMedicineOrderList().get()[0]
-    return render_template('/dashboard/user/medicine_orders/table_orders.html', order=order)
