@@ -14,11 +14,12 @@ blueprint = Blueprint(
 
 
 class _Page:
-    def __init__(self, name: str, icon: str, fragment: str, template: str):
+    def __init__(self, name: str, icon: str, fragment: str, template: str, right_panel_template: str = None):
         self.name = name
         self.icon = icon
         self.fragment = fragment
         self.template = template
+        self.right_panel_template = right_panel_template
 
 
 @blueprint.route('/ajax/user/order_medicine/med_available', methods=['POST'])

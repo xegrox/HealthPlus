@@ -46,8 +46,13 @@
     </div>
     <div id="content" class="flex-1 relative bg-gray-200 overflow-auto">
         {% for page in pages %}
-            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 min-h-full w-full invisible !duration-150 px-20 py-16">
-                {% include page.template %}
+            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 min-h-full w-full invisible !duration-150 flex">
+                <div class="flex-1 px-20 py-16">{% include page.template %}</div>
+                {% if page.right_panel_template %}
+                    <div class="flex-none w-1/4 bg-white">
+                        {% include page.right_panel_template %}
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
