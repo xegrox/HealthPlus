@@ -1,36 +1,41 @@
-{% macro number_input(name='', min=0, max=None) %}
-<div class="flex items-stretch bg-gray-100 p-1.5 rounded-lg">
-    <div class="flex-none flex items-center justify-center bg-secondary/10 text-secondary/80 hover:bg-secondary/20 rounded-lg transition-colors text-white w-10"
-         _="on click send decrement to <input/> in my parentElement">
-        <i class="ti ti-minus font-bold"></i>
-    </div>
-    <input class="flex-1 bg-gray-100 transition-colors p-2 outline-none text-center" name="{{ name }}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" autocomplete="off" value="{{ min }}" _="
-    set :oldValue to ''
-    on input
-        if my value as Int < {{ min }}
-          {% if max != None %} or my value as Int > {{ max }} {% endif %}
-            set my value to :oldValue
-        else
-            set :oldValue to my value
-        end
-    end
-    on decrement
-        set value to my value as Int
-        if not value set value to {{ min }} end
-        if my value as Int > {{ min }} decrement value end
-        set my value to value as String
-        trigger input
-    end
-    on increment
-        set value to my value as Int
-        if not value set value to {{ min }} end
-        if my value as Int < {{ max }} increment value end
-        set my value to value as String
-        trigger input
-    end"/>
-    <div class="flex-none flex items-center justify-center bg-secondary/10 text-secondary/80 hover:bg-secondary/20 rounded-lg transition-colors text-white w-10"
-         _="on click send increment to <input/> in my parentElement">
-        <i class="ti ti-plus font-bold"></i>
-    </div>
+{% macro number_input(label='', name='', min=0, max=None, class='', _='') %}
+<div class="{{class}}" _="{{_}}">
+    <label class="flex flex-col">
+        {{ label }}
+        <div class="flex items-stretch bg-gray-100 p-1.5 rounded-lg">
+            <div class="flex-none flex items-center justify-center bg-secondary/10 text-secondary/80 hover:bg-secondary/20 rounded-lg transition-colors text-white w-10"
+                 _="on click send decrement to <input/> in my parentElement">
+                <i class="ti ti-minus font-bold"></i>
+            </div>
+            <input class="flex-1 bg-gray-100 transition-colors p-2 outline-none text-center" name="{{ name }}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" autocomplete="off" value="{{ min }}" _="
+            set :oldValue to ''
+            on input
+                if my value as Int < {{ min }}
+                  {% if max != None %} or my value as Int > {{ max }} {% endif %}
+                    set my value to :oldValue
+                else
+                    set :oldValue to my value
+                end
+            end
+            on decrement
+                set value to my value as Int
+                if not value set value to {{ min }} end
+                if my value as Int > {{ min }} decrement value end
+                set my value to value as String
+                trigger input
+            end
+            on increment
+                set value to my value as Int
+                if not value set value to {{ min }} end
+                if my value as Int < {{ max }} increment value end
+                set my value to value as String
+                trigger input
+            end"/>
+            <div class="flex-none flex items-center justify-center bg-secondary/10 text-secondary/80 hover:bg-secondary/20 rounded-lg transition-colors text-white w-10"
+                 _="on click send increment to <input/> in my parentElement">
+                <i class="ti ti-plus font-bold"></i>
+            </div>
+        </div>
+    </label>
 </div>
 {% endmacro %}
