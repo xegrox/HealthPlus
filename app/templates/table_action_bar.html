@@ -15,7 +15,7 @@
             send search(matches: matches, column: column) to <table/> in {0}
         '.format('#' + table_id)) }}
         <div class="flex-initial w-40" _="on change send updateSearch to .search in my parentElement">
-            {{ select_input(search_categories, icon='filter', class='category') }}
+            {{ select_input('', search_categories, icon='filter', class='category') }}
         </div>
     </div>
     <div class="flex-1 flex relative justify-end">
