@@ -1,0 +1,17 @@
+{% from 'button.html' import warn_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'vaccine_log_table' %}
+{% set table_template_url = '/dashboard/ajax/vaccine_manager/log_history/vaccine_log_table' %}
+{% set search_categories = {
+    '1': 'Vaccine Name',
+    '2': 'Batch No',
+    'c34': 'Delivery Date'
+} %}
+
+{% block select_options %}
+{{ warn_button('Delete', icon='trash', _='
+on action(values)
+    log values
+') }}
+{% endblock %}

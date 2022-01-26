@@ -9,6 +9,7 @@ from .pharmacist.medicine_list import PharmacistMedicineList
 from .user.available_medicine import UserAvailableMedicine
 from .user.medicine_order import UserMedicineOrder
 from .user.medicine_order_list import UserMedicineOrderList
+from .vaccine_manager.vaccine_order_logs import VaccineOrderLogs
 
 
 def register_api(app):
@@ -22,3 +23,4 @@ def register_api(app):
     api.add_resource(UserMedicineOrderList, '/medicine_order')
     api.add_resource(UserMedicineOrder, '/medicine_order/<order_id>')
     api.add_resource(UserAvailableMedicine, '/available_medicine')
+    api.add_resource(VaccineOrderLogs, '/vaccine_logs')

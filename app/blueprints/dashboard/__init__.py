@@ -5,6 +5,7 @@ from app.models.account.staff import StaffRole
 from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.user.available_medicine import UserAvailableMedicine
 from app.rest.user.medicine_order_list import UserMedicineOrderList
+from app.rest.vaccine_manager.vaccine_order_logs import VaccineOrderLogs
 
 blueprint = Blueprint(
     'dashboard', __name__,
@@ -20,6 +21,12 @@ class _Page:
         self.fragment = fragment
         self.template = template
         self.right_panel_template = right_panel_template
+
+
+@blueprint.route('/ajax/vaccine_manager/log_history/vaccine_log_table', methods=['POST'])
+def log_info():
+    logs = VaccineOrderLogs().get()[0]
+    return render_template('/dashboard/vaccine_manager/log_history/vaccine_log_table.html', logs=logs)
 
 
 @blueprint.route('/ajax/user/order_medicine/med_available', methods=['POST'])
@@ -78,5 +85,8 @@ def dashboard():
             ])
         elif current_user.role == StaffRole.VACCINE_MANAGER:
             return render_template('dashboard/index.html', pages=[
-                _Page('Settings', 'settings', 'settings', 'dashboard/vaccine_manager/settings/index.html')
+                _Page('Create_Log', 'settings', 'create_log', 'dashboard/vaccine_manager/create_log/index.html'),
+                _Page('Log_History', 'settings', 'log_history', 'dashboard/vaccine_manager/log_history/index.html'),
+                _Page('Settings', 'settings', 'settings', 'dashboard/vaccine_manager/settings/index.html'),
+
             ])

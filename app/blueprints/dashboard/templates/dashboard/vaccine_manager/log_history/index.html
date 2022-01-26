@@ -1,11 +1,16 @@
+{% from 'button.html' import focus_button %}
+{% from 'select_input.html' import select_input %}
 
-
-<div class=" container flex p-10 bg-white border">
-   <div class="ml-20 py-16 px-8 ">
-       <h3 class="block uppercase font-bold mb-6 mr-6">Vaccine Name</h3>
-       <h3 class="block uppercase font-bold mb-6 mr-6">Batch No</h3>
-       <h3 class="block uppercase font-bold mb-6 mr-6">Quantity</h3>
-       <h3 class="block uppercase font-bold mb-6 mr-6">Delivery Date</h3>
-       <h3 class="block uppercase font-bold mb-6 mr-6">Expiry Date</h3>
-   </div>
+<div class="flex flex-col max-w-5xl space-y-8" _="
+on refresh send click to .refresh_btn in me
+">
+    <div class="flex mx-2 my-8">
+        <p class="flex-1 text-3xl font-bold">User Accounts</p>
+        <p>{{ focus_button('Create new', icon='plus', _='
+            on click send showModal to #modal_vaccine_create_log
+            ') }}</p>
+    </div>
+    {% include '/dashboard/vaccine_manager/log_history/vaccine_log_table_bar.html' %}
+    <div id="vaccine_log_table" class="flex flex-col"></div>
+     {% include '/dashboard/vaccine_manager/log_history/create_log_modal.html' %}
 </div>

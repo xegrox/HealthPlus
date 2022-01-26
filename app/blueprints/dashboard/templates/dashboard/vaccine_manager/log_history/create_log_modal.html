@@ -1,0 +1,25 @@
+{% extends 'modal.html' %}
+{% set name = 'vaccine_create_log' %}
+{% from 'button.html' import button, focus_button %}
+{% from 'input.html' import input %}
+{% from 'number_input.html' import number_input %}
+{% from 'select_input.html' import select_input %}
+
+{% block content %}
+<form hx-post="/vaccine_logs" hx-swap="none">
+    <div class="space-y-6">
+        {{ select_input('Vaccine Name', options={
+            'Pfizer': 'Pfizer',
+            'Moderna': 'Moderna',
+            'Sinovac': 'Sinovac'
+        }, name='vaccine_type') }}
+        {{ input('Batch No', name='batch_no') }}
+        {{ number_input(name='quantity', min=10, max=100) }}
+        {{ input('Delivery Date', name='delivery_date') }}
+        {{ input('Expiry Date', name='expiry_date') }}
+    </div>
+    <div>
+        {{ focus_button('Create Log', submit=True) }}
+    </div>
+</form>
+{% endblock %}
