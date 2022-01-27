@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
-
-from app.database.exceptions import AccountAlreadyExistsError
+from app.database.exceptions import AccountAlreadyExistsError, AccountNotFoundError
 from app.rest import register_api
 from app.blueprints import register_blueprints
 from app.database.accounts import user_accounts, staff_accounts
@@ -27,7 +26,10 @@ except AccountAlreadyExistsError:
 
 @login_manager.user_loader
 def load_account(account_id):
-    if account_id[0] == 'U':
-        return user_accounts.read(account_id=account_id)
-    elif account_id[0] == 'S':
-        return staff_accounts.read(account_id=account_id)
+    try:
+        if account_id[0] == 'U':
+            return user_accounts.read(account_id=account_id)
+        elif account_id[0] == 'S':
+            return staff_accounts.read(account_id=account_id)
+    except AccountNotFoundError:
+        return None
