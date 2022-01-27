@@ -1,0 +1,35 @@
+{% from 'input.html' import input %}
+
+{% extends 'modal.html' %}
+{% set name = 'create_staff_account' %}
+
+{% block content %}
+<form class="w-96 flex flex-col space-y-10" hx-post="/staff_account" hx-swap="none" _="
+    on htmx:responseError(detail)
+        if detail.xhr.status is 409
+            set staff_id to first <input[name='staff_id']/> in me
+            send updateError(msg: 'Staff ID is already being used') to staff_id
+        end
+    on htmx:afterRequest(detail)
+        if detail.xhr.status == 200
+            trigger hideModal
+            trigger refresh
+        end
+    ">
+    <p class="font-bold text-2xl">Create account</p>
+    <div class="space-y-3">
+        {{ input('Staff', name='staff_id', required=True) }}
+        {{ select_input('Role', options={
+            'admin': 'Admin',
+            'doctor': 'Doctor',
+            'pharmacist': 'Pharmacist',
+            'vaccine_manager': 'Vaccine Manager'
+        }, name='role', defaultValue='doctor') }}
+        {{ input('First name', name='first_name', required=True) }}
+        {{ input('Last name', name='last_name', required=True) }}
+        {{ input('Password', type='password', name='password', required=True) }}
+    </div>
+    {{ focus_button('Create', submit=True) }}
+</form>
+</form>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% from 'input.html' import input %}
+
+{% extends 'modal.html' %}
+{% set name = 'create_user_account' %}
+
+{% block content %}
+<form class="w-96 flex flex-col space-y-10" hx-post="/user_account" hx-swap="none" _="
+    on htmx:responseError(detail)
+        if detail.xhr.status is 409
+            set nric to first <input[name='nric']/> in me
+            send updateError(msg: 'NRIC is already being used') to nric
+        end
+    on htmx:afterRequest(detail)
+        if detail.xhr.status == 200
+            trigger hideModal
+            trigger refresh
+        end
+    ">
+    <p class="font-bold text-2xl">Create account</p>
+    <div class="space-y-3">
+        {{ input('NRIC', name='nric') }}
+        {{ input('First name', name='first_name') }}
+        {{ input('Last name', name='last_name') }}
+        {{ input('Password', type='password', name='password') }}
+    </div>
+    {{ focus_button('Create', submit=True) }}
+</form>
+</form>
+{% endblock %}

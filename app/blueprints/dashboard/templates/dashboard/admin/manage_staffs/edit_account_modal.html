@@ -27,7 +27,7 @@ on fetch:afterResponse(detail)
       send updateError(msg: 'Staff ID is already being used') to <input[name='staff_id']/> in me
     end
     if detail.response.status is 200
-      send hideModal to #modal_edit_staff_account
+      trigger hideModal
       trigger refresh
     end
 end

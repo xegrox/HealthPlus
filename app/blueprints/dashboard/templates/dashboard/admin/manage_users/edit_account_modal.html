@@ -2,11 +2,11 @@
 {% from 'button.html' import focus_button %}
 
 {% extends 'modal.html' %}
-{% set name = 'edit_account' %}
+{% set name = 'edit_user_account' %}
 
 {% block content %}
 <form class="w-96 flex flex-col space-y-10" _="
-on showModal(account) from #modal_edit_account
+on showModal(account) from #modal_edit_user_account
     set $account_id to account['account_id']
     set placeholder of <input[name='nric']/> in me to account['nric']
     set placeholder of <input[name='first_name']/> in me to account['first_name']
@@ -25,7 +25,7 @@ on fetch:afterResponse(detail)
       send updateError(msg: 'NRIC is already being used') to <input[name='nric']/> in me
     end
     if detail.response.status is 200
-      send hideModal to #modal_edit_account
+      trigger hideModal
       trigger refresh
     end
 end
