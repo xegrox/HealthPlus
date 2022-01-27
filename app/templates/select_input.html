@@ -6,22 +6,24 @@
     <label class="flex flex-col">
         {{ label }}
         <div class="select relative" _="
-        set :selectedValue to '{{ defaultValue }}'
-        set :selectedElem to null
+        set :input to <input/> in me
+        set :dropdownMenu to .select_dropdown in me
+        set :prevElem to null
         install DropdownBehaviour(button: .select_button, content: .select_dropdown)
+        init trigger selectItem(value: '{{defaultValue}}') end
         on showContent
-            send showElem to .select_dropdown in me
+            send showElem to :dropdownMenu
             remove .rounded-b-lg from .select_button in me
         on hideContent
-            send hideElem to .select_dropdown in me
+            send hideElem to :dropdownMenu
             add .rounded-b-lg to .select_button in me
-        on selectItem(name, value, elem)
-            put name into innerHTML of .select_name in me
-            set input to <input/> in me
-            set the input's @value to the value then trigger change
-            if :selectedElem show :selectedElem end
-            set :selectedElem to elem
-            hide :selectedElem
+        on selectItem(value)
+            set elem to <p[value=`$value`]/> in :dropdownMenu
+            put @name of elem into innerHTML of .select_name in me
+            set the :input's @value to the @value of elem then trigger change
+            if :prevElem show :prevElem end
+            hide elem
+            set :prevElem to elem
             trigger hideContent
         end
         ">
@@ -46,11 +48,10 @@
             </div>
             <div class="select_dropdown bg-gray-100 top-full w-full absolute rounded-b-lg overflow-hidden transition-height z-10" _="install TransitionAutoHeightBehaviour">
                 {% for value, name in options.items() %}
-                    <p class="p-2 hover:bg-black/5 transition-colors truncate" _="
-                        {% if not placeholder %}
-                            init if '{{ value }}' is '{{ defaultValue }}' then trigger click end end
-                        {% endif %}
-                        on click trigger selectItem(name: '{{ name }}', value: '{{ value }}', elem: me)
+                    <p name="{{ name }}" value="{{ value }}" class="p-2 hover:bg-black/5 transition-colors truncate" _="
+                        on click
+                            set value to my @value
+                            trigger selectItem(value: value)
                     ">{{ name }}</p>
                 {% endfor %}
             </div>

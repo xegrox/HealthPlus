@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from app.models.account import User, Staff
 from app.models.account.staff import StaffRole
+from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.user.available_medicine import UserAvailableMedicine
 from app.rest.user.medicine_order_list import UserMedicineOrderList
@@ -71,6 +72,7 @@ def dashboard():
     elif isinstance(current_user, Staff):
         if current_user.role == StaffRole.ADMIN:
             return render_template('dashboard/index.html', pages=[
+                _Page('Manage staff', 'friends', 'manage_staffs', 'dashboard/admin/manage_staffs/index.html'),
                 _Page('Manage users', 'users', 'manage_users', 'dashboard/admin/manage_users/index.html'),
                 _Page('Settings', 'settings', 'settings', 'dashboard/admin/settings/index.html')
             ])

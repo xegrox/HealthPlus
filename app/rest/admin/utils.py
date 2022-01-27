@@ -17,3 +17,13 @@ def serialize_user(user):
         'first_name': user.first_name,
         'last_name': user.last_name
     }
+
+
+def serialize_staff(staff):
+    return {
+        'account_id': staff.get_id(),
+        'staff_id': staff.staff_id,
+        'role': staff.role.value,
+        'first_name': staff.first_name,
+        'last_name': staff.last_name
+    }

@@ -1,5 +1,7 @@
 from flask_restful import Api
 
+from .admin.staff_account import AdminStaffAccount
+from .admin.staff_account_list import AdminStaffAccountList
 from .admin.user_account import AdminUserAccount
 from .admin.user_account_list import AdminUserAccountList
 from .session import SessionManagement
@@ -18,6 +20,8 @@ def register_api(app):
     api.add_resource(SessionManagement, '/session')
     api.add_resource(AdminUserAccountList, '/user_account')
     api.add_resource(AdminUserAccount, '/user_account/<account_id>')
+    api.add_resource(AdminStaffAccountList, '/staff_account')
+    api.add_resource(AdminStaffAccount, '/staff_account/<account_id>')
     api.add_resource(PharmacistMedicineList, '/medicine')
     api.add_resource(PharmacistMedicine, '/medicine/<medicine_id>')
     api.add_resource(UserMedicineOrderList, '/medicine_order')

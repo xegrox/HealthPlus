@@ -1,0 +1,50 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import focus_button %}
+{% from 'select_input.html' import select_input %}
+
+{% extends 'modal.html' %}
+{% set name = 'edit_staff_account' %}
+
+{% block content %}
+<form class="w-96 flex flex-col space-y-10" _="
+on showModal(account) from #modal_edit_staff_account
+    set $account_id to account['account_id']
+    set placeholder of <input[name='staff_id']/> in me to account['staff_id']
+    set placeholder of <input[name='first_name']/> in me to account['first_name']
+    set placeholder of <input[name='last_name']/> in me to account['last_name']
+    send selectItem(value: account['role']) to <input[name='role']/> in me
+end
+on submit
+    halt the event's default
+    make a FormData from me called formData
+    set data to Object.fromEntries(formData)
+    fetch `/staff_account/${$account_id}` with method:'PUT',
+      body:JSON.stringify(data),
+      headers:{'Content-Type': 'application/json'}
+end
+on fetch:afterResponse(detail)
+    if detail.response.status is 409
+      send updateError(msg: 'Staff ID is already being used') to <input[name='staff_id']/> in me
+    end
+    if detail.response.status is 200
+      send hideModal to #modal_edit_staff_account
+      trigger refresh
+    end
+end
+">
+    <p class="font-bold text-2xl">Edit account</p>
+    <div class="space-y-3">
+        {{ input('Staff ID', name='staff_id') }}
+        {{ select_input('Role', options={
+            'admin': 'Admin',
+            'doctor': 'Doctor',
+            'pharmacist': 'Pharmacist',
+            'vaccine_manager': 'Vaccine Manager'
+        }, name='role') }}
+        {{ input('First name', name='first_name') }}
+        {{ input('Last name', name='last_name') }}
+        {{ input('Password', type='password', name='password') }}
+    </div>
+    {{ focus_button('Apply', submit=True) }}
+</form>
+{% endblock %}
