@@ -13,7 +13,7 @@
     <tbody>
         {% for account in accounts %}
         <tr>
-            <td><input class="check_row" type="checkbox" name="{{ account['account_id'] }}" value="{{ account['account_id'] }}"></td>
+            <td><input class="check_row" type="checkbox" name="{{ account['account_id'] }}" value='{{ account|tojson }}'></td>
             <td>{{ account['account_id'] }}</td>
             <td>{{ account['staff_id'] }}</td>
             <td>{{ account['role'] }}</td>

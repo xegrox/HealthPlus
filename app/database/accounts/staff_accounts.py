@@ -45,7 +45,7 @@ def __update(account_id, data):
         return staff
 
 
-def __delete(account_id):
+def  __delete(account_id):
     with staff_accounts_db.open() as accounts:
         with staff_id_map_db.open() as sid_map:
             staff = accounts[account_id]

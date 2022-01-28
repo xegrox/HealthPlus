@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse, abort
 
 from app.database.accounts import staff_accounts
-from app.database.exceptions import AccountAlreadyExistsError
+from app.database.exceptions import AccountAlreadyExistsError, AccountNotFoundError
 from .utils import check_is_admin, serialize_staff
 from app.models.account.staff import StaffRole
 
@@ -26,3 +26,14 @@ class AdminStaffAccountList(Resource):
             return serialize_staff(user), 200
         except AccountAlreadyExistsError:
             abort(409)
+
+    def delete(self):
+        check_is_admin()
+        parser = reqparse.RequestParser(trim=True).add_argument('account_id', action='append', required=True)
+        args = parser.parse_args()
+        try:
+            for account_id in args['account_id']:
+                staff_accounts.delete(account_id=account_id)
+            return '', 200
+        except AccountNotFoundError:
+            abort(404)

@@ -2,10 +2,8 @@
 {% from 'button.html' import text_button %}
 
 <div class="flex bg-white rounded-lg p-5 items-center space-x-5" _="
-    init
-        make Map then set :values to it
-        set :table_actions to first .table_actions in me
-    end
+    set :table_actions to first .table_actions in me
+    init make Map then set :values to it end
     on toggleRow(name, value, checked) from {{ '#' + table_id }}
         if checked
             call :values.set(name, value)
@@ -13,6 +11,9 @@
             call :values.delete(name)
         end
         send selectChange(values: :values) to :table_actions
+
+    on click(target) from <button/> in :table_actions
+        send action(values: :values) to it
 
     init
         set :category_input to first <input/> in .search_category in me
@@ -28,7 +29,7 @@
     on htmx:afterSettle from {{ '#' + table_id }}
         trigger updateSearch
         set table to it
-        for name in :values.values()
+        for name in :values.keys()
             set cb to first <input.check_row[name=`$name`]/> in <tbody/> in table
             if cb != undefined
                 set cb.checked to true
@@ -56,8 +57,6 @@
                 add .opacity-0
                 trigger hideElem
             end
-        on click(target) from <button/> in me
-            send action(values: :values) to it
         ">
             <div class="pl-4 inline-flex space-x-4 h-full">
                 <hr class="h-full w-px bg-gray-200"/>
