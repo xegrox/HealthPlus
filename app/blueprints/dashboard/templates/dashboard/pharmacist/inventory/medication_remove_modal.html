@@ -1,0 +1,38 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import focus_button %}
+
+{% extends 'modal.html' %}
+{% set name = 'remove_med' %}
+    {% block content %}
+    <form hx-post='/medicine' hx-swap='none' _="
+    set :id_list to []
+    on showModal(values) from #modal_remove_med
+        for raw_med in values.values()
+            set medicine to JSON.parse(raw_med)
+            append medicine.medicine_id to :id_list
+        end
+        
+    on hideModal from #modal_remove_med
+        settle
+        set :id_list to []
+
+    on submit
+        halt the event's default
+        fetch `/medicine` with method:'DELETE',
+          body:JSON.stringify({
+            medicine_id: :id_list
+          }),
+          headers:{'Content-Type': 'application/json'}
+
+    on fetch:afterResponse(detail)
+        if detail.response.status is 200
+          trigger hideModal
+          trigger refresh
+        end
+    end">
+        <p class="text-3xl font-bold underline decoration-primary">Confirm Delete</p>
+        <p>Are you sure you want to delete the selected items?</p>
+        {{ focus_button('Delete', submit=True) }}
+        
+    </form>
+    {% endblock %}

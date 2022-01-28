@@ -31,6 +31,9 @@ class Medicine(DatabaseObject):
     def update_quantity(self, quantity): self._quantity = quantity
 
     @property
+    def quantity(self): return self._quantity
+
+    @property
     def serializable(self):
         return {
             'medicine_id': self._medicine_id,

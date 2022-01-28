@@ -4,6 +4,7 @@ from app.models.account import User, Staff
 from app.models.account.staff import StaffRole
 from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
+from app.rest.pharmacist.medicine_list import PharmacistMedicineList
 from app.rest.user.available_medicine import UserAvailableMedicine
 from app.rest.user.medicine_order_list import UserMedicineOrderList
 from app.rest.vaccine_manager.vaccine_order_logs import VaccineOrderLogs
@@ -28,6 +29,12 @@ class _Page:
 def log_info():
     logs = VaccineOrderLogs().get()[0]
     return render_template('/dashboard/vaccine_manager/log_history/vaccine_log_table.html', logs=logs)
+
+
+@blueprint.route('/ajax/pharmacist/inventory/inventory_base', methods=['POST'])
+def medicine_management():
+    medicines = PharmacistMedicineList().get()[0]
+    return render_template('/dashboard/pharmacist/inventory/inventory_base.html', medicines=medicines)
 
 
 @blueprint.route('/ajax/user/order_medicine/med_available', methods=['POST'])
@@ -83,7 +90,8 @@ def dashboard():
         elif current_user.role == StaffRole.PHARMACIST:
             return render_template('dashboard/index.html', pages=[
                 _Page('Collection Status', 'settings', 'collection_status', 'dashboard/pharmacist/collection_status/update_status.html'),
-                _Page('Settings', 'settings', 'settings', 'dashboard/pharmacist/settings/index.html')
+                _Page('Settings', 'settings', 'settings', 'dashboard/pharmacist/settings/index.html'),
+                _Page('Inventory', 'pencil', 'inventory_management', 'dashboard/pharmacist/inventory/index.html')
             ])
         elif current_user.role == StaffRole.VACCINE_MANAGER:
             return render_template('dashboard/index.html', pages=[

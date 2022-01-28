@@ -1,0 +1,26 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import focus_button %}
+{% from 'number_input.html' import number_input %}
+
+
+{% extends 'modal.html' %}
+{% set name = 'add_med' %}
+    {% block content %}
+    <form hx-post='/medicine' hx-swap='none' _="
+    on htmx:afterRequest(detail)
+        if detail.xhr.status == 200
+            trigger hideModal
+            trigger refresh
+        end">
+        <p class="text-3xl font-bold underline decoration-primary">Add Medication</p>
+        <div class="flex flex-col space-y-5">
+            {{ input('ATC Code', name='atc_code') }}
+            {{ input('Medicine Name', type='text', name='name', required=True) }}
+            {{ input('Medicine Desc.', type='text', name='description', required=True) }}
+            {{ input('Supplier', type='text', name='license_holder', required=True) }}
+            {{ number_input('Quantity', name='quantity', max=9999999) }}
+        </div>
+        {{ focus_button('Add', submit=True) }}
+    
+    </form>
+    {% endblock %}

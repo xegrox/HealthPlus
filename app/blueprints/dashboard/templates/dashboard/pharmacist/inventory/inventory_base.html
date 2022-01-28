@@ -1,0 +1,24 @@
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+    <thead>
+        <tr>
+            <th><input class="check_all" type="checkbox" name="check_all"></th>
+            <th>Medicine Name</th>
+            <th>Supplier</th>
+            <th>Quantity</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in medicines %}
+        <tr>
+            <td><input class="check_row" type="checkbox" name="{{ x['medicine_id'] }}" value='{{ x|tojson }}'></td>
+            <td>{{ x['name'] }}</td>
+            <td>{{ x['license_holder'] }}</td>
+            <td>{{ x['quantity'] }}</td>
+            <td class="p-0 px-3"><i class="ti ti-pencil text-xl text-secondary rounded-full hover:bg-secondary/10 p-2 transition-colors" _="
+            on click send showModal(medicine_id: '{{ x['medicine_id']}}' ) to #modal_edit_med
+            "></i></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

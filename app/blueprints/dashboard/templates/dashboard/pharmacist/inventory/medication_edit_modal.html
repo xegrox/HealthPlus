@@ -1,0 +1,36 @@
+{% from 'input.html' import input %}
+{% from 'button.html' import focus_button %}
+{% from 'number_input.html' import number_input %}
+
+
+{% extends 'modal.html' %}
+{% set name = 'edit_med' %}
+    {% block content %}
+    <form hx-post='/medicine' hx-swap='none' _="
+    on showModal(medicine_id) from #modal_edit_med
+        set :medicine_id to medicine_id
+    on submit
+        halt the event's default
+        make a FormData from me called formData
+        set data to Object.fromEntries(formData)
+        fetch `/medicine/${:medicine_id}` with method:'PUT',
+        body:JSON.stringify(data),
+        headers:{'Content-Type': 'application/json'}
+        
+    on fetch:afterResponse(detail)
+        if detail.response.status is 200
+            trigger hideModal
+            trigger refresh
+        end">
+        <p class="text-3xl font-bold underline decoration-primary">Manage Medication</p>
+        <div class="flex flex-col space-y-5">
+            <!-- {{ input('ATC Code', name='atc_code') }}
+            {{ input('Medicine Name', type='text', name='name', required=True) }}
+            {{ input('Medicine Desc.', type='text', name='description', required=True) }}
+            {{ input('Supplier', type='text', name='license_holder', required=True) }} -->
+            {{ number_input('Quantity', name='quantity', max=9999999) }}
+        </div>
+        {{ focus_button('OK', submit=True) }}
+    
+    </form>
+    {% endblock %}

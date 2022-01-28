@@ -1,0 +1,17 @@
+{% from 'button.html' import warn_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'user_accounts_table' %}
+{% set table_template_url = '/dashboard/ajax/pharmacist/inventory/inventory_base' %}
+{% set search_categories = {
+    '1': 'Medicine Name',
+    '2': 'Supplier',
+    '3': 'Quantity'
+} %}
+
+{% block select_options %}
+{{ warn_button('Delete', icon='trash', _='
+on action(values)
+    send showModal(values: values) to #modal_remove_med
+') }}
+{% endblock %}
