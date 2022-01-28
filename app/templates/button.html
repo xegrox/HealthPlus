@@ -1,5 +1,5 @@
 {% macro button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 outline outline-2 outline-secondary rounded hover:bg-secondary/20 transition-colors text-secondary truncate {{class}}"
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 ring-inset ring-2 ring-secondary rounded-lg hover:bg-secondary/20 transition-colors text-secondary truncate {{class}}"
        onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
          hx-{{name}}="{{val}}"
@@ -10,7 +10,7 @@
 {% endmacro %}
 
 {% macro focus_button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 outline outline-2 outline-secondary bg-secondary rounded hover:bg-secondary/80 hover:outline-secondary/80 transition-colors text-white text-center truncate {{class}}"
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors text-white text-center truncate {{class}}"
        onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
        hx-{{name}}="{{val}}"
@@ -21,7 +21,7 @@
 {% endmacro %}
 
 {% macro warn_button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 outline outline-2 outline-red-500 bg-red-500 rounded hover:bg-red-500/80 hover:outline-red-500/80 transition-colors text-white text-center truncate {{class}}"
+<button type="{{'submit' if submit else 'button'}}" class="box-border flex items-center py-2.5 bg-red-500 rounded-lg hover:bg-red-500/80 transition-colors text-white text-center truncate {{class}}"
        onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
        hx-{{name}}="{{val}}"
@@ -32,7 +32,7 @@
 {% endmacro %}
 
 {% macro text_button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2 rounded hover:bg-secondary/10 transition-colors text-secondary truncate {{class}}"
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 rounded-lg hover:bg-secondary/10 transition-colors text-secondary truncate {{class}}"
         onclick="{{ onclick }}" _="{{ _ }}"
         {% for name, val in hx.items() %}
         hx-{{name}}="{{val}}"
