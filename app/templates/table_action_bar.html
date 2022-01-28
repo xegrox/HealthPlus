@@ -12,8 +12,10 @@
         end
         send selectChange(values: :values) to :table_actions
 
+    {% if select_options %}
     on click(target) from <button/> in :table_actions
         send action(values: :values) to it
+    {% endif %}
 
     init
         set :category_input to first <input/> in .search_category in me

@@ -1,0 +1,44 @@
+{% from 'number_input.html' import number_input %}
+{% from 'button.html' import focus_button %}
+
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour
+    init make Map then set :selected_med to it end
+    on quantityChange(medicine_id, name, quantity)
+        if quantity > 0
+            call :selected_med.set(medicine_id, {name: name, quantity: quantity})
+        else
+            call :selected_med.delete(medicine_id)
+        end
+        send updateMedSelect(selected: :selected_med) to #user_med_checkout_form
+    end
+        ">
+    <colgroup>
+        <col>
+        <col>
+        <col>
+        <col class="w-44">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Medicine Name</th>
+            <th>Description</th>
+            <th>ATC Code</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for medicine in medicines %}
+        <tr>
+            <td>{{ medicine.name }}</td>
+            <td>{{ medicine.description }}</td>
+            <td>{{ medicine.atc_code }}</td>
+            <td>
+            {{ number_input(name=medicine.medicine_id, min=0, class="w-44", _="
+                on input(target)
+                    trigger quantityChange(medicine_id: '{0}', name: '{1}', quantity: target's value)
+                ".format(medicine.medicine_id, medicine.name)) }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,10 @@
+{% from 'button.html' import warn_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'user_avail_med_table' %}
+{% set table_template_url = '/dashboard/ajax/user/order_medicine/medicine_table' %}
+{% set search_categories = {
+    '1': 'Account ID',
+    '2': 'Staff ID',
+    'c45': 'Name'
+} %}

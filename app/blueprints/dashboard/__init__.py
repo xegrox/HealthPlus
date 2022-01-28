@@ -37,10 +37,10 @@ def medicine_management():
     return render_template('/dashboard/pharmacist/inventory/inventory_base.html', medicines=medicines)
 
 
-@blueprint.route('/ajax/user/order_medicine/med_available', methods=['POST'])
+@blueprint.route('/ajax/user/order_medicine/medicine_table', methods=['POST'])
 def medicine_list():
     medicines = UserAvailableMedicine().get()[0]
-    return render_template('/dashboard/user/order_medicine/med_available.html', medicines=medicines)
+    return render_template('/dashboard/user/order_medicine/medicine_table.html', medicines=medicines)
 
 
 @blueprint.route('/ajax/user/order_history/orders_table', methods=['POST'])
@@ -72,7 +72,7 @@ def dashboard():
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/user/appointments/index.html'),
             _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/user/prescriptions/index.html'),
-            _Page('Order Medicine', 'medicine-syrup', 'order_medicine', 'dashboard/user/order_medicine/index.html', 'dashboard/user/order_medicine/order_receipt.html'),
+            _Page('Order Medicine', 'medicine-syrup', 'order_medicine', 'dashboard/user/order_medicine/index.html', 'dashboard/user/order_medicine/right_panel.html'),
             _Page('Order History', 'history', 'order_history', 'dashboard/user/order_history/index.html'),
             _Page('Settings', 'settings', 'settings', 'dashboard/user/settings/index.html')
         ])

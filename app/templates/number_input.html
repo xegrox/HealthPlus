@@ -7,7 +7,7 @@
                  _="on click send decrement to <input/> in my parentElement">
                 <i class="ti ti-minus font-bold"></i>
             </div>
-            <input class="flex-1 bg-gray-100 transition-colors p-2 outline-none text-center" name="{{ name }}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" autocomplete="off" value="{{ min }}" _="
+            <input class="flex-1 bg-gray-100 transition-colors p-2 outline-none text-center min-w-0" name="{{ name }}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" autocomplete="off" value="{{ min }}" _="
             set :oldValue to ''
             on input
                 if my value as Int < {{ min }}
