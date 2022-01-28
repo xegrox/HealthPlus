@@ -12,6 +12,6 @@
 {% block select_options %}
 {{ warn_button('Delete', icon='trash', _='
 on action(values)
-    log values
+    send showModal(values: values) to #modal_delete_user_account
 ') }}
 {% endblock %}

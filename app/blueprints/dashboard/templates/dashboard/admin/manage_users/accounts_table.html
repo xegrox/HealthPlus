@@ -1,7 +1,7 @@
 <table _="install TableSearchBehaviour install TableCheckboxBehaviour">
     <thead>
         <tr>
-            <th><input type="checkbox" name="check_all"></th>
+            <th><input type="checkbox" class="check_all"></th>
             <th>Account ID</th>
             <th>NRIC</th>
             <th>First Name</th>
@@ -12,7 +12,7 @@
     <tbody>
         {% for account in accounts %}
         <tr>
-            <td><input type="checkbox" value="{{ account['account_id'] }}"></td>
+            <td><input type="checkbox" class="check_row" name="{{ account['account_id'] }}" value='{{ account|tojson }}'></td>
             <td>{{ account['account_id'] }}</td>
             <td>{{ account['nric'] }}</td>
             <td>{{ account['first_name'] }}</td>

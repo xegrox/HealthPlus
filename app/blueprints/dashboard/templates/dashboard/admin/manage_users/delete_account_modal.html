@@ -1,33 +1,32 @@
 {% from 'button.html' import warn_button %}
 {% extends 'modal.html' %}
-{% set name = 'delete_staff_account' %}
+{% set name = 'delete_user_account' %}
 
 {% block content %}
 <form class="flex flex-col space-y-10" _="
     set :summary_body to first <tbody/> in .summary_table in me
     set :id_list to []
-    on showModal(values) from #modal_delete_staff_account
+    on showModal(values) from #modal_delete_user_account
         for raw_acc in values.values()
             set account to JSON.parse(raw_acc)
             append account.account_id to :id_list
             set row to '<tr>'
             append `<td>${account.account_id}</td>` to row
-            append `<td>${account.staff_id}</td>` to row
-            append `<td>${account.role}</td>` to row
+            append `<td>${account.nric}</td>` to row
             append `<td>${account.first_name}</td>` to row
             append `<td>${account.last_name}</td>` to row
             append '</tr>' to row
             append row to :summary_body
         end
 
-    on hideModal from #modal_delete_staff_account
+    on hideModal from #modal_delete_user_account
         settle
         set :id_list to []
         set innerHTML of :summary_body to ''
 
     on submit
         halt the event's default
-        fetch `/staff_account` with method:'DELETE',
+        fetch `/user_account` with method:'DELETE',
           body:JSON.stringify({
             account_id: :id_list
           }),
@@ -46,8 +45,7 @@
         <thead>
             <tr>
                 <th>Account ID</th>
-                <th>Staff ID</th>
-                <th>Role</th>
+                <th>NRIC</th>
                 <th>First Name</th>
                 <th>Last Name</th>
             </tr>
