@@ -1,1 +1,16 @@
-index
+{% from 'button.html' import focus_button %}
+{% from 'select_input.html' import select_input %}
+
+<div class="flex flex-col max-w-5xl space-y-8" _="
+on refresh send click to .refresh_btn in me
+">
+    <div class="flex mx-2 my-8">
+        <p class="flex-1 text-3xl font-bold">Order History</p>
+        <p>{{ focus_button('Cancel Order', icon='plus', _='
+            on click send showModal to #modal_cancel_order
+            ') }}</p>
+    </div>
+    {% include '/dashboard/user/order_history/order_table_bar.html' %}
+    <div id="vaccine_log_table" class="flex flex-col"></div>
+     {% include '/dashboard/user/order_history/order_table.html' %}
+</div>

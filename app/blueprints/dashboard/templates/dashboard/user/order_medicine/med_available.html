@@ -2,7 +2,9 @@
 {% from 'button.html' import focus_button %}
 
 
-<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour
+    on change(target)
+        ">
     <thead>
         <tr>
             <th>Medicine Name</th>
@@ -18,11 +20,9 @@
             <td>{{ medicine.description }}</td>
             <td>{{ medicine.atc_code }}</td>
             <td class="px-6 py-4 text-sm text-gray-900 flex items-center">
-            {{ number_input(name='quantity', min=0, max=5) }}
+            {{ number_input(name=medicine.medicine_id, min=0, max=5) }}
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<br>
-{{ focus_button('Check Out', submit=True) }}

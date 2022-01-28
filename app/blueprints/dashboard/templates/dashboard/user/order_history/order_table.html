@@ -1,0 +1,26 @@
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+    <thead>
+        <tr>
+            <th><input class="check_all" type="checkbox"></th>
+            <th>Medicine Name</th>
+            <th>Quantity</th>
+            <th>Order Date</th>
+            <th>Collection Method</th>
+            <th>Status</th>
+            <th>Collection Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_item in orders %}
+        <tr>
+            <td><input class="check_row" type="checkbox" name="{{ order_item['order_id'] }}" value="{{ order_item['order_id'] }}"></td>
+            <td>{{ order_item['medicine_name'] }}</td>
+            <td>{{ order_item['quantities'] }}</td>
+            <td>{{ order_item['order_date'] }}</td>
+            <td>{{ order_item['method'] }}</td>
+            <td>{{ order_item['status'] }}</td>
+            <td>{{ order_item['collection_date'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

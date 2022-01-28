@@ -20,10 +20,10 @@ def __get_user_order(user_orders, order_id) -> UserMedicineOrder:
         raise OrderNotFoundError()
 
 
-def create(user_account_id, quantities):
+def create(user_account_id, medicine_name, quantities, method, collection_date):
     # TODO: check user exists
     # TODO: check medicine id exists
-    order = UserMedicineOrder(uuid4().hex, user_account_id, quantities)
+    order = UserMedicineOrder(uuid4().hex, user_account_id, medicine_name, quantities, method, collection_date)
     with user_medicine_orders_db.open() as orders:
         user_orders = orders.get(user_account_id, {})
         user_orders[order.order_id] = order

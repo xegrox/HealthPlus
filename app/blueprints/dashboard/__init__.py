@@ -37,9 +37,9 @@ def medicine_list():
 
 
 @blueprint.route('/ajax/user/order_history/orders_table', methods=['POST'])
-def store_order():
+def display_order():
     orders = UserMedicineOrderList().get()[0]
-    return render_template('/dashboard/user/order_history/orders_table.html', orders=orders)
+    return render_template('/dashboard/user/order_history/order_table.html', orders=orders)
 
 
 @blueprint.route('/ajax/admin/manage_staffs/accounts_table', methods=['POST'])
@@ -65,8 +65,8 @@ def dashboard():
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/user/appointments/index.html'),
             _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/user/prescriptions/index.html'),
-            _Page('Order Medicine', 'medicine-syrup', 'order_medicine', 'dashboard/user/order_medicine/index.html'),
-            _Page('Order History', 'history', 'order_history', 'dashboard/user/order_history/orders_table.html'),
+            _Page('Order Medicine', 'medicine-syrup', 'order_medicine', 'dashboard/user/order_medicine/index.html', 'dashboard/user/order_medicine/order_receipt.html'),
+            _Page('Order History', 'history', 'order_history', 'dashboard/user/order_history/index.html'),
             _Page('Settings', 'settings', 'settings', 'dashboard/user/settings/index.html')
         ])
     elif isinstance(current_user, Staff):

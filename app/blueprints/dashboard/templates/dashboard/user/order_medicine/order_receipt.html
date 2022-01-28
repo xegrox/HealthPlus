@@ -1,27 +1,31 @@
 {% from 'button.html' import focus_button %}
 
-<div class="w-full p-2">
-    <div class="flex flex-wrap m-auto">
-        <div class='flex flex-col w-80 side_bar'>
-            <div class="side_bar_item">
-                <p class="font-extrabold text-xl">Medicine 1</p>
+<form hx-post="/user_medicine_orders" hx-swap="none">
+    <div class="w-full p-2">
+        <div class="flex flex-wrap m-auto">
+            <div class='flex flex-col w-80 pl-3'>
+                <p class="font-extrabold text-xl pt-3">Medicine 1</p>
                 <div class="justify-center w-60 border-t border-gray-500"></div>
                 <br>
-                <p class="text-sm flex">Name</p>
-                <p class="font-medium text-xl">Amlodipine</p>
+                <div>
+                    <p class="text-sm flex">Name</p>
+                    <p class="font-medium text-xl">Amlodipine</p>
+                    <p class="font-medium text-xl">B03AC09</p>
+                </div>
+                <br>
+                <div>
+                    <p class="text-sm flex">Quantity</p>
+                    <p class="font-medium text-xl">3</p>
+                </div>
+                <br>
+                <div class="justify-center w-60 border-t border-gray-500"></div>
+                <br><br>
+                <div class="flex items-center">
+                    <p>{{ focus_button('Check Out', _='
+                        on click send showModal to #modal_delivery
+                        ') }}</p>
+                </div>
             </div>
-            <div class="side_bar_item">
-                <p class="font-medium text-xl">B03AC09</p>
-            </div>
-            <br>
-            <div class="side_bar_item">
-                <p class="text-sm flex">Quantity</p>
-                <p class="font-medium text-xl">3</p>
-            </div>
-            <br>
-            <div class="justify-center w-60 border-t border-gray-500"></div>
-            <br><br>
-            <a href="#medicine_orders">{{ focus_button('Order') }}</a>
         </div>
     </div>
-</div>
+</form>

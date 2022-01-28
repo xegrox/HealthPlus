@@ -1,0 +1,17 @@
+{% from 'button.html' import warn_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'order_table' %}
+{% set table_template_url = '/dashboard/ajax/user/order_history/order_table' %}
+{% set search_categories = {
+    '1': 'Medicine Name',
+    '2': 'Order Date',
+    'c34': 'Status'
+} %}
+
+{% block select_options %}
+{{ warn_button('Delete', icon='trash', _='
+on action(values)
+    log values
+') }}
+{% endblock %}
