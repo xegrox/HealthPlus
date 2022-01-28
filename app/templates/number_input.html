@@ -27,7 +27,11 @@
             on increment
                 set value to my value as Int
                 if not value set value to {{ min }} end
-                if my value as Int < {{ max }} increment value end
+                {% if max != None%}
+                    if value < {{ max }} increment value end
+                {% else %}
+                    increment value
+                {% endif %}
                 set my value to value as String
                 trigger input
             end"/>
