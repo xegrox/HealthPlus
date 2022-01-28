@@ -34,6 +34,13 @@ behavior TransitionAutoHeightBehaviour
     on hideElem
         set my style's height to 0px
 
+behavior TransitionAutoWidthBehaviour
+    on showElem
+        measure my scrollWidth
+        set my style's width to `${scrollWidth}px`
+    on hideElem
+        set my style's width to 0px
+
 behavior TableSearchBehaviour
     set :tbody to <tbody/> in me
     set :rows to <tr/> in :tbody
@@ -64,27 +71,24 @@ behavior TableSearchBehaviour
     end
 
 behavior TableCheckboxBehaviour
-    set :check_all to first <input[name='check_all']/> in <thead/> in me
-    set :check_body to <input[type='checkbox']/> in <tbody/> in me
-    init
-        make Map then set :values to it
-    end
+    set :check_all to first .check_all in <thead/> in me
+    set :check_rows to .check_row in <tbody/> in me
     on change(target) queue all
         if target is :check_all
-            repeat for el in :check_body
-                set el.checked to target.checked
-                make Event from 'change', {'bubbles': true} called event
-                call el.dispatchEvent(event)
+            repeat for cb in :check_rows
+                set cb.checked to target.checked
+                send change to cb
             end
         else
-            if target.checked
-                call :values.set(target, target.value)
-            else
-                call :values.delete(target)
+            trigger toggleRow(name: target.name, value: target.value, checked: target.checked)
+            set is_all_checked to true
+            for cb in :check_rows
+                if not cb.checked
+                     set is_all_checked to false
+                     break
+                end
             end
-            set is_all_checked to (length of :check_body) is (size of :values)
             set checked of :check_all to is_all_checked
-            trigger selectValues(values: Array.from(:values.values()))
         end
 </script>
 

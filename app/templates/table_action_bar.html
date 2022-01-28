@@ -1,42 +1,69 @@
 {% from 'input.html' import input %}
 {% from 'button.html' import text_button %}
 
-<div class="flex bg-white rounded-lg p-5 items-center space-x-5">
+<div class="flex bg-white rounded-lg p-5 items-center space-x-5" _="
+    init
+        make Map then set :values to it
+        set :table_actions to first .table_actions in me
+    end
+    on toggleRow(name, value, checked) from {{ '#' + table_id }}
+        if checked
+            call :values.set(name, value)
+        else
+            call :values.delete(name)
+        end
+        send selectChange(values: :values) to :table_actions
+
+    init
+        set :category_input to first <input/> in .search_category in me
+        set :search_input to first <input/> in .search in me
+    end
+    on updateSearch debounced at 500ms
+        set column to :category_input.value
+        set raw_matches to :search_input.value
+        make a RegExp from '[ ,]+', 'g' called regex
+        set matches to raw_matches.trim().split(regex)
+        send search(matches: matches, column: column) to <table/> in {{ '#' + table_id }}
+
+    on htmx:afterSettle from {{ '#' + table_id }}
+        trigger updateSearch
+        set table to it
+        for name in :values.values()
+            set cb to first <input.check_row[name=`$name`]/> in <tbody/> in table
+            if cb != undefined
+                set cb.checked to true
+                send change to cb
+            else
+                call :values.delete(name)
+            end
+        end
+">
     <div class="flex flex-initial space-x-5 min-w-0">
-        {{ input(placeholder='Search', class='search min-w-0', _='
-        set :category_input to first <input/> in .category in my parentElement
-        on input trigger updateSearch end
-        on htmx:afterSettle from {0} trigger updateSearch end
-        on updateSearch debounced at 500ms
-            set column to :category_input.value
-            set raw_matches to value of first <input/> in me
-            make a RegExp from "[ ,]+", "g" called regex
-            set matches to raw_matches.trim().split(regex)
-            send search(matches: matches, column: column) to <table/> in {0}
-        '.format('#' + table_id)) }}
-        <div class="flex-initial w-40" _="on change send updateSearch to .search in my parentElement">
-            {{ select_input('', search_categories, icon='filter', class='category') }}
+        {{ input(placeholder='Search', class='search min-w-0', _='on input trigger updateSearch') }}
+        <div class="flex-initial w-40" _="on change trigger updateSearch">
+            {{ select_input('', search_categories, icon='filter', class='search_category') }}
         </div>
     </div>
     <div class="flex-1 flex relative justify-end">
-        <div class="flex justify-end absolute right-0 w-full bg-white transition-opacity" _="
-        set :values to []
-        init hide me then hide me with opacity end
-        on selectValues(values) from {{ '#' + table_id }}
-            set :values to values
-            if values is not empty
-                show me then wait 0s then show me with opacity
-                add .pointer-events-none to .refresh_btn in my parentElement
+        {{ text_button('Refresh', icon='refresh', class='refresh_btn flex-none', hx={'post': table_template_url, 'target': '#' + table_id, 'swap': 'innerHTML', 'trigger': 'load, click'}) }}
+        <div class="table_actions transition-[width,opacity] w-0 overflow-hidden flex opacity-0" _="
+        install TransitionAutoWidthBehaviour
+        on selectChange(values)
+            if values.size > 0
+                remove .opacity-0
+                trigger showElem
             else
-                remove .pointer-events-none from .refresh_btn in my parentElement
-                hide me with opacity then settle then hide me
+                add .opacity-0
+                trigger hideElem
             end
         on click(target) from <button/> in me
             send action(values: :values) to it
         ">
-            {% block select_options %}
-            {% endblock %}
+            <div class="pl-4 inline-flex space-x-4 h-full">
+                <hr class="h-full w-px bg-gray-200"/>
+                {% block select_options %}
+                {% endblock %}
+            </div>
         </div>
-        {{ text_button('Refresh', icon='refresh', class='refresh_btn flex-none', hx={'post': table_template_url, 'target': '#' + table_id, 'swap': 'innerHTML', 'trigger': 'load, click'}) }}
     </div>
 </div>

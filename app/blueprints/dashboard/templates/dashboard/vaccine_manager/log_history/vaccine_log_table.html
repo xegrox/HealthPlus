@@ -1,7 +1,7 @@
 <table _="install TableSearchBehaviour install TableCheckboxBehaviour">
     <thead>
         <tr>
-            <th><input type="checkbox" name="check_all"></th>
+            <th><input class="check_all" type="checkbox"></th>
             <th>Vaccine Name</th>
             <th>Batch No</th>
             <th>Quantity</th>
@@ -12,7 +12,7 @@
     <tbody>
         {% for vaccine_log in logs %}
         <tr>
-            <td><input type="checkbox" value="{{ vaccine_log['batch_no'] }}"></td>
+            <td><input class="check_row" type="checkbox" name="{{ vaccine_log['batch_no'] }}" value="{{ vaccine_log['batch_no'] }}"></td>
             <td>{{ vaccine_log['vaccine_name'] }}</td>
             <td>{{ vaccine_log['batch_no'] }}</td>
             <td>{{ vaccine_log['quantity'] }}</td>
