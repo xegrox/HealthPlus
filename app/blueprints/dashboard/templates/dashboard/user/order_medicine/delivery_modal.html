@@ -7,12 +7,14 @@
 <form hx-post="/medicine_order" hx-swap="none">
     <p class="text-3xl font-bold underline decoration-primary">Obtain via: Delivery</p>
     <br>
-    <div class="flex flex-col space-y-5">
-        <div class="form-group row">
-            {{ input('Address', type='text', name='address', value='address', required=True) }}
-            {{ input('Postal Code', type='text', name='postal_code', value='postal_code' required=True) }}
+    <div class="form-group row">
+        <div class="flex flex-col space-y-5">
+            {{ input('Address', type='text', name='address', placeholder='address', required=True) }}
+            {{ input('Postal Code', type='text', name='postal_code', placeholder='postal_code', required=True) }}
+            {{ input('Collection Date', type='date', name='collection_date', required=True) }}
         </div>
-        <a href="#" class="underline text-blue-700" _="
+        <br>
+        <a href="#order_medicine" class="underline text-blue-700" _="
         on click
             trigger hideModal
             send showModal to #modal_self_collection
@@ -22,3 +24,4 @@
     {{ focus_button('Order', submit=True) }}
 </form>
 {% endblock %}
+{% include '/dashboard/user/order_medicine/self_collection_modal.html' %}
