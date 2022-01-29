@@ -3,7 +3,7 @@
 
 {% extends 'card.html' %}
 
-{% set outline='red-500' %}
+{% set class='outline-red-500 outline-2 outline' %}
 {% block content %}
 <form class="flex flex-col space-y-10" hx-delete="/account" hx-swap="none" _="
     on htmx:responseError(detail)
