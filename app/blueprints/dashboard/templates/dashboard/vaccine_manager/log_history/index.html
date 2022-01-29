@@ -5,7 +5,7 @@
 on refresh send click to .refresh_btn in me
 ">
     <div class="flex mx-2 my-8">
-        <p class="flex-1 text-3xl font-bold">User Accounts</p>
+        <p class="flex-1 text-3xl font-bold">Vaccine Log</p>
         <p>{{ focus_button('Create new', icon='plus', _='
             on click send showModal to #modal_vaccine_create_log
             ') }}</p>
@@ -13,4 +13,5 @@ on refresh send click to .refresh_btn in me
     {% include '/dashboard/vaccine_manager/log_history/vaccine_log_table_bar.html' %}
     <div id="vaccine_log_table" class="flex flex-col"></div>
      {% include '/dashboard/vaccine_manager/log_history/create_log_modal.html' %}
+     {% include '/dashboard/vaccine_manager/log_history/delete_log_modal.html' %}
 </div>

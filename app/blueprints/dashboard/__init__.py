@@ -71,6 +71,7 @@ def dashboard():
     if isinstance(current_user, User):
         return render_template('dashboard/index.html', pages=[
             _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/user/appointments/index.html'),
+            _Page('Covid Appointments', 'vaccine', 'covid_appointment', 'dashboard/user/covid_appointment/index.html'),
             _Page('Prescriptions', 'prescription', 'prescriptions', 'dashboard/user/prescriptions/index.html'),
             _Page('Order Medicine', 'medicine-syrup', 'order_medicine', 'dashboard/user/order_medicine/index.html', 'dashboard/user/order_medicine/right_panel.html'),
             _Page('Order History', 'history', 'order_history', 'dashboard/user/order_history/index.html'),
@@ -95,8 +96,7 @@ def dashboard():
             ])
         elif current_user.role == StaffRole.VACCINE_MANAGER:
             return render_template('dashboard/index.html', pages=[
-                _Page('Create_Log', 'settings', 'create_log', 'dashboard/vaccine_manager/create_log/index.html'),
-                _Page('Log_History', 'settings', 'log_history', 'dashboard/vaccine_manager/log_history/index.html'),
+                _Page('Vaccine Log', 'notebook', 'log_history', 'dashboard/vaccine_manager/log_history/index.html'),
                 _Page('Settings', 'settings', 'settings', 'dashboard/vaccine_manager/settings/index.html'),
 
             ])

@@ -1,0 +1,14 @@
+{% extends 'modal.html' %}
+{% set name='delete_log' %}
+{% from 'button.html' import button, warn_button %}
+
+{% block content%}
+<form>
+   <div class="p-6">
+    <h3 class="uppercase bold">Confirm Delete?</h3>
+   </div>
+    <div class="p-4 flex justify-center">
+        {{ warn_button('Delete', icon='trash', submit=True)}}
+    </div>
+</form>
+{% endblock %}
