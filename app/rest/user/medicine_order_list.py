@@ -1,8 +1,11 @@
-from flask import request
-from flask_login import login_required, current_user
-from flask_restful import Resource, abort
+import json
 
+from flask_login import login_required, current_user
+from flask_restful import Resource, abort, reqparse
+
+from app.database.exceptions import MedicineNotFoundError
 from app.database.user import medicine_orders
+from app.models.user_medicine_order import UserMedicineOrderMethod
 from app.rest.user.utils import check_is_user, serialize_medicine_order
 
 
@@ -18,9 +21,15 @@ class UserMedicineOrderList(Resource):
     @login_required
     def post(self):
         check_is_user()
+        parser = reqparse.RequestParser(trim=True) \
+            .add_argument('method', choices=(e.value for e in UserMedicineOrderMethod), required=True) \
+            .add_argument('quantities', required=True)
+        args = parser.parse_args()
         try:
-            parsed_order = {med_id: int(quantity) for med_id, quantity in request.form.items()}
-            order = medicine_orders.create(current_user.get_id(), parsed_order)
+            def quantity_to_int(x):
+                return {k: int(v) for k, v in x}
+            quantities = json.loads(args['quantities'], object_pairs_hook=quantity_to_int)
+            order = medicine_orders.create(current_user.get_id(), quantities, args['method'])
             return serialize_medicine_order(order), 200
-        except ValueError:
+        except (ValueError, MedicineNotFoundError):
             abort(400)

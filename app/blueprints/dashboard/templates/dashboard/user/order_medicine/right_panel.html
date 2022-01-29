@@ -1,25 +1,32 @@
 {% from 'button.html' import focus_button %}
 
 <div class="p-10 flex flex-col space-y-16 h-full items-stretch" id="user_med_checkout_form" _="
+    set :quantities to {}
     set :summary_content to first .summary_content in me
+    on click from .checkout_btn in me
+        send showModal(quantities: :quantities) to #modal_delivery
+    end
+
     on updateMedSelect(selected)
         set :summary_content's innerHTML to ''
+        set quantities to {}
         for entry in selected
             set med_id to entry[0]
             set med_info to entry[1]
+            set quantity to med_info.quantity
+            js(quantities, med_id, quantity)
+                quantities[med_id] = quantity
+            end
             append `
             <div class='flex px-3'>
-                <p class='flex-1'><span>${med_info.quantity}</span> x <span>${med_info.name}</span></p>
+                <p class='flex-1'><span>${quantity}</span> x <span>${med_info.name}</span></p>
                 <p>${'$20'}</p>
             </div>
             <hr/>
             ` to :summary_content
-            log :summary_content
-        end">
+        end
+        set :quantities to quantities">
     <p class="text-xl font-bold text-center">Checkout Summary</p>
     <div class="summary_content flex-1 font-medium space-y-5"></div>
-    {{ focus_button('Checkout', _='
-            on click send showModal to #modal_delivery
-            ') }}
-    {% include '/dashboard/user/order_medicine/delivery_modal.html' %}
+    {{ focus_button('Checkout', class='checkout_btn') }}
 </div>

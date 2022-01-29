@@ -1,7 +1,7 @@
 from uuid import uuid4
 from app.database import BasicDatabase
 from app.database.exceptions import UserNotFoundError, OrderNotFoundError
-from app.models.user_medicine_order import UserMedicineOrder
+from app.models.user_medicine_order import UserMedicineOrder, UserMedicineOrderMethod, UserMedicineOrderStatus
 
 user_medicine_orders_db = BasicDatabase('user_medicine_orders')
 
@@ -20,10 +20,10 @@ def __get_user_order(user_orders, order_id) -> UserMedicineOrder:
         raise OrderNotFoundError()
 
 
-def create(user_account_id, medicine_name, quantities, method, collection_date):
+def create(user_account_id, quantities, method):
     # TODO: check user exists
     # TODO: check medicine id exists
-    order = UserMedicineOrder(uuid4().hex, user_account_id, medicine_name, quantities, method, collection_date)
+    order = UserMedicineOrder(uuid4().hex, user_account_id, quantities, UserMedicineOrderMethod(method))
     with user_medicine_orders_db.open() as orders:
         user_orders = orders.get(user_account_id, {})
         user_orders[order.order_id] = order
@@ -44,7 +44,7 @@ def update(user_account_id, order_id, status):
     with user_medicine_orders_db.open() as orders:
         user_orders = __get_user_orders(orders, user_account_id)
         order = __get_user_order(user_orders, order_id)
-        order.update_status(status)
+        order.update_status(UserMedicineOrderStatus(status))
         orders[user_account_id] = user_orders
         return order
 

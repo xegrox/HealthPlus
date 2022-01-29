@@ -3,6 +3,7 @@ from flask_restful import abort
 
 from app.database.pharmacist import medicine_inventory
 from app.models.account import User
+from app.models.user_medicine_order import UserMedicineOrder
 
 
 def check_is_user():
@@ -19,7 +20,7 @@ def serialize_medicine(medicine):
     }
 
 
-def serialize_medicine_order(order):
+def serialize_medicine_order(order: UserMedicineOrder):
 
     def fill_medicine_info(medicine_id, quantity):
         medicine = medicine_inventory.read(medicine_id)
@@ -27,14 +28,15 @@ def serialize_medicine_order(order):
         quantity_filled['quantity'] = quantity
         return quantity_filled
 
-    medicines = [fill_medicine_info(k, v) for k, v in order.quantities.items()]
+    quantities = [fill_medicine_info(k, v) for k, v in order.quantities.items()]
     return {
+        'method': order.method.value,
         'order_id': order.order_id,
         'date': {
-            'day': order.date.day,
-            'month': order.date.month,
-            'year': order.date.year
+            'day': order.order_date.day,
+            'month': order.order_date.month,
+            'year': order.order_date.year
         },
-        'medicines': medicines,
-        'status': order.status
+        'quantities': quantities,
+        'status': order.status.value
     }
