@@ -4,13 +4,13 @@
 {% from 'button.html' import focus_button %}
 
 {% block content %}
-<form hx-post="/user_medicine_order" hx-swap="none">
+<form hx-post="/medicine_order" hx-swap="none">
     <p class="text-3xl font-bold underline decoration-primary">Delivery</p>
     <br>
     <div class="flex flex-col space-y-5">
         <div class="form-group row">
-            {{ input('Address', type='text', name='Address', required=True) }}
-            {{ input('Postal Code', type='text', name='Postal_Code', required=True) }}
+            {{ input('Address', type='text', name='address', value='address', required=True) }}
+            {{ input('Postal Code', type='text', name='postal_code', value='postal_code' required=True) }}
         </div>
         <a href="#" class="underline text-blue-700">Obtain via Self-collection? Click here</a>
     </div>

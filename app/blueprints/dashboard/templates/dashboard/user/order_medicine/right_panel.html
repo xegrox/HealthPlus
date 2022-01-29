@@ -18,5 +18,7 @@
         end">
     <p class="text-xl font-bold text-center">Checkout Summary</p>
     <div class="summary_content flex-1 font-medium space-y-5"></div>
-    {{ focus_button('Checkout') }}
+    {{ focus_button('Checkout', _='
+            on click send showModal to #modal_delivery
+            ') }}
 </div>
