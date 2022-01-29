@@ -1,9 +1,11 @@
+{% extends 'modal.html' %}
+{% set name = 'self_collection' %}
 {% from 'button.html' import focus_button %}
 
 {% block content %}
-<p class="text-3xl font-bold underline decoration-primary">Obtain via: Self-collection</p>
-<br>
-<form>
+<form hx-post="/medicine_order" hx-swap="none">
+    <p class="text-3xl font-bold underline decoration-primary">Obtain via: Self-collection</p>
+    <br>
     <div class="form-group row">
         <label class="col-sm-3 col-form-label">Collect From</label>
         <div class="py-4 text-sm text-gray-900">
@@ -14,7 +16,11 @@
                     <option>Clinic 1</option>
                     <option>Clinic 2</option>
                 </select>
-                <a href="#" class="underline text-blue-700">Obtain via Delivery? Click here</a>
+                <a href="#" class="underline text-blue-700" _="
+                on click
+                trigger hideModal
+                send showModal to #modal_delivery
+                ">Obtain via Delivery? Click here</a>
             </div>
         </div>
     </div>
