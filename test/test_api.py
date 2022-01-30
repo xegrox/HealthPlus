@@ -45,19 +45,22 @@ class TestUserAccount(unittest.TestCase):
         self.assertEqual(data['last_name'], self.user_data['last_name'])
 
     def test_04_update_info(self):
-        old_nric = self.user_data['nric']
-        self.user_data['nric'] = 'T0123456B'
         self.user_data['first_name'] = 'Tom'
         self.user_data['last_name'] = 'Lee'
-        self.user_data['password'] = 'secret2'
-        res = self.client.put('/account', data=self.user_data)
+        res = self.client.put('/account', data={
+            'nric': 'T0123456B',
+            'first_name': self.user_data['first_name'],
+            'last_name': self.user_data['last_name'],
+            'current_password': self.user_data['password'],
+            'new_password': 'secret2'
+        })
         self.assertEqual(200, res.status_code)
         data = json.loads(res.data)
         self.assertCountEqual(data.keys(), ['nric', 'first_name', 'last_name'])
-        self.assertEqual(data['nric'], old_nric)  # User cannot change nric
+        self.assertEqual(data['nric'], self.user_data['nric'])  # User cannot change nric
         self.assertEqual(data['first_name'], self.user_data['first_name'])
         self.assertEqual(data['last_name'], self.user_data['last_name'])
-        self.user_data['nric'] = old_nric
+        self.user_data['password'] = 'secret2'
 
     def test_05_logout(self):
         res = self.client.delete('session')
