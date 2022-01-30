@@ -44,14 +44,16 @@
     <div class="w-80">
         {% include 'dashboard/side_navbar.html' %}
     </div>
-    <div id="content" class="flex-1 relative bg-gray-200 overflow-auto">
+    <div id="content" class="flex-1 relative bg-gray-200 overflow-hidden">
         {% for page in pages %}
-            <div id="content-{{page.fragment}}" class="absolute bg-gray-200 min-h-full w-full invisible !duration-150 flex">
-                <div class="flex-1 px-20 py-16">{% include page.template %}</div>
+            <div id="content-{{page.fragment}}" class="absolute h-screen !duration-150 invisible w-full flex">
+                <div class="flex-1 bg-gray-200 min-h-full w-full overflow-auto">
+                    <div class="px-20 py-16">{% include page.template %}</div>
+                </div>
                 {% if page.right_panel_template %}
-                    <div class="flex-none w-1/4 bg-white">
-                        {% include page.right_panel_template %}
-                    </div>
+                <div class="flex-none w-1/4 bg-white">
+                    {% include page.right_panel_template %}
+                </div>
                 {% endif %}
             </div>
         {% endfor %}
