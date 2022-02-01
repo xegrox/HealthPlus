@@ -378,10 +378,13 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-htmx.org@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-1.6.1.tgz#6f0d59a93fa61cbaa15316c134a2f179045a5778"
-  integrity sha512-i+1k5ee2eFWaZbomjckyrDjUpa3FMDZWufatUSBmmsjXVksn89nsXvr1KLGIdAajiz+ZSL7TE4U/QaZVd2U2sA==
+"htmx.org@https://github.com/bigskysoftware/htmx#cd6d2b78e2deb19391ecedd38128aca7477ed8b9":
+  version "1.7.0"
+  resolved "https://github.com/bigskysoftware/htmx#cd6d2b78e2deb19391ecedd38128aca7477ed8b9"
+
+"htmx.org@https://github.com/bigskysoftware/htmx#dev":
+  version "1.7.0"
+  resolved "https://github.com/bigskysoftware/htmx#f524901d5ee3ea74a1b031f3d0b0fe16bb194ddc"
 
 hyperscript.org@^0.9.4:
   version "0.9.4"
