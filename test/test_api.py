@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 from app import app
@@ -252,8 +253,11 @@ class TestUserMedicineOrder(unittest.TestCase):
         cls.medicine_2 = medicine_2
 
         order_request_data = {
-            medicine_1.medicine_id: 5,
-            medicine_2.medicine_id: 10
+            'method': 'delivery',
+            'quantities': {
+                medicine_1.medicine_id: 5,
+                medicine_2.medicine_id: 10
+            }
         }
         cls.order_request_data = order_request_data
         cls.client = app.test_client()
@@ -272,22 +276,33 @@ class TestUserMedicineOrder(unittest.TestCase):
 
     def test_01_add_order(self):
         self.__login()
-        res = self.client.post('/medicine_order', data=self.order_request_data)
+        res = self.client.post('/medicine_order', data=json.dumps(self.order_request_data), content_type='application/json')
         self.assertEqual(res.status_code, 200)
         data = json.loads(res.data)
-        medicine_1_data = data['medicines'][0]
-        self.assertEqual(medicine_1_data['medicine_id'], self.medicine_1.medicine_id)
-        self.assertEqual(medicine_1_data['name'], self.medicine_1.name)
-        self.assertEqual(medicine_1_data['description'], self.medicine_1.description)
-        self.assertEqual(medicine_1_data['atc_code'], self.medicine_1.atc_code)
-        self.assertEqual(medicine_1_data['quantity'], self.order_request_data[self.medicine_1.medicine_id])
-
-        medicine_2_data = data['medicines'][1]
-        self.assertEqual(medicine_2_data['medicine_id'], self.medicine_2.medicine_id)
-        self.assertEqual(medicine_2_data['name'], self.medicine_2.name)
-        self.assertEqual(medicine_2_data['description'], self.medicine_2.description)
-        self.assertEqual(medicine_2_data['atc_code'], self.medicine_2.atc_code)
-        self.assertEqual(medicine_2_data['quantity'], self.order_request_data[self.medicine_2.medicine_id])
+        self.assertEqual(data['method'], 'delivery')
+        self.assertEqual(data['status'], 'pending')
+        medicine_1_data = data['quantities'][0]
+        self.assertDictEqual(medicine_1_data, {
+            'medicine_id': self.medicine_1.medicine_id,
+            'name': self.medicine_1.name,
+            'description': self.medicine_1.description,
+            'atc_code': self.medicine_1.atc_code,
+            'quantity': self.order_request_data['quantities'][self.medicine_1.medicine_id]
+        })
+        medicine_2_data = data['quantities'][1]
+        self.assertDictEqual(medicine_2_data, {
+            'medicine_id': self.medicine_2.medicine_id,
+            'name': self.medicine_2.name,
+            'description': self.medicine_2.description,
+            'atc_code': self.medicine_2.atc_code,
+            'quantity': self.order_request_data['quantities'][self.medicine_2.medicine_id]
+        })
+        today = datetime.date.today()
+        self.assertDictEqual(data['date'], {
+            'day': today.day,
+            'month': today.month,
+            'year': today.year
+        })
         self.order_data.update(data)
 
     def test_02_get_all_orders(self):
@@ -295,42 +310,23 @@ class TestUserMedicineOrder(unittest.TestCase):
         res = self.client.get('/medicine_order')
         self.assertEqual(res.status_code, 200)
         data = json.loads(res.data)
+        self.assertEqual(data[0]['order_id'], self.order_data['order_id'])
+        self.assertEqual(data[0]['method'], self.order_data['method'])
+        self.assertListEqual(data[0]['quantities'], self.order_data['quantities'])
+        self.assertDictEqual(data[0]['date'], self.order_data['date'])
         self.assertEqual(data[0]['status'], 'pending')
-
-        medicine_1_data = data[0]['medicines'][0]
-        self.assertEqual(medicine_1_data['medicine_id'], self.medicine_1.medicine_id)
-        self.assertEqual(medicine_1_data['name'], self.medicine_1.name)
-        self.assertEqual(medicine_1_data['description'], self.medicine_1.description)
-        self.assertEqual(medicine_1_data['atc_code'], self.medicine_1.atc_code)
-        self.assertEqual(medicine_1_data['quantity'], self.order_request_data[self.medicine_1.medicine_id])
-
-        medicine_2_data = data[0]['medicines'][1]
-        self.assertEqual(medicine_2_data['medicine_id'], self.medicine_2.medicine_id)
-        self.assertEqual(medicine_2_data['name'], self.medicine_2.name)
-        self.assertEqual(medicine_2_data['description'], self.medicine_2.description)
-        self.assertEqual(medicine_2_data['atc_code'], self.medicine_2.atc_code)
-        self.assertEqual(medicine_2_data['quantity'], self.order_request_data[self.medicine_2.medicine_id])
+        self.order_data.update(data[0])
 
     def test_03_get_order(self):
         self.__login()
         res = self.client.get(f'/medicine_order/{self.order_data["order_id"]}')
         self.assertEqual(res.status_code, 200)
         data = json.loads(res.data)
-        self.assertEqual(data['status'], 'pending')
-
-        medicine_1_data = data['medicines'][0]
-        self.assertEqual(medicine_1_data['medicine_id'], self.medicine_1.medicine_id)
-        self.assertEqual(medicine_1_data['name'], self.medicine_1.name)
-        self.assertEqual(medicine_1_data['description'], self.medicine_1.description)
-        self.assertEqual(medicine_1_data['atc_code'], self.medicine_1.atc_code)
-        self.assertEqual(medicine_1_data['quantity'], self.order_request_data[self.medicine_1.medicine_id])
-
-        medicine_2_data = data['medicines'][1]
-        self.assertEqual(medicine_2_data['medicine_id'], self.medicine_2.medicine_id)
-        self.assertEqual(medicine_2_data['name'], self.medicine_2.name)
-        self.assertEqual(medicine_2_data['description'], self.medicine_2.description)
-        self.assertEqual(medicine_2_data['atc_code'], self.medicine_2.atc_code)
-        self.assertEqual(medicine_2_data['quantity'], self.order_request_data[self.medicine_2.medicine_id])
+        self.assertEqual(data['order_id'], self.order_data['order_id'])
+        self.assertEqual(data['method'], self.order_data['method'])
+        self.assertListEqual(data['quantities'], self.order_data['quantities'])
+        self.assertDictEqual(data['date'], self.order_data['date'])
+        self.assertEqual(data['status'], self.order_data['status'])
 
     def test_04_delete_order(self):
         self.__login()

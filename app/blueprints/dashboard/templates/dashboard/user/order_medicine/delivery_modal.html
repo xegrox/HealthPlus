@@ -4,12 +4,21 @@
 {% from 'button.html' import focus_button %}
 
 {% block content %}
-<form hx-post="/medicine_order" hx-swap="none" _="
+<form _="
+on submit
+    halt the event's default
+    fetch `/medicine_order` with method:'POST',
+      body: :data,
+      headers: {'Content-Type': 'application/json'}
+on fetch:afterResponse(detail)
+    if detail.response.status is 200
+      trigger hideModal
+    end
 on showModal(quantities) from #modal_delivery
     set form_data to {}
     set form_data.method to 'delivery'
-    set form_data.quantities to JSON.stringify(quantities)
-    set @hx-vals to JSON.stringify(form_data)
+    set form_data.quantities to quantities
+    set :data to JSON.stringify(form_data)
 ">
     <p class="text-3xl font-bold underline decoration-primary">Delivery</p>
     <br>
