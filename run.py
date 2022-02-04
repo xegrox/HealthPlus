@@ -7,7 +7,9 @@ if __name__ == '__main__':
     if os.environ.get('DEBUG') == "1":
         app.debug = True
         server = Server(app.wsgi_app)
-        server.watch('app/')
-        server.serve(host='0.0.0.0', liveport=35729)
+        server.watch('app/templates/*.html')
+        server.watch('app/blueprints/*/templates/**/*.html')
+        server.watch('app/static/dist/main.css')
+        server.serve(liveport=35729)
     else:
-        app.run(host='0.0.0.0')
+        app.run()
