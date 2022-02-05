@@ -3,7 +3,24 @@
 {% from 'button.html' import button, warn_button %}
 
 {% block content%}
-<form>
+<form _="
+on showModal(values) from #modal_delete_log
+    set :vaccine_logs_list to Array.from(values.values())
+on submit
+   halt the event's default
+   fetch /vaccine_logs with method: 'DELETE',
+    body: JSON.stringify({
+     batch_no: :vaccine_logs_list
+     }),
+     headers:{'Content-Type': 'application/json'}
+
+     on fetch:afterResponse(detail)
+       if detail.response.status is 200
+        trigger hideModal
+        trigger refresh
+      end
+     end
+     ">
    <div class="p-6">
     <h3 class="uppercase bold">Confirm Delete?</h3>
    </div>

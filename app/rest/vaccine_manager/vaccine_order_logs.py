@@ -34,7 +34,9 @@ class VaccineOrderLogs(Resource):
     @login_required
     def delete(self):
         check_is_vaccine_manager()
-        parser = RequestParser().add_argument('batch_no', required=True)
+        parser = RequestParser().add_argument('batch_no', required=True, action='append')
         args = parser.parse_args()
-        logs.delete(args['batch_no'])
+        print(args['batch_no'])
+        for batch_no in args['batch_no']:
+            logs.delete(batch_no)
         return '', 200
