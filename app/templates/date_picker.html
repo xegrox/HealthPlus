@@ -1,0 +1,88 @@
+{% macro date_picker(class='') %}
+<div class="{{ class }}" _="
+    init
+        make Date called today
+        trigger selectMonth(date: today)
+        trigger selectDateNum(date: today.getDate())
+    end
+
+    on selectMonth(date)
+        call date.setDate(1)
+        set month to date.toLocaleString('default', { month: 'long' })
+        set year to date.getFullYear()
+        set format to `${month} ${year}`
+        set innerHTML of first .selected_month in me to format
+        set :selectedMonth to date
+        send changeMonth(month: :selectedMonth) to .date_num_grid in me
+    end
+
+    on selectDateNum(date)
+        make Date from :selectedMonth.getFullYear(), :selectedMonth.getMonth(), date then set :selectedDate to result
+        trigger selectValue(value: :selectedDate)
+        trigger updateDateState
+    end
+
+    def toggleDateState(el, selected)
+        if selected
+            remove .bg-gray-50 .hover:bg-gray-100 from el
+            add .text-white .bg-secondary to el
+        else
+            remove .text-white .bg-secondary from el
+            add .bg-gray-50 .hover:bg-gray-100 to el
+        end
+    end
+
+    on updateDateState
+        if :selectedDate is undefined then exit end
+        if :selectedMonth.getFullYear() is :selectedDate.getFullYear() and :selectedMonth.getMonth() is :selectedDate.getMonth()
+            for el in .select_date in me
+                set isSelected to parseInt(el's @value) is :selectedDate.getDate()
+                call toggleDateState(el, isSelected)
+            end
+        else
+            for el in .select_date in me
+                call toggleDateState(el, false)
+            end
+        end
+    end
+
+    on nextMonth
+        make Date from :selectedMonth.getFullYear(), :selectedMonth.getMonth() + 1 called monthDate
+        trigger selectMonth(date: monthDate)
+    end
+
+    on prevMonth
+        make Date from :selectedMonth.getFullYear(), :selectedMonth.getMonth() - 1 called monthDate
+        trigger selectMonth(date: monthDate)
+    end
+    ">
+    <div class="flex items-center px-5">
+        <div class="flex items-center justify-center hover:bg-gray-100 transition-colors rounded-full w-8 h-8" _="on click trigger prevMonth"><i class="ti ti-chevron-left"></i></div>
+        <p class="selected_month flex-1 text-center"></p>
+        <div class="flex items-center justify-center hover:bg-gray-100 transition-colors rounded-full w-8 h-8" _="on click trigger nextMonth"><i class="ti ti-chevron-right"></i></div>
+    </div>
+    <div class="date_num_grid grid grid-cols-7 gap-3 auto-rows-min" _="
+        on changeMonth(month)
+            set my innerHTML to ''
+            for name in ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                append `<p class='text-center p-2'>${name}</p>` to me
+            end
+            if month.getDay() != 0
+                make Date from month.getFullYear(), month.getMonth(), 1 - month.getDay() then set prevMonthStart to result.getDate()
+                make Date from month.getFullYear(), month.getMonth(), 0 then set prevMonthEnd to result.getDate()
+                repeat (prevMonthEnd + 1) - prevMonthStart times index i
+                    set day to prevMonthStart + i
+                    append `<div class='flex text-center h-10 w-10 bg-gray-50 rounded-full items-center justify-center opacity-50'><p>${day}</p></div>` to me
+                end
+            end
+            make Date from month.getFullYear(), month.getMonth() + 1, 0 then set monthEnd to result.getDate()
+            repeat monthEnd times index i
+                set day to i + 1
+                set classes to 'select_date flex text-center h-10 w-10 rounded-full items-center justify-center transition-colors cursor-pointer'
+                set onclick to `dispatchEvent(new CustomEvent('selectDateNum', {bubbles: true, detail: {date:getAttribute('value')}}))`
+                append `<div class='${classes}' onclick=&quot${onclick}&quot value='${day}'><p>${day}</p></div>` to me
+            end
+            trigger updateDateState
+    "></div>
+</div>
+{% endmacro %}
