@@ -382,14 +382,9 @@ has@^1.0.3:
   version "1.7.0"
   resolved "https://github.com/bigskysoftware/htmx#cd6d2b78e2deb19391ecedd38128aca7477ed8b9"
 
-"htmx.org@https://github.com/bigskysoftware/htmx#dev":
-  version "1.7.0"
-  resolved "https://github.com/bigskysoftware/htmx#f524901d5ee3ea74a1b031f3d0b0fe16bb194ddc"
-
-hyperscript.org@^0.9.4:
+"hyperscript.org@https://github.com/xegrox/_hyperscript":
   version "0.9.4"
-  resolved "https://registry.yarnpkg.com/hyperscript.org/-/hyperscript.org-0.9.4.tgz#a8d92f52768513d758cd6d7225dbf73b6e373fe9"
-  integrity sha512-ttGMzy4J9u7mMLz+/NnFZJ0rSSBp5UmuDfu/1KOL3V5ngPLFhjWERFzVU02MEmNfgIwpWMu64GP3ApBfu/Y9CA==
+  resolved "https://github.com/xegrox/_hyperscript#87d9c07af4806c6969bbadc53465a7705dcc37c3"
 
 import-cwd@^3.0.0:
   version "3.0.0"

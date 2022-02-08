@@ -1,14 +1,14 @@
 {
   "scripts": {
     "watch": "tailwindcss -i src/main.css -o dist/main.css --watch",
-    "build": "npm explore htmx.org -- npm install && npm explore htmx.org -- npm run dist",
+    "build": "npm explore htmx.org -- npm install && npm explore htmx.org -- npm run dist && npm explore hyperscript.org -- npm install && npm explore hyperscript.org -- npm run dist",
     "dist": "npm run build && tailwindcss -i src/main.css -o dist/main.css && copyfiles -u 3 node_modules/htmx.org/dist/htmx.min.js node_modules/hyperscript.org/dist/_hyperscript_w9y.min.js \"node_modules/@tabler/icons/iconfont/**/*\" dist && copyfiles -f \"src/static/*\" dist"
   },
   "dependencies": {
     "@tabler/icons": "^1.51.0",
     "copyfiles": "^2.4.1",
     "htmx.org": "https://github.com/bigskysoftware/htmx#cd6d2b78e2deb19391ecedd38128aca7477ed8b9",
-    "hyperscript.org": "^0.9.4",
+    "hyperscript.org": "https://github.com/xegrox/_hyperscript",
     "tailwindcss": "^3.0.7"
   }
 }
