@@ -1,5 +1,6 @@
-{% macro button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 ring-inset ring-2 ring-secondary rounded-lg hover:bg-secondary/20 transition-colors text-secondary truncate {{class}}"
+{% macro button(name, onclick='', submit=False, hx={}, icon='', _='', class='', disabled=False) %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 ring-inset ring-2 ring-secondary rounded-lg hover:bg-secondary/20 transition-[opacity,background-color] text-secondary truncate {{class}} disabled:pointer-events-none disabled:opacity-50"
+        {% if disabled %} disabled {% endif %}
        onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
          hx-{{name}}="{{val}}"
@@ -9,9 +10,10 @@
 </button>
 {% endmacro %}
 
-{% macro focus_button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors text-white text-center truncate {{class}}"
-       onclick="{{ onclick }}" _="{{ _ }}"
+{% macro focus_button(name, onclick='', submit=False, hx={}, icon='', _='', class='', disabled=False) %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 bg-secondary rounded-lg hover:bg-secondary/80 transition-[opacity,background-color] text-white text-center truncate {{class}} disabled:pointer-events-none disabled:opacity-50"
+        {% if disabled %} disabled {% endif %}
+        onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
        hx-{{name}}="{{val}}"
        {% endfor %}>
@@ -20,9 +22,10 @@
 </button>
 {% endmacro %}
 
-{% macro warn_button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="box-border flex items-center py-2.5 bg-red-500 rounded-lg hover:bg-red-500/80 transition-colors text-white text-center truncate {{class}}"
-       onclick="{{ onclick }}" _="{{ _ }}"
+{% macro warn_button(name, onclick='', submit=False, hx={}, icon='', _='', class='', disabled=False) %}
+<button type="{{'submit' if submit else 'button'}}" class="box-border flex items-center py-2.5 bg-red-500 rounded-lg hover:bg-red-500/80 transition-[opacity,background-color] text-white text-center truncate {{class}} disabled:pointer-events-none disabled:opacity-50"
+        {% if disabled %} disabled {% endif %}
+        onclick="{{ onclick }}" _="{{ _ }}"
        {% for name, val in hx.items() %}
        hx-{{name}}="{{val}}"
        {% endfor %}>
@@ -31,8 +34,9 @@
 </button>
 {% endmacro %}
 
-{% macro text_button(name, onclick='', submit=False, hx={}, icon='', _='', class='') %}
-<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 rounded-lg hover:bg-secondary/10 transition-colors text-secondary truncate {{class}}"
+{% macro text_button(name, onclick='', submit=False, hx={}, icon='', _='', class='', disabled=False) %}
+<button type="{{'submit' if submit else 'button'}}" class="flex items-center py-2.5 rounded-lg hover:bg-secondary/10 transition-[opacity,background-color] text-secondary truncate {{class}} disabled:pointer-events-none disabled:opacity-50"
+        {% if disabled %} disabled {% endif %}
         onclick="{{ onclick }}" _="{{ _ }}"
         {% for name, val in hx.items() %}
         hx-{{name}}="{{val}}"
