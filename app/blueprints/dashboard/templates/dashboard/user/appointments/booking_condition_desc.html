@@ -1,0 +1,27 @@
+{% from 'input.html' import input %}
+
+<div class="page absolute w-full h-full !duration-150 bg-white space-y-5" _="
+set :condition to ''
+set :description to ''
+
+def sendValue()
+  if :condition != ''
+    trigger pageValue(value: {condition: :condition, description: :description})
+  else
+    trigger pageValue(value: undefined)
+  end
+end
+
+on inputCondition(value)
+  set :condition to value.trim()
+  call sendValue()
+end
+
+on inputDescription(value)
+  set :description to value.trim()
+  call sendValue()
+end
+">
+  {{ input('Condition', _='on input(target) trigger inputCondition(value: target.value)') }}
+  {{ input('Description (optional)', _='on input(target) trigger inputDescription(value: target.value)') }}
+</div>

@@ -379,5 +379,67 @@ class TestUserAvailableMedicine(unittest.TestCase):
         self.assertEqual(medicine_data['atc_code'], self.medicine.atc_code)
 
 
+class TestUserAppointments(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.client = app.test_client()
+        cls.doctor = staff_accounts.create('doctor', 'test_doctor', 'John', 'Smith', '')
+        user_accounts.create('test_user', '', '', '123')
+        cls.appointment_data = {}
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        os.remove('user_accounts')
+        os.remove('user_nric_map')
+        os.remove('staff_accounts')
+        os.remove('staff_id_map')
+        os.remove('appointments')
+        os.remove('appointments_user_map')
+        os.remove('appointments_doctor_map')
+
+    def __login(self):
+        res = self.client.post('/session', data={'nric': 'test_user', 'password': 123})
+        self.assertEqual(res.status_code, 200)
+
+    def test_01_add_appointment(self):
+        self.__login()
+        res = self.client.post('/appointment', data={
+            'doctor_id': self.doctor.get_id(),
+            'datetime': '2020-02-08T09:30',
+            'condition': 'test condition',
+            'description': 'test description'
+        })
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        assert data.items() >= {
+            'status': 'Booked',
+            'doctor_name': 'Dr John Smith',
+            'datetime': '2020-02-08T09:30:00',
+            'condition': 'test condition',
+            'description': 'test description'
+        }.items()
+        self.appointment_data.update(data)
+
+    def test_02_get_all_appointments(self):
+        self.__login()
+        res = self.client.get(f'/appointment')
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertDictEqual(data[0], self.appointment_data)
+
+    def test_03_get_appointment(self):
+        self.__login()
+        res = self.client.get(f'/appointment/{self.appointment_data["appointment_id"]}')
+        self.assertEqual(res.status_code, 200)
+        data = json.loads(res.data)
+        self.assertDictEqual(data, self.appointment_data)
+
+    def test_04_delete_appointment(self):
+        self.__login()
+        res = self.client.delete(f'/appointment/{self.appointment_data["appointment_id"]}')
+        self.assertEqual(res.status_code, 200)
+
+
 if __name__ == "__main__":
     unittest.main(failfast=True)

@@ -14,6 +14,13 @@ class Staff(Account):
         super().__init__(account_id, first_name, last_name, password_hash)
         self.role = role
         self.staff_id = staff_id
+        self.__details = {}
+
+    def put_detail(self, name, value):
+        self.__details[name] = value
+
+    def get_detail(self, name, default=None):
+        return self.__details.get(name, default)
 
     @property
     def serializable(self):

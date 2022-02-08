@@ -1,0 +1,7 @@
+{% from 'input.html' import input %}
+
+<div class="page absolute w-full h-full space-y-6 !duration-150 bg-white" _="
+    on selectValue(value) trigger pageValue(value: value)">
+    {{ input(placeholder='Search by name') }}
+    <div hx-post="/dashboard/ajax/user/appointments/available_doctors_table" hx-swap="innerHTML" hx-trigger="showModal from:#modal_user_book_appointment"></div>
+</div>

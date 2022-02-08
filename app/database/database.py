@@ -6,14 +6,21 @@ T = TypeVar('T', bound='DatabaseObject')
 
 
 class DatabaseInterface:
-    def __init__(self, db: shelve.Shelf):
+    def __init__(self, db: shelve.Shelf, keyerror=None):
         self.__db = db
+        self.__keyerror = keyerror
 
     def __contains__(self, item):
         return self.__db.__contains__(item)
 
     def __getitem__(self, item):
-        return self.__db[item]
+        try:
+            return self.__db[item]
+        except KeyError:
+            if self.__keyerror is not None:
+                raise self.__keyerror(item)
+            else:
+                raise
 
     def __delitem__(self, key):
         self.remove(key)
@@ -71,9 +78,10 @@ class BasicDatabase:
 
 
 class Database(BasicDatabase):
-    def __init__(self, name: str):
+    def __init__(self, name: str, keyerror=None):
         super().__init__(name)
+        self.__keyerror = keyerror
 
     def open(self):
         db = super().open()
-        return DatabaseInterface(db)
+        return DatabaseInterface(db, self.__keyerror)

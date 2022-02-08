@@ -1,0 +1,32 @@
+<table _="install TableSearchBehaviour">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Doctor</th>
+            <th>Condition</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr _="
+        init
+            make Date from '{{appointment.datetime}}' called datetime
+            set date to datetime.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})
+            set time to `${(datetime.getHours().toString()).padStart(2, '0')}:${(datetime.getMinutes().toString()).padStart(2, '0')}`
+            set innerHTML of .detail_date in me to date
+            set innerHTML of .detail_time in me to time
+        end
+        ">
+            <td>{{ appointment['status'] }}</td>
+            <td class="detail_date"></td>
+            <td class="detail_time"></td>
+            <td>{{ appointment['doctor_name'] }}</td>
+            <td>{{ appointment['condition'] }}</td>
+            <td>{{ appointment['description'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

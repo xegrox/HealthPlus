@@ -1,7 +1,8 @@
 from app.database.database import Database, BasicDatabase
 from app.models.account.user import User
 from ..exceptions import AccountNotFoundError, AccountAlreadyExistsError
-from .utils import has_one_of, hash_sha256, generate_user_id
+from .utils import hash_sha256, generate_user_id
+from ..utils import has_one_of
 
 user_accounts_db = Database('user_accounts')
 user_nric_map_db = BasicDatabase('user_nric_map')

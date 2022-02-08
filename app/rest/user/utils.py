@@ -1,8 +1,9 @@
 from flask_login import current_user
 from flask_restful import abort
-
+from app.database.accounts import staff_accounts
 from app.database.pharmacist import medicine_inventory
 from app.models.account import User
+from app.models.appointment import Appointment
 from app.models.user_medicine_order import UserMedicineOrder
 
 
@@ -39,4 +40,16 @@ def serialize_medicine_order(order: UserMedicineOrder):
         },
         'quantities': quantities,
         'status': order.status.value
+    }
+
+
+def serialize_appointment(appointment: Appointment):
+    doctor_name = 'Dr ' + staff_accounts.read(appointment.doctor_id).full_name
+    return {
+        'appointment_id': appointment.appointment_id,
+        'doctor_name': doctor_name,
+        'status': appointment.status.value,
+        'datetime': appointment.datetime.isoformat(),
+        'condition': appointment.condition,
+        'description': appointment.description
     }

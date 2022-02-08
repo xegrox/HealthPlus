@@ -8,7 +8,7 @@ if __name__ == '__main__':
         app.debug = True
         server = Server(app.wsgi_app)
         server.watch('app/templates/*.html')
-        server.watch('app/blueprints/*/templates/**/*.html')
+        server.watch('app/blueprints/**/*.html')
         server.watch('app/static/dist/main.css')
         server.serve(liveport=35729)
     else:

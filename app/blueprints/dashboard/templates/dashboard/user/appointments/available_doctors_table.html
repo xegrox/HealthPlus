@@ -1,0 +1,44 @@
+<table class="w-full outline outline-px outline-gray-200" _="
+on selectValue(value)
+  set :selectedDoctor to value
+  for row in <tr/> in <tbody/> in me
+    remove @selected from row
+  end
+  add @selected to event.target
+">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Specialization</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for doctor in doctors %}
+    <tr class="hover:bg-primary/10 transition-colors cursor-pointer" value="{{ doctor['doctor_id'] }}" _="
+    on click
+      trigger selectValue(value: @value)
+    end
+    on mutation of @selected
+      tell .radio_check in me
+        if @selected of me
+          remove .ti-circle .text-gray-400
+          add .ti-circle-check .text-secondary
+        else
+          add .ti-circle .text-gray-400
+          remove .ti-circle-check .text-secondary
+        end
+      end
+    ">
+      <td class="relative">
+        <i class="radio_check ti ti-circle absolute w-full text-gray-400 text-center top-1/2 right-0 transform -translate-y-1/2 transition-colors"></i>
+      </td>
+      <td>{{ doctor['name'] }}</td>
+      <td>{{ doctor['specialization'] }}</td>
+      <td>{{ doctor['description'] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>

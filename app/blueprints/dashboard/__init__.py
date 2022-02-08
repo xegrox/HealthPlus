@@ -5,6 +5,8 @@ from app.models.account.staff import StaffRole
 from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.pharmacist.medicine_list import PharmacistMedicineList
+from app.rest.user.appointment_list import UserAppointmentList
+from app.rest.user.available_doctors import UserAvailableDoctors
 from app.rest.user.available_medicine import UserAvailableMedicine
 from app.rest.user.medicine_order_list import UserMedicineOrderList
 from app.rest.vaccine_manager.vaccine_order_logs import VaccineOrderLogs
@@ -47,6 +49,24 @@ def medicine_list():
 def display_order():
     orders = UserMedicineOrderList().get()[0]
     return render_template('/dashboard/user/order_history/order_table.html', orders=orders)
+
+
+@blueprint.route('/ajax/user/appointments/appointments_table', methods=['POST'])
+def user_appointments_table():
+    appointments = UserAppointmentList().get()[0]
+    return render_template('/dashboard/user/appointments/appointments_table.html', appointments=appointments)
+
+
+@blueprint.route('/ajax/user/appointments/available_doctors_table', methods=['POST'])
+def user_available_doctors_table():
+    doctors = UserAvailableDoctors().get()[0]
+    return render_template('/dashboard/user/appointments/available_doctors_table.html', doctors=doctors)
+
+
+@blueprint.route('/ajax/user/appointments/available_timeslots_grid', methods=['POST'])
+def user_available_timeslots_grid():
+    timeslots = [('09', '30'), ('09', '45'), ('10', '15'), ('11', '45'), ('12', '30')]
+    return render_template('/dashboard/user/appointments/available_timeslots_grid.html', timeslots=timeslots)
 
 
 @blueprint.route('/ajax/admin/manage_staffs/accounts_table', methods=['POST'])

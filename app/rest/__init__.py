@@ -8,6 +8,9 @@ from .session import SessionManagement
 from .account import AccountManagement
 from .pharmacist.medicine import PharmacistMedicine
 from .pharmacist.medicine_list import PharmacistMedicineList
+from .user.appointment import UserAppointment
+from .user.appointment_list import UserAppointmentList
+from .user.available_doctors import UserAvailableDoctors
 from .user.available_medicine import UserAvailableMedicine
 from .user.medicine_order import UserMedicineOrder
 from .user.medicine_order_list import UserMedicineOrderList
@@ -27,4 +30,7 @@ def register_api(app):
     api.add_resource(UserMedicineOrderList, '/medicine_order')
     api.add_resource(UserMedicineOrder, '/medicine_order/<order_id>')
     api.add_resource(UserAvailableMedicine, '/available_medicine')
+    api.add_resource(UserAppointmentList, '/appointment')
+    api.add_resource(UserAppointment, '/appointment/<appointment_id>')
+    api.add_resource(UserAvailableDoctors, '/available_doctors')
     api.add_resource(VaccineOrderLogs, '/vaccine_logs')

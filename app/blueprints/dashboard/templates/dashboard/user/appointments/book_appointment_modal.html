@@ -1,0 +1,115 @@
+{% from 'button.html' import focus_button, text_button %}
+
+{% extends 'modal.html' %}
+{% set name = 'user_book_appointment' %}
+
+{% block content %}
+<div class="flex flex-col space-y-10" _="
+set :pages to .page in .page_container in me
+init resetPage() end
+
+def resetPage()
+    set @page-index to 0
+    set :pageValues to []
+end
+
+def isLastPage()
+    return @page-index is :pages.length - 1
+end
+
+def toggleNext(enabled)
+    set btn to .next_btn in me
+    if isLastPage() then set btn to .submit_btn in me end
+    if not enabled
+        add @disabled to btn
+    else
+        remove @disabled from btn
+    end
+end
+
+def togglePrev(enabled)
+    if not enabled
+        add @disabled to .prev_btn in me
+    else
+        remove @disabled from .prev_btn in me
+    end
+end
+
+on hideModal from #modal_user_book_appointment
+    settle then resetPage()
+end
+
+on nextPage if :pageValues[[@page-index]] != undefined then increment @page-index end
+
+on prevPage decrement @page-index
+
+on mutation of @page-index
+    if @page-index >= :pages.length
+        set @page-index to :pages.length - 1
+    else
+        if @page-index < 0
+            set @page-index to 0
+        else
+            for page in :pages index index
+                if index is @page-index
+                    remove .invisible from page
+                    transition the page's opacity to 1
+                else
+                    transition the page's opacity to 0
+                    add .invisible to page
+                end
+            end
+
+            if @page-index is 0 then togglePrev(false) else togglePrev(true) end
+            if not :pageValues[[@page-index]] then toggleNext(false) else toggleNext(true) end
+
+            if isLastPage() then hide .next_btn in me then show .submit_btn in me
+            else hide .submit_btn in me then show .next_btn in me end
+        end
+    end
+end
+
+on pageValue(value)
+    set :pageValues[[@page-index]] to value
+    call toggleNext(value != undefined)
+end
+
+on submit
+    set doctor_id to :pageValues[0]
+    set datetime to :pageValues[1]
+    set condition to :pageValues[2].condition
+    set description to :pageValues[2].description
+    set data to {
+        doctor_id: doctor_id,
+        datetime: datetime,
+        condition: condition,
+        description: description
+    }
+    log data
+
+    fetch /appointment with method: 'POST',
+        body: JSON.stringify(data),
+        headers:{'Content-Type': 'application/json'}
+end
+
+on fetch:afterResponse(detail)
+    if detail.response.status is 200
+        trigger hideModal
+        trigger refresh
+    end
+end
+
+">
+    <p class="font-bold text-2xl w-[50rem]">Book appointment</p>
+    <div class="page_container relative h-[26rem]">
+        {% include 'dashboard/user/appointments/booking_select_doctor.html' %}
+        {% include 'dashboard/user/appointments/booking_select_timeslot.html' %}
+        {% include 'dashboard/user/appointments/booking_condition_desc.html' %}
+    </div>
+    <div class="flex w-full">
+        {{ text_button('Back', class='prev_btn', _='on click trigger prevPage', disabled=True) }}
+        {{ focus_button('Next', class='next_btn ml-auto', _='on click trigger nextPage', disabled=True) }}
+        {{ focus_button('Finish', class='submit_btn ml-auto', _='on click trigger submit') }}
+    </div>
+</div>
+{% endblock %}

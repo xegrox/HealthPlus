@@ -3,11 +3,6 @@ import string
 from hashlib import sha256
 
 
-def has_one_of(*args):
-    if all(v is None for v in args):
-        raise ValueError('Expected one of the arguments to be filled')
-
-
 def __generate_id():
     rand_num = random.randrange(0, 99999)
     rand_letter = random.choice(string.ascii_uppercase)

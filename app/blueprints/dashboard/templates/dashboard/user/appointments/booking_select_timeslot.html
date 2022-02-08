@@ -1,0 +1,27 @@
+{% from 'date_picker.html' import date_picker %}
+
+<div class="page absolute w-full h-full !duration-150 bg-white flex" _="
+    on selectValue(value) from .date_picker in me
+        if :selectedDate != undefined
+            if :selectedDate.getTime() is value.getTime() then exit end
+        end
+        set :selectedDate to value
+        send updateTimeslots to .timeslot_picker in me
+        trigger pageValue(value: undefined)
+    end
+
+    on selectTime(time)
+        set split to time.split(':')
+        set hours to split[0]
+        set minutes to split[1]
+        make Date from :selectedDate.getFullYear(), :selectedDate.getMonth(), :selectedDate.getDate(), hours, minutes
+        trigger pageValue(value: result)
+    end">
+    <div class="date_picker w-1/2 p-5 space-y-5">
+        {{ date_picker() }}
+    </div>
+    <div class="timeslot_picker w-1/2 p-5"
+         hx-post="/dashboard/ajax/user/appointments/available_timeslots_grid"
+         hx-swap="innerHTML" hx-trigger="load, updateTimeslots">
+    </div>
+</div>

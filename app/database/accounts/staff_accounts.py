@@ -1,7 +1,8 @@
 from app.database.database import Database, BasicDatabase
 from app.models.account.staff import Staff, StaffRole
-from app.database.exceptions import AccountNotFoundError, AccountAlreadyExistsError, InvalidStaffRoleError
-from .utils import has_one_of, hash_sha256, generate_staff_id
+from app.database.exceptions import AccountNotFoundError, AccountAlreadyExistsError
+from .utils import hash_sha256, generate_staff_id
+from ..utils import has_one_of
 
 staff_accounts_db = Database('staff_accounts')
 staff_id_map_db = BasicDatabase('staff_id_map')
@@ -31,10 +32,7 @@ def __update(account_id, data):
                 sid_map[val] = staff.get_id()
             staff.staff_id = val
         if val := data.get('role'):
-            try:
-                staff.role = StaffRole(val)
-            except ValueError:
-                raise InvalidStaffRoleError()
+            staff.role = StaffRole(val)
         if val := data.get('first_name'):
             staff.first_name = val
         if val := data.get('last_name'):
@@ -45,7 +43,7 @@ def __update(account_id, data):
         return staff
 
 
-def  __delete(account_id):
+def __delete(account_id):
     with staff_accounts_db.open() as accounts:
         with staff_id_map_db.open() as sid_map:
             staff = accounts[account_id]
@@ -74,12 +72,8 @@ def create(role, staff_id, first_name, last_name, password):
                 raise AccountAlreadyExistsError()  # Abort if staff id already exists
             while (account_id := generate_staff_id()) in accounts:
                 ...  # Regenerate if generated id already exists
-            try:
-                role = StaffRole(role)
-            except ValueError:
-                raise InvalidStaffRoleError()
             staff = Staff(
-                role=role,
+                role=StaffRole(role),
                 account_id=account_id,
                 staff_id=staff_id,
                 first_name=first_name,
