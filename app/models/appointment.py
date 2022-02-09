@@ -3,10 +3,10 @@ from app.database.database_object import DatabaseObject
 
 
 class AppointmentStatus(Enum):
-    BOOKED = 'Booked'
-    NO_SHOW = 'No Show'
-    CANCELLED_BY_DOCTOR = 'Cancelled By Doctor'
-    SEEN = 'Seen'
+    BOOKED = 'booked'
+    NO_SHOW = 'no_show'
+    CANCELLED_BY_DOCTOR = 'cancelled'
+    SEEN = 'seen'
 
     def __str__(self):
         return self.value

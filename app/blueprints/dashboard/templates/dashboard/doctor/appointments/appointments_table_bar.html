@@ -10,5 +10,7 @@
 } %}
 
 {% block select_options %}
-{{ focus_button('Edit status', icon='edit') }}
+{{ focus_button('Edit status', icon='edit', _='
+on action(values) send showModal(values: values) to #modal_edit_appointment_status
+') }}
 {% endblock %}

@@ -4,6 +4,7 @@ from .admin.staff_account import AdminStaffAccount
 from .admin.staff_account_list import AdminStaffAccountList
 from .admin.user_account import AdminUserAccount
 from .admin.user_account_list import AdminUserAccountList
+from .doctor.appointment_list import DoctorAppointmentList
 from .session import SessionManagement
 from .account import AccountManagement
 from .pharmacist.medicine import PharmacistMedicine
@@ -34,3 +35,4 @@ def register_api(app):
     api.add_resource(UserAppointment, '/appointment/<appointment_id>')
     api.add_resource(UserAvailableDoctors, '/available_doctors')
     api.add_resource(VaccineOrderLogs, '/vaccine_logs')
+    api.add_resource(DoctorAppointmentList, '/doctor_appointment')
