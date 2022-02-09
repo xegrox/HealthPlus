@@ -1,0 +1,30 @@
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+    <thead>
+    <tr>
+        <th><input class="check_all" type="checkbox"></th>
+        <th>Status</th>
+        <th>Time</th>
+        <th>Patient</th>
+        <th>Condition</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for appointment in appointments %}
+    <tr _="
+        init
+            make Date from '{{appointment.datetime}}' called datetime
+            set time to `${(datetime.getHours().toString()).padStart(2, '0')}:${(datetime.getMinutes().toString()).padStart(2, '0')}`
+            set innerHTML of .detail_time in me to time
+        end
+        " date="{{ appointment.datetime }}">
+        <td><input class="check_row" type="checkbox" name="{{ appointment.appointment_id }}" value="{{ appointment.appointment_id }}"></td>
+        <td>{{ appointment.status }}</td>
+        <td class="detail_time"></td>
+        <td>{{ appointment.patient_name }}</td>
+        <td>{{ appointment.condition }}</td>
+        <td>{{ appointment.description }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

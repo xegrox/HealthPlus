@@ -11,33 +11,30 @@
             call :values.delete(name)
         end
         send selectChange(values: :values) to :table_actions
+    end
 
     on click(target) from <button/> in :table_actions
         send action(values: :values) to it
+    end
 
     init
         set :category_input to first <input/> in .search_category in me
         set :search_input to first <input/> in .search in me
     end
-    on updateSearch debounced at 500ms
+
+    on updateSearch or htmx:afterSettle from {{ '#' + table_id }}
         set column to :category_input.value
         set raw_matches to :search_input.value
         make a RegExp from '[ ,]+', 'g' called regex
         set matches to raw_matches.trim().split(regex)
         send search(matches: matches, column: column) to <table/> in {{ '#' + table_id }}
+    end
 
-    on htmx:afterSettle from {{ '#' + table_id }}
-        trigger updateSearch
-        set table to it
-        for name in :values.keys()
-            set cb to first <input.check_row[name=`$name`]/> in <tbody/> in table
-            if cb != undefined
-                set cb.checked to true
-                send change to cb
-            else
-                call :values.delete(name)
-            end
-        end
+    on searchComplete from {{ '#' + table_id }}
+        call :values.clear()
+        send selectChange(values: :values) to :table_actions
+        send checkAllRow(checked: false) to <table/> in {{ '#' + table_id }}
+    end
 ">
     <div class="flex flex-initial space-x-5 min-w-0">
         {{ input(placeholder='Search', class='search min-w-0', _='on input trigger updateSearch') }}
@@ -45,7 +42,7 @@
             {{ select_input('', search_categories, icon='filter', class='search_category') }}
         </div>
     </div>
-    <div class="flex-1 flex relative justify-end">
+    <div class="flex-1 flex justify-end">
         {{ text_button('Refresh', icon='refresh', class='refresh_btn flex-none', hx={'post': table_template_url, 'target': '#' + table_id, 'swap': 'innerHTML', 'trigger': 'load, click'}) }}
         <div class="table_actions transition-[width,opacity] w-0 overflow-hidden flex opacity-0" _="
         install TransitionAutoWidthBehaviour

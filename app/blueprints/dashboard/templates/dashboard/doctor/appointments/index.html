@@ -1,0 +1,36 @@
+{% from 'button.html' import focus_button %}
+{% from 'select_input.html' import select_input %}
+
+<div id="doctor_appointments_view" class="flex flex-col max-w-5xl space-y-8" _="
+on refresh send click to .refresh_btn in me end
+
+def filterDate()
+    for row in <tr/> in <tbody/> in #doctor_appointments_table
+        make Date from row's @date called appointment_date
+        if appointment_date.getFullYear() != :date.getFullYear()
+           or appointment_date.getMonth() != :date.getMonth()
+           or appointment_date.getDate() != :date.getDate()
+           add .hidden to row
+        else
+           remove .hidden from row
+        end
+    end
+end
+
+on changeDate(date)
+    set :date to date
+    send checkAllRow(checked: false) to <table/> in me
+    call filterDate()
+    send checkAllRow(checked: false) to <table/> in me
+end
+
+on htmx:afterSettle
+    call filterDate()
+end
+">
+    <div class="flex mx-2 my-8">
+        <p class="flex-1 text-3xl font-bold">Appointments</p>
+    </div>
+    {% include '/dashboard/doctor/appointments/appointments_table_bar.html' %}
+    <div id="doctor_appointments_table" class="flex flex-col"></div>
+</div>

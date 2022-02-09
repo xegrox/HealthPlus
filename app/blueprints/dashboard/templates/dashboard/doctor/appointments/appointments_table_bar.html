@@ -1,0 +1,14 @@
+{% from 'button.html' import focus_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'doctor_appointments_table' %}
+{% set table_template_url = '/dashboard/ajax/doctor/appointments/appointments_table' %}
+{% set search_categories = {
+'3': 'Patient',
+'4': 'Condition',
+'5': 'Description'
+} %}
+
+{% block select_options %}
+{{ focus_button('Edit status', icon='edit') }}
+{% endblock %}

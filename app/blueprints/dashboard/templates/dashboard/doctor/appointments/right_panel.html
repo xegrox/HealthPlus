@@ -1,0 +1,8 @@
+{% from 'date_picker.html' import date_picker %}
+
+<div class="p-8" _="
+on selectValue(value)
+    send changeDate(date: value) to #doctor_appointments_view
+">
+    {{ date_picker() }}
+</div>

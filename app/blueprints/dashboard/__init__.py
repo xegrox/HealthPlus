@@ -4,6 +4,7 @@ from app.models.account import User, Staff
 from app.models.account.staff import StaffRole
 from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
+from app.rest.doctor.appointment_list import DoctorAppointmentList
 from app.rest.pharmacist.medicine_list import PharmacistMedicineList
 from app.rest.user.appointment_list import UserAppointmentList
 from app.rest.user.available_doctors import UserAvailableDoctors
@@ -25,6 +26,13 @@ class _Page:
         self.fragment = fragment
         self.template = template
         self.right_panel_template = right_panel_template
+
+
+@blueprint.route('/ajax/doctor/appointments/appointments_table', methods=['POST'])
+def doctor_appointments_table():
+    appointments = DoctorAppointmentList().get()[0]
+    return render_template('/dashboard/doctor/appointments/appointments_table.html', appointments=appointments)
+
 
 # vaccine_manager
 @blueprint.route('/ajax/vaccine_manager/log_history/vaccine_log_table', methods=['POST'])
@@ -106,6 +114,7 @@ def dashboard():
             ])
         elif current_user.role == StaffRole.DOCTOR:
             return render_template('dashboard/index.html', pages=[
+                _Page('Appointments', 'calendar-event', 'appointments', 'dashboard/doctor/appointments/index.html', 'dashboard/doctor/appointments/right_panel.html'),
                 _Page('Settings', 'settings', 'settings', 'dashboard/doctor/settings/index.html')
             ])
         elif current_user.role == StaffRole.PHARMACIST:

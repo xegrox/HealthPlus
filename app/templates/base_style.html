@@ -29,16 +29,20 @@ end
 
 behavior TransitionAutoHeightBehaviour
     on showElem
+        halt the event's bubbling
         measure my scrollHeight
         set my style's height to `${scrollHeight}px`
     on hideElem
+        halt the event's bubbling
         set my style's height to 0px
 
 behavior TransitionAutoWidthBehaviour
     on showElem
+        halt the event's bubbling
         measure my scrollWidth
         set my style's width to `${scrollWidth}px`
     on hideElem
+        halt the event's bubbling
         set my style's width to 0px
 
 behavior TableSearchBehaviour
@@ -68,27 +72,49 @@ behavior TableSearchBehaviour
             end
             if hasMatch show row else hide row end
         end
+        trigger searchComplete
     end
 
 behavior TableCheckboxBehaviour
     set :check_all to first .check_all in <thead/> in me
-    set :check_rows to .check_row in <tbody/> in me
+    set :table_rows to <tr/> in <tbody/> in me
+
+    def isVisible(row)
+        return getComputedStyle(row).getPropertyValue("display") is not 'none'
+    end
+
+    on checkRow(checked) from :table_rows
+        if isVisible(it)
+            set checkbox to first .check_row in it
+            set checkbox.checked to checked
+            trigger toggleRow(name: checkbox.name, value: checkbox.value, checked: checked)
+        end
+        call updateCheckAllState()
+    end
+
+    def updateCheckAllState()
+        set all_checked to true
+        for row in :table_rows
+            if isVisible(it) and not checked of first .check_row in it
+                set all_checked to false
+                break
+            end
+        end
+        set :check_all.checked to all_checked
+    end
+
     on change(target) queue all
         if target is :check_all
-            repeat for cb in :check_rows
-                set cb.checked to target.checked
-                send change to cb
-            end
+            send checkRow(checked: target.checked) to :table_rows
         else
-            trigger toggleRow(name: target.name, value: target.value, checked: target.checked)
-            set is_all_checked to true
-            for cb in :check_rows
-                if not cb.checked
-                     set is_all_checked to false
-                     break
-                end
+            if target matches .check_row
+                send checkRow(checked: target.checked) to target
             end
-            set checked of :check_all to is_all_checked
         end
+    end
+
+    on checkAllRow(checked)
+        send checkRow(checked: checked) to :table_rows
+    end
 </script>
 
