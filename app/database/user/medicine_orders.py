@@ -1,16 +1,9 @@
 from uuid import uuid4
 from app.database import BasicDatabase
-from app.database.exceptions import UserNotFoundError, OrderNotFoundError
+from app.database.exceptions import OrderNotFoundError
 from app.models.user_medicine_order import UserMedicineOrder, UserMedicineOrderMethod, UserMedicineOrderStatus
 
 user_medicine_orders_db = BasicDatabase('user_medicine_orders')
-
-
-def __get_user_orders(orders, user_account_id) -> dict:
-    try:
-        return orders[user_account_id]
-    except KeyError:
-        raise UserNotFoundError()
 
 
 def __get_user_order(user_orders, order_id) -> UserMedicineOrder:
@@ -33,7 +26,7 @@ def create(user_account_id, quantities, method):
 
 def read(user_account_id, order_id=None):
     with user_medicine_orders_db.open() as orders:
-        user_orders = __get_user_orders(orders, user_account_id)
+        user_orders = orders.get(user_account_id, {})
         if order_id is not None:
             return __get_user_order(user_orders, order_id)
         else:
@@ -42,7 +35,7 @@ def read(user_account_id, order_id=None):
 
 def update(user_account_id, order_id, status):
     with user_medicine_orders_db.open() as orders:
-        user_orders = __get_user_orders(orders, user_account_id)
+        user_orders = orders.get(user_account_id, {})
         order = __get_user_order(user_orders, order_id)
         order.update_status(UserMedicineOrderStatus(status))
         orders[user_account_id] = user_orders
@@ -51,7 +44,7 @@ def update(user_account_id, order_id, status):
 
 def delete(user_account_id, order_id):
     with user_medicine_orders_db.open() as orders:
-        user_orders = __get_user_orders(orders, user_account_id)
+        user_orders = orders.get(user_account_id, {})
         try:
             del user_orders[order_id]
             orders[user_account_id] = user_orders
