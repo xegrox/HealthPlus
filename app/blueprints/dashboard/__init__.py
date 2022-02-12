@@ -5,7 +5,6 @@ from app.models.account.staff import StaffRole
 from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.doctor.appointment_list import DoctorAppointmentList
-from app.rest.doctor.available_medicine import DoctorAvailableMedicine
 from app.rest.pharmacist.medicine_list import PharmacistMedicineList
 from app.rest.user.appointment_list import UserAppointmentList
 from app.rest.user.available_doctors import UserAvailableDoctors
@@ -28,6 +27,8 @@ class _Page:
         self.template = template
         self.right_panel_template = right_panel_template
 
+
+# doctor - appointments
 @blueprint.route('/ajax/doctor/appointments/appointments_table', methods=['POST'])
 def doctor_appointments_table():
     appointments = DoctorAppointmentList().get()[0]
@@ -40,11 +41,20 @@ def log_info():
     logs = VaccineOrderLogs().get()[0]
     return render_template('/dashboard/vaccine_manager/log_history/vaccine_log_table.html', logs=logs)
 
+
 # pharmacist - inventory
 @blueprint.route('/ajax/pharmacist/inventory/inventory_base', methods=['POST'])
 def medicine_management():
     medicines = PharmacistMedicineList().get()[0]
     return render_template('/dashboard/pharmacist/inventory/inventory_base.html', medicines=medicines)
+
+
+# user - prescriptions
+@blueprint.route('/ajax/user/prescriptions/prescription_list', methods=['POST'])
+def prescription_list():
+    appointments = UserAppointmentList().get()[0]
+    return render_template('/dashboard/user/prescriptions/prescription_list.html', appointments=appointments)
+
 
 # user - order medicine
 @blueprint.route('/ajax/user/order_medicine/medicine_table', methods=['POST'])
@@ -52,11 +62,13 @@ def medicine_list():
     medicines = UserAvailableMedicine().get()[0]
     return render_template('/dashboard/user/order_medicine/medicine_table.html', medicines=medicines)
 
+
 # user - order history
 @blueprint.route('/ajax/user/order_history/order_table', methods=['POST'])
 def display_order():
     orders = UserMedicineOrderList().get()[0]
     return render_template('/dashboard/user/order_history/order_table.html', orders=orders)
+
 
 # user - appointments
 @blueprint.route('/ajax/user/appointments/appointments_table', methods=['POST'])

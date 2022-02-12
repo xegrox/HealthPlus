@@ -21,14 +21,14 @@ def serialize_medicine(medicine):
     }
 
 
+def fill_medicine_info(medicine_id, quantity):
+    medicine = medicine_inventory.read(medicine_id)
+    quantity_filled = serialize_medicine(medicine)
+    quantity_filled['quantity'] = quantity
+    return quantity_filled
+
+
 def serialize_medicine_order(order: UserMedicineOrder):
-
-    def fill_medicine_info(medicine_id, quantity):
-        medicine = medicine_inventory.read(medicine_id)
-        quantity_filled = serialize_medicine(medicine)
-        quantity_filled['quantity'] = quantity
-        return quantity_filled
-
     quantities = [fill_medicine_info(k, v) for k, v in order.quantities.items()]
     return {
         'method': order.method.value,
@@ -51,5 +51,6 @@ def serialize_appointment(appointment: Appointment):
         'status': appointment.status.value,
         'datetime': appointment.datetime.isoformat(),
         'condition': appointment.condition,
-        'description': appointment.description
+        'description': appointment.description,
+        'prescription': [fill_medicine_info(k, v) for k, v in appointment.prescription.items()]
     }

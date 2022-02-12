@@ -1,0 +1,50 @@
+<div class="space-y-8">
+    {% for appointment in appointments %}
+    <div class="rounded-lg bg-white shadow py-6 px-8 hover:bg-gray-100 transition-colors" _="
+    init
+        make Date from '{{appointment.datetime}}' called datetime
+        set date to datetime.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})
+        append date to first .appointment_date in me
+    end
+    set :shown to false
+    on click
+        if :shown
+            send hideElem to .prescription_content in me
+        else
+            send showElem to .prescription_content in me
+        end
+        set :shown to not :shown
+">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <p class="text-lg font-medium leading-loose">{{ appointment['doctor_name'] }}</p>
+                <p>Appointment on <span class="appointment_date"></span></p>
+                <p><span class="font-medium">{{ appointment['prescription'] | length }}</span> medicine(s) prescribed</p>
+            </div>
+            <i class="ti ti-chevron-down text-xl text-gray-500 mr-4"></i>
+        </div>
+        <div class="prescription_content transition-[height] h-0 overflow-hidden" _="install TransitionAutoHeightBehaviour">
+            <div class="pt-10 pb-2 px-2">
+                <table class="outline outline-px outline-gray-200 w-full">
+                    <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for medicine in appointment.prescription %}
+                        <tr>
+                            <td>{{ medicine.name }}</td>
+                            <td>{{ medicine.description }}</td>
+                            <td>{{ medicine.quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
