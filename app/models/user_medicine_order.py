@@ -11,6 +11,7 @@ class UserMedicineOrderStatus(Enum):
     PENDING = 'pending'
     ONGOING = 'ongoing'
     SENT = 'sent'
+    CANCELLED = "cancelled"
 
 
 class UserMedicineOrder:

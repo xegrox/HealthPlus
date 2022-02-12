@@ -6,11 +6,10 @@ on refresh send click to .refresh_btn in me
 ">
     <div class="flex mx-2 my-8">
         <p class="flex-1 text-3xl font-bold">Order History</p>
-        <p>{{ focus_button('Cancel Order', icon='plus', _='
-            on click send showModal to #modal_cancel_order
-            ') }}</p>
+        <p><a href="#order_medicine">{{ focus_button('Add Order') }}</a></p>
     </div>
     {% include '/dashboard/user/order_history/order_table_bar.html' %}
-    <div id="vaccine_log_table" class="flex flex-col"></div>
-     {% include '/dashboard/user/order_history/order_table.html' %}
+    <div id="order_table" class="flex flex-col"></div>
+    {% include '/dashboard/user/order_history/view_quantity_modal.html' %}
+    {% include '/dashboard/user/order_history/cancel_modal.html' %}
 </div>

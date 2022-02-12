@@ -12,6 +12,7 @@
 {% block select_options %}
 {{ warn_button('Delete', icon='trash', _='
 on action(values)
-    log values
+    log "test"
+    send showModal(values: values) to #modal_cancel_order
 ') }}
 {% endblock %}

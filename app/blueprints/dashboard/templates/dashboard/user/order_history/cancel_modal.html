@@ -1,16 +1,16 @@
 {% extends 'modal.html' %}
 {% set name = 'cancel_order' %}
 {% from 'button.html' import button, warn_button %}
-{% set outline='red-500' %}
+
 
 {% block content %}
-<form class="flex flex-col space-y-10" hx-delete="/user_medicine_order" hx-swap="none">
-    <p class="font-bold text-2xl text-red-500">Cancel Order</p>
-    <p>Are you sure you wish to cancel your order? All your information will be discarded. This cannot be undone.</p>
-    <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+<form>
+    <p class="font-bold text-2xl text-red-500">Remove Order Display</p>
+    <br>
+    <p>Are you sure you wish to remove view of your orders? This cannot be undone.</p>
+    <br>
+    <div class="sm:flex sm:flex-row-reverse">
         {{ warn_button('Confirm', submit='True') }}
-        <div class="px-2 py-2"></div>
-        {{ button('Cancel', submit='True') }}
       </div>
 </form>
 {% endblock %}

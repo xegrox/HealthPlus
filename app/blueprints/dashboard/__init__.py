@@ -26,31 +26,31 @@ class _Page:
         self.template = template
         self.right_panel_template = right_panel_template
 
-
+# vaccine_manager
 @blueprint.route('/ajax/vaccine_manager/log_history/vaccine_log_table', methods=['POST'])
 def log_info():
     logs = VaccineOrderLogs().get()[0]
     return render_template('/dashboard/vaccine_manager/log_history/vaccine_log_table.html', logs=logs)
 
-
+# pharmacist - inventory
 @blueprint.route('/ajax/pharmacist/inventory/inventory_base', methods=['POST'])
 def medicine_management():
     medicines = PharmacistMedicineList().get()[0]
     return render_template('/dashboard/pharmacist/inventory/inventory_base.html', medicines=medicines)
 
-
+# user - order medicine
 @blueprint.route('/ajax/user/order_medicine/medicine_table', methods=['POST'])
 def medicine_list():
     medicines = UserAvailableMedicine().get()[0]
     return render_template('/dashboard/user/order_medicine/medicine_table.html', medicines=medicines)
 
-
-@blueprint.route('/ajax/user/order_history/orders_table', methods=['POST'])
+# user - order history
+@blueprint.route('/ajax/user/order_history/order_table', methods=['POST'])
 def display_order():
     orders = UserMedicineOrderList().get()[0]
     return render_template('/dashboard/user/order_history/order_table.html', orders=orders)
 
-
+# user - appointments
 @blueprint.route('/ajax/user/appointments/appointments_table', methods=['POST'])
 def user_appointments_table():
     appointments = UserAppointmentList().get()[0]
@@ -110,7 +110,7 @@ def dashboard():
             ])
         elif current_user.role == StaffRole.PHARMACIST:
             return render_template('dashboard/index.html', pages=[
-                _Page('Collection Status', 'settings', 'collection_status', 'dashboard/pharmacist/collection_status/update_status.html'),
+                _Page('Collection Status', 'truck', 'collection_status', 'dashboard/pharmacist/collection_status/index.html'),
                 _Page('Settings', 'settings', 'settings', 'dashboard/pharmacist/settings/index.html'),
                 _Page('Inventory', 'pencil', 'inventory_management', 'dashboard/pharmacist/inventory/index.html')
             ])

@@ -1,0 +1,22 @@
+{% extends 'modal.html' %}
+{% set name = 'view_quantity' %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Medicine Name</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody _="
+    on showModal(quantities) from #modal_view_quantity
+        for medicine in quantities
+            append `<tr><td>${medicine.name}</td><td>${medicine.quantity}</td></tr>` to me
+        end
+    on hideModal from #modal_view_quantity
+        settle then set my innerHTML to ''
+    ">
+    </tbody>
+</table>
+{% endblock %}

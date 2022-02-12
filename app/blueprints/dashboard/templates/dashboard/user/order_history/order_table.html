@@ -2,24 +2,34 @@
     <thead>
         <tr>
             <th><input class="check_all" type="checkbox"></th>
-            <th>Medicine Name</th>
-            <th>Quantity</th>
             <th>Order Date</th>
             <th>Collection Method</th>
             <th>Status</th>
-            <th>Collection Date</th>
+            <th>View Medicine</th>
+            <th>Cancel Order</th>
         </tr>
     </thead>
     <tbody>
         {% for order_item in orders %}
         <tr>
-            <td><input class="check_row" type="checkbox" name="{{ order_item['order_id'] }}" value="{{ order_item['order_id'] }}"></td>
-            <td>{{ order_item['medicine_name'] }}</td>
-            <td>{{ order_item['quantities'] }}</td>
-            <td>{{ order_item['order_date'] }}</td>
+            <td>
+                {% if order_item.status == 'cancelled' %}
+                    <input class="check_row" type="checkbox" name="{{ order_item['order_id'] }}" value="{{ order_item['order_id'] }}">
+                {% endif %}
+            </td>
+            <td>{{ order_item.date.values() | join('/') }}</td>
             <td>{{ order_item['method'] }}</td>
             <td>{{ order_item['status'] }}</td>
-            <td>{{ order_item['collection_date'] }}</td>
+            <td class="space-x-2">
+                <i class="ti ti-eye" _='on click send showModal(quantities: {{ order_item.quantities | tojson }}) to #modal_view_quantity'></i>
+            </td>
+            <td>
+                {% if order_item.status == 'pending' %}
+                    <i class="ti ti-circle-x" hx-put="/medicine_order/{{order_item.order_id}}" hx-vals='{"cancel": true}' hx-swap="none" hx-trigger="click" _="
+                        on htmx:afterRequest trigger refresh
+                    "></i></td>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
