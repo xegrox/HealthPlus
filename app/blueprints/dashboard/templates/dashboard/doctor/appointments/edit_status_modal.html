@@ -24,15 +24,12 @@
           headers:{'Content-Type': 'application/json'}
     ">
     <p class="font-bold text-2xl">Edit status</p>
-    <div class="space-y-3">
-        {{ select_input(options={
-            'booked': 'Booked',
-            'seen': 'Seen',
-            'no_show': 'No Show',
-            'cancelled': 'Cancelled'
-        }) }}
-    </div>
+    {{ select_input(options={
+        'booked': 'Booked',
+        'seen': 'Seen',
+        'no_show': 'No Show',
+        'cancelled': 'Cancelled'
+    }) }}
     {{ focus_button('Apply', submit=True) }}
-</form>
 </form>
 {% endblock %}

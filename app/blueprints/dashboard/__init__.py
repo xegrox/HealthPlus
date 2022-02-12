@@ -5,6 +5,7 @@ from app.models.account.staff import StaffRole
 from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.doctor.appointment_list import DoctorAppointmentList
+from app.rest.doctor.available_medicine import DoctorAvailableMedicine
 from app.rest.pharmacist.medicine_list import PharmacistMedicineList
 from app.rest.user.appointment_list import UserAppointmentList
 from app.rest.user.available_doctors import UserAvailableDoctors
@@ -26,7 +27,6 @@ class _Page:
         self.fragment = fragment
         self.template = template
         self.right_panel_template = right_panel_template
-
 
 @blueprint.route('/ajax/doctor/appointments/appointments_table', methods=['POST'])
 def doctor_appointments_table():

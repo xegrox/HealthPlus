@@ -22,3 +22,12 @@ def serialize_appointment(appointment: Appointment):
         'condition': appointment.condition,
         'description': appointment.description
     }
+
+
+def serialize_medicine(medicine):
+    return {
+        'medicine_id': medicine.medicine_id,
+        'name': medicine.name,
+        'description': medicine.description,
+        'atc_code': medicine.atc_code
+    }

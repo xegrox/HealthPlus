@@ -32,18 +32,24 @@ behavior TransitionAutoHeightBehaviour
         halt the event's bubbling
         measure my scrollHeight
         set my style's height to `${scrollHeight}px`
+    end
     on hideElem
         halt the event's bubbling
         set my style's height to 0px
+    end
+end
 
 behavior TransitionAutoWidthBehaviour
     on showElem
         halt the event's bubbling
         measure my scrollWidth
         set my style's width to `${scrollWidth}px`
+    end
     on hideElem
         halt the event's bubbling
         set my style's width to 0px
+    end
+end
 
 behavior TableSearchBehaviour
     set :tbody to <tbody/> in me
@@ -74,16 +80,16 @@ behavior TableSearchBehaviour
         end
         trigger searchComplete
     end
+end
 
 behavior TableCheckboxBehaviour
     set :check_all to first .check_all in <thead/> in me
-    set :table_rows to <tr/> in <tbody/> in me
 
     def isVisible(row)
         return getComputedStyle(row).getPropertyValue("display") is not 'none'
     end
 
-    on checkRow(checked) from :table_rows
+    on checkRow(checked) from <tbody/> in me
         if isVisible(it)
             set checkbox to first .check_row in it
             set checkbox.checked to checked
@@ -93,8 +99,9 @@ behavior TableCheckboxBehaviour
     end
 
     def updateCheckAllState()
+        if :check_all is undefined then exit end
         set all_checked to true
-        for row in :table_rows
+        for row in <tr/> in <tbody/> in me
             if isVisible(it) and not checked of first .check_row in it
                 set all_checked to false
                 break
@@ -105,7 +112,7 @@ behavior TableCheckboxBehaviour
 
     on change(target) queue all
         if target is :check_all
-            send checkRow(checked: target.checked) to :table_rows
+            send checkRow(checked: target.checked) to <tr/> in <tbody/> in me
         else
             if target matches .check_row
                 send checkRow(checked: target.checked) to target
@@ -114,7 +121,8 @@ behavior TableCheckboxBehaviour
     end
 
     on checkAllRow(checked)
-        send checkRow(checked: checked) to :table_rows
+        send checkRow(checked: checked) to <tr/> in <tbody/> in me
     end
+end
 </script>
 

@@ -1,0 +1,108 @@
+{% from 'input.html' import input %}
+{% from 'number_input.html' import number_input %}
+{% from 'button.html' import focus_button %}
+
+{% extends 'modal.html' %}
+{% set name = 'doctor_issue_prescription' %}
+
+{% block content %}
+<div class="w-[60rem] h-[40rem] flex flex-col space-y-10" _="
+on fetch:afterResponse(detail)
+    if detail.response.status is 200
+      trigger hideModal
+      trigger refresh
+    end
+end
+">
+    <p class="font-bold text-2xl">Issue prescription</p>
+    <div class="flex h-full w-full gap-x-8">
+        <div class="w-1/2 space-y-5">
+            {{ input(placeholder='Search available medicine') }}
+            <table id="doctor_available_medicine" class="w-full outline outline-px outline-gray-200" _="
+                install TableCheckboxBehaviour
+                on hideModal from #modal_doctor_issue_prescription
+                    settle then trigger checkAllRow(checked: false)
+                ">
+                <colgroup>
+                    <col class="w-px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tbody _="
+                init
+                    fetch /doctor_available_medicine
+                    set medicines to JSON.parse(result)
+                    for medicine in medicines
+                        set row to '<tr>'
+                            + `<td><input class='check_row' type='checkbox' name='${medicine.medicine_id}' value='${medicine.name}'></td>`
+                            + `<td>${medicine.name}</td>`
+                            + '</tr>'
+                        append row to me
+                    end
+                end
+                ">
+                </tbody>
+            </table>
+        </div>
+        <div class="w-px bg-gray-200"></div>
+        <form class="w-1/2 flex flex-col space-y-8" _="
+            on showModal(appointment_id) from #modal_doctor_issue_prescription
+                set :appointment_id to appointment_id
+            on hideModal from #modal_doctor_issue_prescription
+                set :appointment_id to undefined
+            on submit
+                halt the event's default
+                make FormData from me called formData
+                fetch `/doctor_appointment/${:appointment_id}` with method: 'PUT',
+                    body: JSON.stringify(Object.fromEntries(formData)),
+                    headers: {'Content-Type': 'application/json'}
+            ">
+            <table class="outline outline-px outline-primary/20">
+                <colgroup>
+                    <col>
+                    <col class="w-52">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>Selected Medicine</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <template>
+                    <tr>
+                        <td class="medicine_name"></td>
+                        <td>{{ number_input(class='w-44', min=1) }}</td>
+                    </tr>
+                </template>
+                <tbody class="relative" _="
+                set :submit_btn to first <button[type='submit']/> in closest <form/>
+                on toggleRow(name, value, checked) from #doctor_available_medicine
+                    if checked
+                        set row to (first <template/> in my parentElement).content.cloneNode(true).firstElementChild
+                        set @name of first <input/> in row to name
+                        set innerHTML of first .medicine_name in row to value
+                        call me.appendChild(row)
+                        call _hyperscript.processNode(row)
+                        remove @disabled from :submit_btn
+                    else
+                        for row in <tr/> in me
+                            if @name of first <input/> in row is name
+                                row.remove()
+                            end
+                        end
+                        if my childNodes's length is 0
+                            add @disabled to :submit_btn
+                        end
+                    end
+                "></tbody>
+            </table>
+            <div class="flex-1"></div>
+            {{ focus_button('Prescribe', submit=True, disabled=True) }}
+        </form>
+    </div>
+</div>
+{% endblock %}

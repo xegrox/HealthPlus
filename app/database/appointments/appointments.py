@@ -4,8 +4,7 @@ from app.database import Database, BasicDatabase
 from app.database.exceptions import AppointmentNotFoundError
 from app.database.utils import has_one_of, check_user_exists, check_staff_exists
 from app.models.account.staff import StaffRole
-from app.models.appointment import Appointment
-
+from app.models.appointment import Appointment, AppointmentStatus
 
 #   Appointments_db
 #   +-------------------------------+
@@ -52,10 +51,13 @@ def __read(appointment_id, _):
         return appointments[appointment_id]
 
 
-def __update(appointment_id, _, status):
+def __update(appointment_id, _, status: AppointmentStatus = None, prescription=None):
     with appointments_db.open() as appointments:
         appointment = appointments[appointment_id]
-        appointment.update_status(status)
+        if status is not None:
+            appointment.update_status(status)
+        if appointment.status == AppointmentStatus.SEEN:
+            appointment.prescription = prescription
         appointments.put(appointment)
     return appointment
 
@@ -95,8 +97,8 @@ def read(doctor_id=None, user_id=None, appointment_id=None):
     return __operation(__read, doctor_id, user_id, appointment_id)
 
 
-def update(status, doctor_id=None, user_id=None, appointment_id=None):
-    return __operation(__update, doctor_id, user_id, appointment_id, status)
+def update(doctor_id=None, user_id=None, appointment_id=None, status=None, prescription=None):
+    return __operation(__update, doctor_id, user_id, appointment_id, status, prescription)
 
 
 def delete(doctor_id=None, user_id=None, appointment_id=None):
