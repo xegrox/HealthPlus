@@ -39,6 +39,9 @@ def __update(account_id, data):
             staff.last_name = val
         if val := data.get('password'):
             staff.password_hash = hash_sha256(val)
+        if val := data.get('details'):
+            for name, value in val.items():
+                staff.put_detail(name, value)
         accounts.put(staff)
         return staff
 

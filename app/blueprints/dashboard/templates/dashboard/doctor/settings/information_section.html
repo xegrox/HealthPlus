@@ -1,0 +1,32 @@
+{% from 'button.html' import focus_button %}
+{% from 'input.html' import input %}
+
+{% extends 'card.html' %}
+
+{% block content %}
+<form class="flex flex-col space-y-10" _="
+    init
+        fetch /account with method: 'GET'
+        set details to JSON.parse(result).details
+        set @placeholder of <input[name='specialization']/> in me to details.specialization
+        set @placeholder of <input[name='description']/> in me to details.description
+    end
+    on submit
+        halt the event's default
+        make FormData from me called formData
+        fetch /account with method:'PUT',
+          body:JSON.stringify({
+            'details': Object.fromEntries(formData)
+          }),
+          headers:{'Content-Type': 'application/json'}
+    ">
+    <p class="font-bold text-2xl">Update information</p>
+    <div class="flex flex-col space-y-5">
+        {{ input('Specialization', name='specialization') }}
+        {{ input('Description', name='description') }}
+    </div>
+    <div class="ml-auto justify-self-end flex space-x-5">
+        {{ focus_button('Update', submit=True) }}
+    </div>
+</form>
+{% endblock %}

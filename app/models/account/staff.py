@@ -28,5 +28,6 @@ class Staff(Account):
             'role': self.role.value,
             'staff_id': self.staff_id,
             'first_name': self.first_name,
-            'last_name': self.last_name
+            'last_name': self.last_name,
+            'details': self.__details
         }

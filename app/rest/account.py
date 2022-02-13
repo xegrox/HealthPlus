@@ -54,12 +54,13 @@ class AccountManagement(Resource):
                 .add_argument('current_password', trim=False) \
                 .add_argument('new_password', trim=False)
         else:
-            # Staff can only change password
             parser = reqparse.RequestParser() \
                 .add_argument('current_password') \
-                .add_argument('new_password')
+                .add_argument('new_password') \
+                .add_argument('details', type=dict)
         args = parser.parse_args()
         database = self.__database_of_account(current_user)
+        details = {k: v.strip() for k, v in args.get('details', {}).items() if v.strip() != ''}
         try:
             account = database.update(account_id=current_user.get_id(), data={
                 'first_name': args.get('first_name'),
@@ -67,7 +68,8 @@ class AccountManagement(Resource):
                 'password': self.__verify_password_change(
                     current=args.get('current_password'),
                     new=args.get('new_password')
-                )
+                ),
+                'details': details
             })
             return account.serializable, 200
         except AccountAlreadyExistsError:
