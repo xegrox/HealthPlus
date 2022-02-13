@@ -21,14 +21,16 @@ class PharmacistMedicineList(Resource):
             .add_argument('name', required=True) \
             .add_argument('description', required=True) \
             .add_argument('license_holder', required=True) \
-            .add_argument('quantity', type=int, required=True)
+            .add_argument('quantity', type=int, required=True) \
+            .add_argument('price', type=int, required=True)
         args = parser.parse_args()
         return medicine_inventory.create(
             atc_code=args['atc_code'],
             name=args['name'],
             description=args['description'],
             license_holder=args['license_holder'],
-            quantity=args['quantity']
+            quantity=args['quantity'],
+            price=args['price']
         ).serializable, 200
 
     @login_required

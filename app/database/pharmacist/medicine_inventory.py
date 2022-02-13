@@ -14,8 +14,8 @@ def __get_medicine(inv, medicine_id) -> Medicine:
         raise MedicineNotFoundError()
 
 
-def create(atc_code, name, description, license_holder, quantity):
-    medicine = Medicine(uuid4().hex, atc_code, name, description, license_holder, quantity)
+def create(atc_code, name, description, license_holder, quantity, price):
+    medicine = Medicine(uuid4().hex, atc_code, name, description, license_holder, quantity, price)
     with medicine_inventory_db.open() as inv:
         inv.put(medicine)
         return medicine

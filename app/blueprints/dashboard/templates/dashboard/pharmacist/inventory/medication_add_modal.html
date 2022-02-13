@@ -19,6 +19,7 @@
             {{ input('Medicine Desc.', type='text', name='description', required=True) }}
             {{ input('Supplier', type='text', name='license_holder', required=True) }}
             {{ number_input('Quantity', name='quantity') }}
+	        {{ number_input('Price', name='price') }}
         </div>
         {{ focus_button('Add', submit=True) }}
     
