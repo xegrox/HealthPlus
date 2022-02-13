@@ -17,6 +17,7 @@ from .user.appointment import UserAppointment
 from .user.appointment_list import UserAppointmentList
 from .user.available_doctors import UserAvailableDoctors
 from .user.available_medicine import UserAvailableMedicine
+from .user.available_timeslots import UserAvailableTimeslotList
 from .user.medicine_order import UserMedicineOrder
 from .user.medicine_order_list import UserMedicineOrderList
 from .vaccine_manager.vaccine_order_logs import VaccineOrderLogs
@@ -40,6 +41,7 @@ def register_api(app):
     api.add_resource(UserAppointmentList, '/appointment')
     api.add_resource(UserAppointment, '/appointment/<appointment_id>')
     api.add_resource(UserAvailableDoctors, '/available_doctors')
+    api.add_resource(UserAvailableTimeslotList, '/available_timeslot')
     api.add_resource(VaccineOrderLogs, '/vaccine_logs')
     api.add_resource(DoctorAppointmentList, '/doctor_appointment')
     api.add_resource(DoctorAppointment, '/doctor_appointment/<appointment_id>')

@@ -1,27 +1,38 @@
 {% from 'date_picker.html' import date_picker %}
 
 <div class="page absolute w-full h-full !duration-150 bg-white flex" _="
+    set :timeslot_picker to .timeslot_picker in me
+    set :day_names to ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+
+    on allPageValues(values)
+        set :doctor_id to values[0]
+        make Date called today
+        send selectDateNum(date: today.getDate()) to first children of .date_picker in me
+
     on selectValue(value) from .date_picker in me
         if :selectedDate != undefined
             if :selectedDate.getTime() is value.getTime() then exit end
         end
         set :selectedDate to value
-        send updateTimeslots to .timeslot_picker in me
+        set @hx-vals of :timeslot_picker to JSON.stringify({
+            doctor_id: :doctor_id,
+            day: :day_names[value.getDay()]
+        })
+        send updateTimeslots to :timeslot_picker
         trigger pageValue(value: undefined)
     end
 
-    on selectTime(time)
-        set split to time.split(':')
-        set hours to split[0]
-        set minutes to split[1]
-        make Date from :selectedDate.getFullYear(), :selectedDate.getMonth(), :selectedDate.getDate(), hours, minutes
-        trigger pageValue(value: result)
+    on selectTime(timeslot_id)
+        trigger pageValue(value: {
+            date: :selectedDate,
+            timeslot_id: timeslot_id
+        })
     end">
     <div class="date_picker w-1/2 p-5 space-y-5">
         {{ date_picker() }}
     </div>
     <div class="timeslot_picker w-1/2 p-5"
          hx-post="/dashboard/ajax/user/appointments/available_timeslots_grid"
-         hx-swap="innerHTML" hx-trigger="showModal from:#modal_user_book_appointment, updateTimeslots">
+         hx-swap="innerHTML" hx-trigger="updateTimeslots">
     </div>
 </div>

@@ -52,6 +52,7 @@ on mutation of @page-index
         else
             for page in :pages index index
                 if index is @page-index
+                    send allPageValues(values: :pageValues) to page
                     remove .invisible from page
                     transition the page's opacity to 1
                 else
@@ -76,16 +77,17 @@ end
 
 on submit
     set doctor_id to :pageValues[0]
-    set datetime to :pageValues[1]
+    set timeslot_id to :pageValues[1].timeslot_id
+    set date to :pageValues[1].date
     set condition to :pageValues[2].condition
     set description to :pageValues[2].description
     set data to {
         doctor_id: doctor_id,
-        datetime: datetime,
+        timeslot_id: timeslot_id,
+        date: date,
         condition: condition,
         description: description
     }
-    log data
 
     fetch /appointment with method: 'POST',
         body: JSON.stringify(data),

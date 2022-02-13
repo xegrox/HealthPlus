@@ -1,7 +1,7 @@
 <div class="grid grid-cols-2 auto-rows-min gap-5" _="
-    on selectTime(time)
+    on selectTime(timeslot_id)
         for el in <div/> in me
-            if el's @value is time
+            if el's @value is timeslot_id
                 remove .bg-gray-100 .hover:bg-gray-200 from el
                 add .text-white .bg-secondary to el
             else
@@ -10,8 +10,8 @@
             end
         end
     ">
-    {% for timeslot in timeslots %}
+    {% for timeslot_id, timeslot in timeslots.items() %}
     <div class="text-center p-4 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
-         _="on click trigger selectTime(time: @value)" value="{{ timeslot[0] + ':' + timeslot[1] }}">{{ timeslot[0] + ':' + timeslot[1] }}</div>
+         _="on click trigger selectTime(timeslot_id: @value)" value="{{ timeslot_id }}">{{timeslot.start}} - {{timeslot.end}}</div>
     {% endfor %}
 </div>

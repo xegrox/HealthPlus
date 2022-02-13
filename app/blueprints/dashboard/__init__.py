@@ -10,6 +10,7 @@ from app.rest.pharmacist.medicine_list import PharmacistMedicineList
 from app.rest.user.appointment_list import UserAppointmentList
 from app.rest.user.available_doctors import UserAvailableDoctors
 from app.rest.user.available_medicine import UserAvailableMedicine
+from app.rest.user.available_timeslots import UserAvailableTimeslotList
 from app.rest.user.medicine_order_list import UserMedicineOrderList
 from app.rest.vaccine_manager.vaccine_order_logs import VaccineOrderLogs
 
@@ -100,7 +101,7 @@ def user_available_doctors_table():
 
 @blueprint.route('/ajax/user/appointments/available_timeslots_grid', methods=['POST'])
 def user_available_timeslots_grid():
-    timeslots = [('09', '30'), ('09', '45'), ('10', '15'), ('11', '45'), ('12', '30')]
+    timeslots = UserAvailableTimeslotList().get()[0]
     return render_template('/dashboard/user/appointments/available_timeslots_grid.html', timeslots=timeslots)
 
 
