@@ -22,6 +22,6 @@
     </div>
     <div class="timeslot_picker w-1/2 p-5"
          hx-post="/dashboard/ajax/user/appointments/available_timeslots_grid"
-         hx-swap="innerHTML" hx-trigger="load, updateTimeslots">
+         hx-swap="innerHTML" hx-trigger="showModal from:#modal_user_book_appointment, updateTimeslots">
     </div>
 </div>
