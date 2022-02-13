@@ -2,13 +2,14 @@ from app.database import DatabaseObject
 
 
 class Medicine(DatabaseObject):
-    def __init__(self, medicine_id: str, atc_code: str, name: str, description: str, license_holder: str, quantity: int):
+    def __init__(self, medicine_id: str, atc_code: str, name: str, description: str, license_holder: str, quantity: int, price: int):
         self._medicine_id = medicine_id
         self._atc_code = atc_code
         self._name = name
         self._description = description
         self._license_holder = license_holder
         self._quantity = quantity
+        self._price = price
 
     @property
     def key(self) -> str: return self._medicine_id
