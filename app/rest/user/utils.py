@@ -21,6 +21,16 @@ def serialize_medicine(medicine):
     }
 
 
+def serialize_appointment(covid_appointments):
+    return {
+        'date_of_birth': covid_appointments.date_of_birth,
+        'dose': covid_appointments.dose,
+        'vaccine_name': covid_appointments.vaccine_type.value,
+        'date_of_appointment': covid_appointments.date_of_appointment,
+        'time_name': covid_appointments.time_value
+    }
+
+
 def fill_medicine_info(medicine_id, quantity):
     medicine = medicine_inventory.read(medicine_id)
     quantity_filled = serialize_medicine(medicine)

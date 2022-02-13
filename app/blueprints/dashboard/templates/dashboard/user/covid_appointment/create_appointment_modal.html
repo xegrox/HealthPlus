@@ -1,0 +1,29 @@
+{% extends 'modal.html' %}
+{% set name = 'create_appointment' %}
+{% from 'button.html' import button, focus_button %}
+{% from 'input.html' import input %}
+{% from 'number_input.html' import number_input %}
+{% from 'select_input.html' import select_input %}
+
+{% block content %}
+<form hx-post="/covid_appointments" hx-swap="none">
+    <div class="space-y-6">
+        {{ input('Date Of Birth', name='date_of_birth') }}
+        {{ input('Dose', name='dose') }}
+        {{ select_input('Vaccine Name', options={
+            'Pfizer': 'Pfizer',
+            'Moderna': 'Moderna',
+            'Sinovac': 'Sinovac'
+        }, name='vaccine_type') }}
+        {{ input('Date Of Appointment', name='date_of_appointment') }}
+        {{ select_input('Time Name', options={
+            'FOUR': '4',
+            'FIVE': '5',
+            'SIX': '6'
+        }, name='time') }}
+    </div>
+    <div>
+        {{ focus_button('Create Log', submit=True) }}
+    </div>
+</form>
+{% endblock %}

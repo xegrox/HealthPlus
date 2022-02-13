@@ -13,6 +13,7 @@ from app.rest.user.available_medicine import UserAvailableMedicine
 from app.rest.user.available_timeslots import UserAvailableTimeslotList
 from app.rest.user.medicine_order_list import UserMedicineOrderList
 from app.rest.vaccine_manager.vaccine_order_logs import VaccineOrderLogs
+from app.rest.user.covid_appointments import CovidAppointments
 
 blueprint = Blueprint(
     'dashboard', __name__,
@@ -49,6 +50,13 @@ def doctor_appointments_table():
 def log_info():
     logs = VaccineOrderLogs().get()[0]
     return render_template('/dashboard/vaccine_manager/log_history/vaccine_log_table.html', logs=logs)
+
+
+# user - covid appointment
+@blueprint.route('/ajax/user/covid_appointment/appointment_table', methods=['POST'])
+def appointment():
+    covid_appointments = CovidAppointments().get()[0]
+    return render_template('/dashboard/user/covid_appointment/appointment_table.html', covid_appointments=covid_appointments)
 
 
 # pharmacist - inventory

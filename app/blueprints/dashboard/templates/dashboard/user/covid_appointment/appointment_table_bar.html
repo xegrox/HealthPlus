@@ -1,0 +1,18 @@
+{% from 'button.html' import warn_button %}
+
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'appointment_table' %}
+{% set table_template_url = '/dashboard/ajax/user/covid_appointment/appointment_table' %}
+{% set search_categories = {
+    '1': 'Date Of Birth',
+    '2': 'Dose',
+    'c34': 'Vaccine Type'
+} %}
+
+{% block select_options %}
+{{ warn_button('Delete', icon='trash', _='
+on action(values)
+    log "test"
+    send showModal(values: values) to #modal_delete_log
+') }}
+{% endblock %}

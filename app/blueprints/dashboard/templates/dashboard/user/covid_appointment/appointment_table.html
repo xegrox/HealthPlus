@@ -1,0 +1,24 @@
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+    <thead>
+        <tr>
+            <th><input class="check_all" type="checkbox"></th>
+            <th>Date Of Birth</th>
+            <th>Dose</th>
+            <th>Vaccine Type</th>
+            <th>Date Of Appointment</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for covid_appointment in covid_appointments %}
+        <tr>
+            <td><input class="check_row" type="checkbox" name="{{ covid_appointment['date_of_birth'] }}" value="{{ covid_appointment['date_of_birth'] }}"></td>
+            <td>{{ covid_appointment['Date Of Birth'] }}</td>
+            <td>{{ covid_appointment['Dose'] }}</td>
+            <td>{{ covid_appointment['vaccine_type'] }}</td>
+            <td>{{ covid_appointment['date_of_appointment'] }}</td>
+            <td>{{ covid_appointment['time'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
