@@ -5,6 +5,7 @@ from app.models.account.staff import StaffRole
 from app.rest.admin.staff_account_list import AdminStaffAccountList
 from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.doctor.appointment_list import DoctorAppointmentList
+from app.rest.doctor.available_timeslot_list import DoctorAvailableTimeslotList
 from app.rest.pharmacist.medicine_list import PharmacistMedicineList
 from app.rest.user.appointment_list import UserAppointmentList
 from app.rest.user.available_doctors import UserAvailableDoctors
@@ -26,6 +27,13 @@ class _Page:
         self.fragment = fragment
         self.template = template
         self.right_panel_template = right_panel_template
+
+
+# doctor - available_timeslots
+@blueprint.route('/ajax/doctor/settings/available_timeslots_section', methods=['POST'])
+def doctor_available_timeslots():
+    timeslots = DoctorAvailableTimeslotList().get()[0]
+    return render_template('/dashboard/doctor/settings/available_timeslots_section.html', timeslots=timeslots)
 
 
 # doctor - appointments

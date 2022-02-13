@@ -1,0 +1,50 @@
+{% from 'number_input.html' import number_input %}
+{% from 'button.html' import focus_button %}
+
+{% extends 'modal.html' %}
+{% set name = 'doctor_add_timeslot' %}
+
+{% block content %}
+<form class="w-96 flex flex-col space-y-10" _="
+    on showModal(day) from #modal_doctor_add_timeslot
+        set :day to day
+    on fetch:afterResponse(detail)
+        if detail.response.status is 200
+          trigger hideModal
+          trigger refresh
+        end
+    on submit
+        halt the event's default
+        make FormData from me called formData
+        set start to `${formData.get('start_hour').padStart(2, '0')}:${formData.get('start_min').padStart(2, '0')}`
+        set end to `${formData.get('end_hour').padStart(2, '0')}:${formData.get('end_min').padStart(2, '0')}`
+        fetch /doctor_available_timeslot with method: 'POST',
+            body: JSON.stringify({
+                day: :day,
+                start: start,
+                end: end
+            }),
+            headers:{'Content-Type': 'application/json'}
+    ">
+    <p class="font-bold text-2xl">Add timeslot</p>
+    <div class="space-y-5">
+        <div class="space-y-2">
+            <p class="font-medium">Start</p>
+            <div class="flex items-center space-x-5">
+                {{ number_input(class='w-44', max=24, name='start_hour') }}
+                <p>:</p>
+                {{ number_input(class='w-44', max=60, name='start_min') }}
+            </div>
+        </div>
+        <div class="space-y-2">
+            <p class="font-medium">End</p>
+            <div class="flex items-center space-x-5">
+                {{ number_input(class='w-44', max=24, name='end_hour') }}
+                <p>:</p>
+                {{ number_input(class='w-44', max=60, name='end_min') }}
+            </div>
+        </div>
+    </div>
+    {{ focus_button('Add', submit=True) }}
+</form>
+{% endblock %}

@@ -7,6 +7,7 @@ from .admin.user_account_list import AdminUserAccountList
 from .doctor.appointment import DoctorAppointment
 from .doctor.appointment_list import DoctorAppointmentList
 from .doctor.available_medicine import DoctorAvailableMedicine
+from .doctor.available_timeslot_list import DoctorAvailableTimeslotList
 from .session import SessionManagement
 from .account import AccountManagement
 from .pharmacist.medicine import PharmacistMedicine
@@ -43,3 +44,4 @@ def register_api(app):
     api.add_resource(DoctorAppointmentList, '/doctor_appointment')
     api.add_resource(DoctorAppointment, '/doctor_appointment/<appointment_id>')
     api.add_resource(DoctorAvailableMedicine, '/doctor_available_medicine')
+    api.add_resource(DoctorAvailableTimeslotList, '/doctor_available_timeslot')
