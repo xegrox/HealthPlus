@@ -1,4 +1,4 @@
-{% macro date_picker(class='') %}
+{% macro date_picker(class='', present=False) %}
 <div class="space-y-5 {{ class }}" _="
     init
         make Date called today
@@ -101,7 +101,10 @@
             make Date from month.getFullYear(), month.getMonth() + 1, 0 then set monthEnd to result.getDate()
             repeat monthEnd times index i
                 set day to i + 1
-                if month.getFullYear() is today.getFullYear() and month.getMonth() is today.getMonth() and day < today.getDate()
+                {% if present %}
+                set present to true
+                {% endif %}
+                if present and month.getFullYear() is today.getFullYear() and month.getMonth() is today.getMonth() and day < today.getDate()
                     set template to :inactive_date_template.content.cloneNode(true).firstElementChild
                     set innerHTML of <p/> in template to day
                     call me.appendChild(template)

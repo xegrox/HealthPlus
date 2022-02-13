@@ -28,7 +28,7 @@
         })
     end">
     <div class="date_picker w-1/2 p-5 space-y-5">
-        {{ date_picker() }}
+        {{ date_picker(present=True) }}
     </div>
     <div class="timeslot_picker w-1/2 p-5"
          hx-post="/dashboard/ajax/user/appointments/available_timeslots_grid"
