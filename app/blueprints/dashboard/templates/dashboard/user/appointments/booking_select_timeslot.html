@@ -2,7 +2,6 @@
 
 <div class="page absolute w-full h-full !duration-150 bg-white flex" _="
     set :timeslot_picker to .timeslot_picker in me
-    set :day_names to ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
     on allPageValues(values)
         set :doctor_id to values[0]
@@ -16,7 +15,7 @@
         set :selectedDate to value
         set @hx-vals of :timeslot_picker to JSON.stringify({
             doctor_id: :doctor_id,
-            day: :day_names[value.getDay()]
+            date: value.toISOString()
         })
         send updateTimeslots to :timeslot_picker
         trigger pageValue(value: undefined)

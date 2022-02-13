@@ -4,7 +4,7 @@ from pytz import timezone
 from app.database.appointments import appointments
 from app.database.exceptions import AppointmentNotFoundError, StaffNotFoundError
 from .utils import check_is_user, serialize_appointment
-from ...database.accounts import staff_accounts
+from app.database.accounts import staff_accounts
 
 
 class UserAppointmentList(Resource):
@@ -33,8 +33,8 @@ class UserAppointmentList(Resource):
                     split = timeslot_ids[timeslot_id]['start'].split(':')
                     datetime = args['date'].astimezone(timezone('Asia/Singapore'))
                     datetime = datetime.replace(hour=int(split[0]), minute=int(split[1]))
-                    booked_dates = timeslots[day][timeslot_id].get('booked_dates', [])
-                    booked_dates.append(args['date'].replace(hour=0, minute=0))
+                    booked_dates = timeslots[day][timeslot_id].get('booked_dates', set())
+                    booked_dates.add(datetime.date())
                     timeslots[day][timeslot_id]['booked_dates'] = booked_dates
                     staff_accounts.update(account_id=args['doctor_id'], data={
                         'details': {'timeslots': timeslots}
