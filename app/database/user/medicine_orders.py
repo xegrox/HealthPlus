@@ -54,4 +54,8 @@ def delete(user_account_id, order_id):
 
 def read_all():
     with user_medicine_orders_db.open() as orders:
-        return list(orders.values())
+        all_orders = {}
+        for user_orders in orders.values():
+            for order_id, order in user_orders.items():
+                all_orders[order_id] = order
+        return all_orders
