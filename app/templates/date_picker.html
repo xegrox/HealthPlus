@@ -44,6 +44,12 @@
                 call toggleDateState(el, false)
             end
         end
+        make Date called today
+        if today.getFullYear() >= :selectedMonth.getFullYear() and today.getMonth() >= :selectedMonth.getMonth()
+            add .invisible to .prev_month_btn in me
+        else
+            remove .invisible from .prev_month_btn in me
+        end
     end
 
     on nextMonth
@@ -57,11 +63,26 @@
     end
     ">
     <div class="flex items-center px-5">
-        <div class="flex items-center justify-center hover:bg-gray-100 transition-colors rounded-full w-8 h-8" _="on click trigger prevMonth"><i class="ti ti-chevron-left"></i></div>
+        <div class="prev_month_btn flex items-center justify-center hover:bg-gray-100 transition-colors rounded-full w-8 h-8" _="on click trigger prevMonth"><i class="ti ti-chevron-left"></i></div>
         <p class="selected_month flex-1 text-center"></p>
         <div class="flex items-center justify-center hover:bg-gray-100 transition-colors rounded-full w-8 h-8" _="on click trigger nextMonth"><i class="ti ti-chevron-right"></i></div>
     </div>
+    <template class="disabled_date">
+        <div class='flex text-center h-10 w-10 bg-gray-50 rounded-full items-center justify-center opacity-50'><p></p></div>
+    </template>
+    <template class="inactive_date">
+        <div class='flex text-center h-10 w-10 bg-gray-100 rounded-full items-center justify-center opacity-50'><p></p></div>
+    </template>
+    <template class="active_date">
+        <div class='select_date flex text-center h-10 w-10 rounded-full items-center justify-center transition-colors cursor-pointer' _="
+        on click trigger selectDateNum(date: @value)
+        "><p></p></div>
+    </template>
     <div class="date_num_grid grid grid-cols-7 gap-3 auto-rows-min" _="
+        set :disabled_date_template to first .disabled_date in my parentElement
+        set :inactive_date_template to first .inactive_date in my parentElement
+        set :active_date_template to first .active_date in my parentElement
+
         on changeMonth(month)
             set my innerHTML to ''
             for name in ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
@@ -72,15 +93,26 @@
                 make Date from month.getFullYear(), month.getMonth(), 0 then set prevMonthEnd to result.getDate()
                 repeat (prevMonthEnd + 1) - prevMonthStart times index i
                     set day to prevMonthStart + i
-                    append `<div class='flex text-center h-10 w-10 bg-gray-50 rounded-full items-center justify-center opacity-50'><p>${day}</p></div>` to me
+                    set template to :disabled_date_template.content.cloneNode(true).firstElementChild
+                    set innerHTML of <p/> in template to day
+                    call me.appendChild(template)
                 end
             end
+            make Date called today
             make Date from month.getFullYear(), month.getMonth() + 1, 0 then set monthEnd to result.getDate()
             repeat monthEnd times index i
                 set day to i + 1
-                set classes to 'select_date flex text-center h-10 w-10 rounded-full items-center justify-center transition-colors cursor-pointer'
-                set onclick to `dispatchEvent(new CustomEvent('selectDateNum', {bubbles: true, detail: {date:getAttribute('value')}}))`
-                append `<div class='${classes}' onclick=&quot${onclick}&quot value='${day}'><p>${day}</p></div>` to me
+                if month.getFullYear() is today.getFullYear() and month.getMonth() is today.getMonth() and day < today.getDate()
+                    set template to :inactive_date_template.content.cloneNode(true).firstElementChild
+                    set innerHTML of <p/> in template to day
+                    call me.appendChild(template)
+                else
+                    set template to :active_date_template.content.cloneNode(true).firstElementChild
+                    set innerHTML of <p/> in template to day
+                    set @value of template to day
+                    call _hyperscript.processNode(template)
+                    call me.appendChild(template)
+                end
             end
             trigger updateDateState
     "></div>
