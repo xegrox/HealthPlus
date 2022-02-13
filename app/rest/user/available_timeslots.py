@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from flask_login import login_required
 from flask_restful import Resource, abort, inputs
 from flask_restful.reqparse import RequestParser

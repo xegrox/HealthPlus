@@ -29,5 +29,5 @@ class Staff(Account):
             'staff_id': self.staff_id,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'details': self.__details
+            'details': {k: v for k, v in self.__details.items() if k != 'timeslots'}
         }
