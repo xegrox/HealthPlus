@@ -4,7 +4,7 @@
 {% extends 'modal.html' %}
 {% set name = 'update_status' %}
 {% block content %}
-    <form hx-put='/user_medicine_order' hx-swap='none' _="
+    <form hx-post='/user_medicine_order' hx-swap='none' _="
     on showModal(order_id) from #modal_update_status
         set :order_id to order_id
         set :user_id to user_id

@@ -7,6 +7,7 @@ from app.rest.admin.user_account_list import AdminUserAccountList
 from app.rest.doctor.appointment_list import DoctorAppointmentList
 from app.rest.doctor.available_timeslot_list import DoctorAvailableTimeslotList
 from app.rest.pharmacist.medicine_list import PharmacistMedicineList
+from app.rest.pharmacist.all_user_orders import PharmacistAllOrdersList
 from app.rest.user.appointment_list import UserAppointmentList
 from app.rest.user.available_doctors import UserAvailableDoctors
 from app.rest.user.available_medicine import UserAvailableMedicine
@@ -66,18 +67,18 @@ def medicine_management():
     return render_template('/dashboard/pharmacist/inventory/inventory_base.html', medicines=medicines)
 
 
+# pharmacist - collection status
+@blueprint.route('/ajax/pharmacist/collection_status/patient_orders', methods=['POST'])
+def patient_orders():
+    orders = PharmacistAllOrdersList().get()[0]
+    return render_template('/dashboard/pharmacist/collection_status/patient_orders.html', orders=orders)
+
+
 # user - prescriptions
 @blueprint.route('/ajax/user/prescriptions/prescription_list', methods=['POST'])
 def prescription_list():
     appointments = UserAppointmentList().get()[0]
     return render_template('/dashboard/user/prescriptions/prescription_list.html', appointments=appointments)
-
-
-# pharmacist - collection status
-@blueprint.route('/ajax/pharmacist/collection_status/patient_orders', methods=['POST'])
-def patient_orders():
-    orders = UserMedicineOrderList().get()[0]
-    return render_template('/dashboard/pharmacist/collection_status/patient_orders.html', orders=orders)
 
 
 # user - order medicine
@@ -101,18 +102,21 @@ def user_appointments_table():
     return render_template('/dashboard/user/appointments/appointments_table.html', appointments=appointments)
 
 
+# user - appointments (doctor)
 @blueprint.route('/ajax/user/appointments/available_doctors_table', methods=['POST'])
 def user_available_doctors_table():
     doctors = UserAvailableDoctors().get()[0]
     return render_template('/dashboard/user/appointments/available_doctors_table.html', doctors=doctors)
 
 
+# user - appointments (timeslots)
 @blueprint.route('/ajax/user/appointments/available_timeslots_grid', methods=['POST'])
 def user_available_timeslots_grid():
     timeslots = UserAvailableTimeslotList().get()[0]
     return render_template('/dashboard/user/appointments/available_timeslots_grid.html', timeslots=timeslots)
 
 
+# admin - manage staffs
 @blueprint.route('/ajax/admin/manage_staffs/accounts_table', methods=['POST'])
 @login_required
 def admin_staff_accounts_table():
@@ -121,6 +125,7 @@ def admin_staff_accounts_table():
         return render_template('dashboard/admin/manage_staffs/accounts_table.html', accounts=accounts)
 
 
+# admin - manage users
 @blueprint.route('/ajax/admin/manage_users/accounts_table', methods=['POST'])
 @login_required
 def admin_user_accounts_table():
@@ -155,9 +160,9 @@ def dashboard():
             ])
         elif current_user.role == StaffRole.PHARMACIST:
             return render_template('dashboard/index.html', pages=[
+                _Page('Inventory', 'pencil', 'inventory_management', 'dashboard/pharmacist/inventory/index.html'),
                 _Page('Collection Status', 'truck', 'collection_status', 'dashboard/pharmacist/collection_status/index.html'),
-                _Page('Settings', 'settings', 'settings', 'dashboard/pharmacist/settings/index.html'),
-                _Page('Inventory', 'pencil', 'inventory_management', 'dashboard/pharmacist/inventory/index.html')
+                _Page('Settings', 'settings', 'settings', 'dashboard/pharmacist/settings/index.html')
             ])
         elif current_user.role == StaffRole.VACCINE_MANAGER:
             return render_template('dashboard/index.html', pages=[
