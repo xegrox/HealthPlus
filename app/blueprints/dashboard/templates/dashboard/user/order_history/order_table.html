@@ -18,7 +18,7 @@
                 {% endif %}
             </td>
             <td>{{ order_item.date.values() | join('/') }}</td>
-            <td>{{ order_item['method'] }}</td>
+            <td>Self-collection within 2 days</td>
             <td>{{ order_item['status'] }}</td>
             <td class="space-x-2">
                 <i class="ti ti-eye" _='on click send showModal(quantities: {{ order_item.quantities | tojson }}) to #modal_view_quantity'></i>

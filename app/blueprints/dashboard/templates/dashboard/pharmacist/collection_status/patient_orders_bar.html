@@ -1,0 +1,7 @@
+{% extends 'table_action_bar.html' %}
+{% set table_id = 'patient_orders_table' %}
+{% set table_template_url = '/dashboard/ajax/pharmacist/collection_status/patient_orders' %}
+{% set search_categories = {
+    '1': 'Order Date',
+    '2': 'Status',
+} %}

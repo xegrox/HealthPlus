@@ -1,0 +1,28 @@
+<table _="install TableSearchBehaviour install TableCheckboxBehaviour">
+    <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>View Medicine</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_item in orders %}
+            {% if order_item.status != 'cancelled' %}
+                <tr>
+                    <td>{{ order_item.date.values() | join('/') }}</td>
+                    <td>{{ order_item['status'] }}</td>
+                    <td class="space-x-2">
+                        <i class="ti ti-eye"
+                           _='on click send showModal(quantities: {{ order_item.quantities | tojson }}) to #modal_view_info'></i>
+                    </td>
+                    <td class="p-0 px-3">
+                        <i class="ti ti-pencil text-xl text-secondary rounded-full hover:bg-secondary/10 p-2 transition-colors"
+                           _="on click send showModal(status: '{{ order_item.status | tojson }}' ) to #modal_update_status"></i>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>

@@ -56,6 +56,13 @@ def prescription_list():
     return render_template('/dashboard/user/prescriptions/prescription_list.html', appointments=appointments)
 
 
+# pharmacist - collection status
+@blueprint.route('/ajax/pharmacist/collection_status/patient_orders', methods=['POST'])
+def patient_orders():
+    orders = UserMedicineOrderList().get()[0]
+    return render_template('/dashboard/pharmacist/collection_status/patient_orders.html', orders=orders)
+
+
 # user - order medicine
 @blueprint.route('/ajax/user/order_medicine/medicine_table', methods=['POST'])
 def medicine_list():

@@ -11,6 +11,7 @@ from .session import SessionManagement
 from .account import AccountManagement
 from .pharmacist.medicine import PharmacistMedicine
 from .pharmacist.medicine_list import PharmacistMedicineList
+from .pharmacist.order_status import PharmacistOrderStatus
 from .user.appointment import UserAppointment
 from .user.appointment_list import UserAppointmentList
 from .user.available_doctors import UserAvailableDoctors
@@ -30,6 +31,8 @@ def register_api(app):
     api.add_resource(AdminStaffAccount, '/staff_account/<account_id>')
     api.add_resource(PharmacistMedicineList, '/medicine')
     api.add_resource(PharmacistMedicine, '/medicine/<medicine_id>')
+    # added PharmacistOrderStatus class :D
+    api.add_resource(PharmacistOrderStatus, '/user_medicine_order/<user_id>/<order_id>')
     api.add_resource(UserMedicineOrderList, '/medicine_order')
     api.add_resource(UserMedicineOrder, '/medicine_order/<order_id>')
     api.add_resource(UserAvailableMedicine, '/available_medicine')

@@ -1,0 +1,35 @@
+{% from 'button.html' import focus_button %}
+{% from 'select_input.html' import select_input %}
+
+{% extends 'modal.html' %}
+{% set name = 'update_status' %}
+{% block content %}
+    <form hx-put='/user_medicine_order' hx-swap='none' _="
+    on showModal(order_id) from #modal_update_status
+        set :order_id to order_id
+        set :user_id to user_id
+
+    on submit
+        halt the event's default
+        make a FormData from me called formData
+        set data to Object.fromEntries(formData)
+        fetch `/user_medicine_order/${:user_id}/$(:order_id)` with method:'PUT',
+        body:JSON.stringify(data),
+        headers:{'Content-Type': 'application/json'}
+
+    on fetch:afterResponse(detail)
+        if detail.response.status is 200
+            trigger hideModal
+            trigger refresh
+        end">
+        <p class="text-3xl font-bold underline decoration-primary">Update Status</p>
+        <div class="flex flex-col space-y-5">
+            {{ select_input('Status', options={
+            'Pending': 'Pending',
+            'Ongoing': 'Ongoing',
+            'Sent': 'Sent'
+        }, name='status') }}
+        </div>
+        {{ focus_button('Update', submit=True) }}
+    </form>
+{% endblock %}
