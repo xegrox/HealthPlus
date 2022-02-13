@@ -1,0 +1,51 @@
+{% extends 'modal.html' %}
+{% set name = 'doctor_view_appointment' %}
+
+{% block content %}
+<div class="w-[40rem] space-y-10" _="
+set :tbody to first <tbody/> in .prescription_table in me
+set :condition to first .condition in me
+set :description to first .description in me
+
+on showModal(appointment) from #modal_doctor_view_appointment
+  set innerHTML of :condition to appointment.condition
+  set innerHTML of :description to appointment.description
+  if appointment.description is ''
+    set innerHTML of :description to `<span class='italic text-gray-400'>No description provided</span>`
+  end
+  for medicine in appointment.prescription
+    append `<tr><td>${medicine.name}</td><td>${medicine.quantity}</td></tr>` to :tbody
+  end
+
+on hideModal from #modal_doctor_view_appointment
+  settle
+  set innerHTML of :tbody in me to ''
+  set innerHTML of :description to ''
+  set innerHTML of :condition to ''
+">
+  <p class="font-bold text-2xl">View information</p>
+  <div class="space-y-8">
+    <div class="space-y-2">
+      <p class="font-medium text-lg">Condition</p>
+      <div class="condition p-2 bg-gray-50 rounded-lg w-full"></div>
+    </div>
+    <div class="space-y-2">
+      <p class="font-medium text-lg">Description</p>
+      <div class="description p-2 bg-gray-50 rounded-lg w-full"></div>
+    </div>
+    <div class="space-y-2">
+      <p class="font-medium text-lg">Prescription</p>
+      <table class="w-full prescription_table outline outline-px outline-gray-200">
+        <thead>
+        <tr>
+          <th>Medicine</th>
+          <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

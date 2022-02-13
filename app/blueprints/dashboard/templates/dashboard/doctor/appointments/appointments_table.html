@@ -6,7 +6,8 @@
         <th>Time</th>
         <th>Patient</th>
         <th>Condition</th>
-        <th>Actions</th>
+        <th>View</th>
+        <th>Prescribe</th>
     </tr>
     </thead>
     <tbody>
@@ -22,11 +23,13 @@
         <td>{{ appointment.status }}</td>
         <td class="detail_time"></td>
         <td>{{ appointment.patient_name }}</td>
-        <td class="flex align-center pr-10">
-            <p class="flex-1 truncate">{{ appointment.condition }}</p>
-            <i class="ti ti-eye text-xl text-gray-400 hover:text-gray-600 transition-colors"></i>
+        <td>{{ appointment.condition }}</td>
+        <td>
+            <i class="ti ti-eye text-xl text-gray-400 hover:text-gray-600 transition-colors" _='
+                on click send showModal(appointment: {{ appointment | tojson }}) to #modal_doctor_view_appointment
+            '></i>
         </td>
-        <td class="px-3 space-x-2">
+        <td>
             {% if appointment.status == 'seen' %}
             <i class="ti ti-prescription text-xl text-secondary rounded-full hover:bg-secondary/10 p-2 transition-colors" _="
                 on click send showModal(appointment_id: '{{ appointment.appointment_id }}') to #modal_doctor_issue_prescription
