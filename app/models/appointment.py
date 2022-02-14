@@ -20,7 +20,7 @@ class Appointment(DatabaseObject):
         self.datetime = datetime
         self.condition = condition
         self.description = description
-        self.prescription = {}
+        self.prescription = dict()
         self.__status = AppointmentStatus.BOOKED
 
     def update_status(self, status: AppointmentStatus):

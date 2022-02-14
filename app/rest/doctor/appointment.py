@@ -22,7 +22,6 @@ class DoctorAppointment(Resource):
     def put(self, appointment_id):
         check_is_doctor()
         try:
-            print(request.json)
             prescription = {e[0]: int(e[1]) for e in request.json.items()}
             appointments.update(doctor_id=current_user.get_id(), appointment_id=appointment_id, prescription=prescription)
             return '', 200

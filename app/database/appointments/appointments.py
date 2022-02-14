@@ -48,7 +48,10 @@ def __operation(delegate, doctor_id, user_id, appointment_id, *args):
 
 def __read(appointment_id, _):
     with appointments_db.open() as appointments:
-        return appointments[appointment_id]
+        appointment = appointments[appointment_id]
+        if appointment.prescription is None:
+            appointment.prescription = {}
+        return appointment
 
 
 def __update(appointment_id, _, status: AppointmentStatus = None, prescription=None):
