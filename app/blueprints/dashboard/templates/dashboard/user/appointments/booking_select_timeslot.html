@@ -9,9 +9,6 @@
         send selectDateNum(date: today.getDate()) to first children of .date_picker in me
 
     on selectValue(value) from .date_picker in me
-        if :selectedDate != undefined
-            if :selectedDate.getTime() is value.getTime() then exit end
-        end
         set :selectedDate to value
         set @hx-vals of :timeslot_picker to JSON.stringify({
             doctor_id: :doctor_id,
