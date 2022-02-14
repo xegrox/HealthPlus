@@ -89,9 +89,14 @@ behavior TableCheckboxBehaviour
         return getComputedStyle(row).getPropertyValue("display") is not 'none'
     end
 
-    on checkRow(checked) from <tbody/> in me
-        if isVisible(it)
-            set checkbox to first .check_row in it
+    on checkRow(checked, target) from <tbody/> in me
+        if isVisible(target)
+            set checkbox to undefined
+            if target matches .check_row
+                set checkbox to target
+            else
+                set checkbox to first .check_row in target
+            end
             set checkbox.checked to checked
             trigger toggleRow(name: checkbox.name, value: checkbox.value, checked: checked)
         end
@@ -112,7 +117,7 @@ behavior TableCheckboxBehaviour
 
     on change(target) queue all
         if target is :check_all
-            send checkRow(checked: target.checked) to <tr/> in <tbody/> in me
+            trigger checkAllRow(checked: target.checked)
         else
             if target matches .check_row
                 send checkRow(checked: target.checked) to target
@@ -121,7 +126,9 @@ behavior TableCheckboxBehaviour
     end
 
     on checkAllRow(checked)
-        send checkRow(checked: checked) to <tr/> in <tbody/> in me
+        for row in <tr/> in <tbody/> in me
+            send checkRow(checked: checked) to row
+        end
     end
 end
 </script>
