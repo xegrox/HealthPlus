@@ -7,6 +7,7 @@ from app.models.appointment import Appointment
 from app.models.user_medicine_order import UserMedicineOrder
 
 
+
 def check_is_user():
     if not isinstance(current_user, User):
         abort(401)
@@ -43,6 +44,7 @@ def serialize_medicine_order(order: UserMedicineOrder):
     return {
         'method': order.method.value,
         'order_id': order.order_id,
+        'user_account_id': order.user_account_id,
         'date': {
             'day': order.order_date.day,
             'month': order.order_date.month,

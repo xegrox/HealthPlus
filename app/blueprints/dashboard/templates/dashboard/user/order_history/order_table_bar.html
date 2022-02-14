@@ -8,11 +8,3 @@
     '2': 'Collection Method',
     'c34': 'Status'
 } %}
-
-{% block select_options %}
-{{ warn_button('Delete', icon='trash', _='
-on action(values)
-    log "test"
-    send showModal(values: values) to #modal_cancel_order
-') }}
-{% endblock %}

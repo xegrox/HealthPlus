@@ -11,6 +11,6 @@ class PharmacistAllOrdersList(Resource):
     @login_required
     def get(self):
         check_is_pharmacist()
-        orders = list(medicine_orders.read_all())
+        orders = list(medicine_orders.read_all().values())
         serialized = [serialize_medicine_order(order) for order in orders]
         return serialized, 200

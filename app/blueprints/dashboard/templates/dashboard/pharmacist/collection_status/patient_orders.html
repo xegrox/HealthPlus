@@ -19,7 +19,7 @@
                     </td>
                     <td class="p-0 px-3">
                         <i class="ti ti-pencil text-xl text-secondary rounded-full hover:bg-secondary/10 p-2 transition-colors"
-                           _="on click send showModal(status: '{{ order_item.status | tojson }}' ) to #modal_update_status"></i>
+                           _="on click send showModal(user_id: '{{ order_item.user_account_id }}', order_id: '{{ order_item.order_id }}') to #modal_phar_update_status"></i>
                     </td>
                 </tr>
             {% endif %}

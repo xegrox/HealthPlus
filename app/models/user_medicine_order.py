@@ -10,7 +10,7 @@ class UserMedicineOrderMethod(Enum):
 class UserMedicineOrderStatus(Enum):
     PENDING = 'pending'
     ONGOING = 'ongoing'
-    SENT = 'sent'
+    AVAILABLE = 'available'
     CANCELLED = "cancelled"
 
 

@@ -1,7 +1,6 @@
 <table _="install TableSearchBehaviour install TableCheckboxBehaviour">
     <thead>
         <tr>
-            <th><input class="check_all" type="checkbox"></th>
             <th>Order Date</th>
             <th>Collection Method</th>
             <th>Status</th>
@@ -12,11 +11,6 @@
     <tbody>
         {% for order_item in orders %}
         <tr>
-            <td>
-                {% if order_item.status == 'cancelled' %}
-                    <input class="check_row" type="checkbox" name="{{ order_item['order_id'] }}" value="{{ order_item['order_id'] }}">
-                {% endif %}
-            </td>
             <td>{{ order_item.date.values() | join('/') }}</td>
             <td>Self-collection within 2 days</td>
             <td>{{ order_item['status'] }}</td>

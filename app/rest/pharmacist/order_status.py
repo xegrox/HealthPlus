@@ -17,6 +17,7 @@ class PharmacistOrderStatus(Resource):
         args = parser.parse_args()
         if order.status != UserMedicineOrderStatus.CANCELLED:
             try:
-                return medicine_orders.update(user_id, order_id, args['status']).serializable, 200
+                medicine_orders.update(user_id, order_id, args['status'])
             except OrderNotFoundError:
                 abort(404)
+            return '', 200

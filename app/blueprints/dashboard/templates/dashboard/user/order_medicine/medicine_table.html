@@ -33,7 +33,7 @@
             <td>{{ medicine.description }}</td>
             <td>{{ medicine.atc_code }}</td>
             <td>
-            {{ number_input(name=medicine.medicine_id, min=0, max=5, class="w-44", _="
+            {{ number_input(name=medicine.medicine_id, min=0, max=medicine.quantity, class="w-44", _="
                 on input(target)
                     trigger quantityChange(medicine_id: '{0}', name: '{1}', quantity: target's value)
                 ".format(medicine.medicine_id, medicine.name)) }}
