@@ -17,13 +17,13 @@
         }, name='vaccine_type') }}
         {{ input('Date Of Appointment', name='date_of_appointment') }}
         {{ select_input('Time Name', options={
-            'FOUR': '4',
-            'FIVE': '5',
-            'SIX': '6'
+            'Four': 'Four',
+            'Five': 'Five',
+            'Six': 'Six'
         }, name='time') }}
     </div>
     <div>
-        {{ focus_button('Create Log', submit=True) }}
+        {{ focus_button('Book Now', submit=True) }}
     </div>
 </form>
 {% endblock %}

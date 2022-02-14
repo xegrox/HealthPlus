@@ -1,7 +1,7 @@
 from flask_login import login_required
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
-from .utils import check_is_user, serialize_appointment
+from .utils import check_is_user, serialize_covid_appointment
 from app.database.user import covid_appointments
 from ...models.covid_appointment import VaccineType, Time
 
@@ -11,7 +11,7 @@ class CovidAppointments(Resource):
     @login_required
     def get(self):
         check_is_user()
-        return list(map(serialize_appointment, covid_appointments.read_all())), 200
+        return list(map(serialize_covid_appointment, covid_appointments.read_all())), 200
 
     @login_required
     def post(self):
@@ -29,7 +29,7 @@ class CovidAppointments(Resource):
             date_of_appointment=args['date_of_appointment'],
             time=args['time']
         )
-        return serialize_appointment(appointment), 200
+        return serialize_covid_appointment(appointment), 200
 
     @login_required
     def delete(self):

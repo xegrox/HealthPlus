@@ -17,7 +17,7 @@ def read(date_of_birth):
 def create(date_of_birth, dose, vaccine_type, date_of_appointment, time):
     appointment = NewAppointment(date_of_birth, dose, VaccineType(vaccine_type), date_of_appointment, Time(time))
     with covid_appointments_db.open() as covid_appointments:
-        covid_appointments.put(covid_appointments)
+        covid_appointments.put(appointment)
         return appointment
 
 

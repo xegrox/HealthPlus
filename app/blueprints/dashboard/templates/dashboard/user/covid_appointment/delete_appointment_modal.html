@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'modal.html' %}
+{% set name='delete_appointment' %}
+{% from 'button.html' import button, warn_button %}
 
-</body>
-</html>
+{% block content%}
+<form _="
+on showModal(values) from #modal_delete_appointment
+    set :covid_appointment_list to Array.from(values.values())
+on submit
+   halt the event's default
+   fetch /covid_appointments with method: 'DELETE',
+    body: JSON.stringify({
+     date_of_birth: :covid_appointment_list
+     }),
+     headers:{'Content-Type': 'application/json'}
+
+     on fetch:afterResponse(detail)
+       if detail.response.status is 200
+        trigger hideModal
+        trigger refresh
+      end
+     end
+     ">
+   <div class="p-6">
+    <h3 class="uppercase bold">Confirm Delete?</h3>
+   </div>
+    <div class="p-4 flex justify-center">
+        {{ warn_button('Delete', icon='trash', submit=True)}}
+    </div>
+</form>
+{% endblock %}

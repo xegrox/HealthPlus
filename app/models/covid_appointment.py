@@ -4,9 +4,9 @@ from app.database import DatabaseObject
 
 
 class Time(Enum):
-    FOUR = '4'
-    FIVE = '5'
-    SIX = '6'
+    FOUR = 'Four'
+    FIVE = 'Five'
+    SIX = 'Six'
 
 
 class VaccineType(Enum):
