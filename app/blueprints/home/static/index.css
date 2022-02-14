@@ -8,43 +8,43 @@ svg * {
 
 
 #feature-icon-1 {
-    animation: feature-icon-left .8s 1.58s both;
+    animation: feature-icon-left .8s 0.58s both;
 }
 
 #feature-icon-2 {
-    animation: feature-icon-left .8s 1.66s both;
+    animation: feature-icon-left .8s 0.66s both;
 }
 
 #feature-icon-3 {
-    animation: feature-icon-left .8s 1.74s both;
+    animation: feature-icon-left .8s 0.74s both;
 }
 
 #feature-icon-4 {
-    animation: feature-icon-left .8s 1.82s both;
+    animation: feature-icon-left .8s 0.82s both;
 }
 
 #feature-icon-5 {
-    animation: feature-icon-left .8s 1.90s both;
+    animation: feature-icon-left .8s 0.90s both;
 }
 
 #feature-icon-6 {
-    animation: feature-icon-left .8s 1.98s both;
+    animation: feature-icon-left .8s 0.98s both;
 }
 
 #feature-icon-7 {
-    animation: feature-icon-left .8s 2.06s both;
+    animation: feature-icon-left .8s 1.06s both;
 }
 
 #feature-icon-8 {
-    animation: feature-icon-left .8s 2.14s both;
+    animation: feature-icon-left .8s 1.14s both;
 }
 
 #feature-icon-9 {
-    animation: feature-icon-left .8s 2.22s both;
+    animation: feature-icon-left .8s 1.22s both;
 }
 
 #feature-icon-10 {
-    animation: feature-icon-left .8s 2.30s both;
+    animation: feature-icon-left .8s 1.30s both;
 }
 
 @keyframes feature-icon-left {
