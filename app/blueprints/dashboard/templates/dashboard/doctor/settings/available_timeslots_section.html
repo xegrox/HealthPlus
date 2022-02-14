@@ -8,16 +8,16 @@
     <p class="font-bold text-2xl">Available timeslots</p>
     <div class="space-y-8">
         {% for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] %}
-        <div class="flex rounded-lg outline outline-3 outline-primary/10 py-4 px-6 space-x-8 items-center">
+        <div class="flex rounded-lg outline outline-3 outline-primary/10 py-4 px-6 space-x-8 items-center overflow-hidden">
             <p class="font-medium text-lg w-24">{{ day[0]|upper }}{{ day[1:] }}</p>
-            <div class="flex-1 flex p-2 space-x-5">
+            <div class="flex-1 flex p-2 space-x-5 overflow-hidden">
                 {{ button('Add New Time', icon='circle-plus', _='
                     on click send showModal(day: "{0}") to #modal_doctor_add_timeslot
                 ').format(day) }}
-                <div class="space-x-5 flex">
+                <div class="flex-1 space-x-5 flex overflow-auto">
                     {% for timeslot_id, timeslot in timeslots.get(day, {}).items() %}
                     <div class="flex rounded-lg bg-primary/10 py-2.5 px-4 items-center space-x-3 hover:bg-primary/20 transition-colors">
-                        <p>{{timeslot.start}} - {{timeslot.end}}</p>
+                        <p class="whitespace-nowrap">{{timeslot.start}} - {{timeslot.end}}</p>
                         <i class="text-red-300 text-lg ti ti-x pb-0.5 transition-colors hover:text-red-400 cursor-pointer" hx-swap="none"
                             hx-delete="/doctor_available_timeslot" hx-vals='{"day": "{{day}}","timeslot_id": "{{timeslot_id}}"}' _="
                             on htmx:afterRequest(detail)
